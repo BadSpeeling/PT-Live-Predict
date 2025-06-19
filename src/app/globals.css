@@ -24,3 +24,40 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.iron {
+  background-image: url("/ironBackground.png");
+}
+
+.bronze {
+  background-image: url("/bronzeBackground.png");
+}
+
+.silver {
+  background-image: url("/silverBackground.png");
+}
+
+.gold {
+  background-image: url("/goldBackground.png");
+}
+
+.diamond {
+  background-image: url("/diamondBackground.png");
+}
+
+.perfect {
+  background-image: url("/perfectBackground.png");
+}
+
+.ptCardPredictSelection {
+  outline: lightblue 3px solid
+}
+
+.card-list-row {
+  border-top: solid 2px black
+}
+
+.card-tier-selector {
+  width:60px;
+  height:90px;
+}
