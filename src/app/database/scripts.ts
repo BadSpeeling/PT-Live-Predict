@@ -10,13 +10,15 @@ export const getUserPredictsScript = (
     pageSize: number,
     userID: string,
 ) => `
-    SELECT pt.PtCardID,pt.CardID,pt.LiveUpdateID,pt.CardTitle,pt.CardValue,pt.Position,pr.PredictedTier,pr.UserID
+	WITH LatestLiveUpdate AS (
+		SELECT MAX(LiveUpdateID) val FROM LiveUpdate
+	)
+   SELECT pt.PtCardID,pt.CardID,pt.LiveUpdateID,pt.CardTitle,pt.CardValue,pt.Position,pr.PredictedTier,pr.UserID
     FROM (
-        SELECT ROW_NUMBER() OVER (ORDER BY pt.CardID DESC) rn, pt.PtCardID
+        SELECT ROW_NUMBER() OVER (ORDER BY pt.CardID ASC) rn, pt.CardID, pt.PtCardID
         FROM PtCard pt
-        JOIN Player p ON pt.CardID = p.CardID 
-        JOIN Division d ON p.TeamID = d.TeamID
-        JOIN League l ON l.LeagueID = d.LeagueID
+        JOIN DivisionMember d ON pt.Team = d.Team
+		JOIN LatestLiveUpdate lu ON pt.LiveUpdateID = lu.val
         WHERE 1=1
         ${tierFilter.length !== 0 ? `AND pt.tier IN (${tierFilter.join(',')})` : ''}
         ${teamFilter.length !== 0 ? `AND p.TeamID IN (${teamFilter.join(',')})` : ''}
@@ -26,10 +28,11 @@ export const getUserPredictsScript = (
         ${onlyLastYearsAllstars ? `AND p.IsLastYearAllstarFlag` : ''}
         ${onlyLastYearsAwardWinners ? `AND p.IsLastYearAwardWinnerFlag` : ''}
     ) ptCardPage
-    JOIN PtCard pt ON ptCardPage.PtCardID = pt.PtCardID 
-    JOIN PtCardPredict pr ON ptCardPage.PtCardID = pr.PtCardID
-    WHERE rn BETWEEN (${((pageCount-1)*pageSize)+1},${((pageCount)*pageSize)})
-    AND pr.UserID = '${userID}'
+    JOIN PtCard pt ON ptCardPage.CardID = pt.CardID 
+    LEFT JOIN PtCardPredict pr ON ptCardPage.PtCardID = pr.PtCardID
+    WHERE 1=1
+    AND rn BETWEEN ${((pageCount-1)*pageSize)+1} AND ${((pageCount)*pageSize)}
+    AND IFNULL(pr.UserID,'') = ''
     ORDER BY pt.CardID ASC, pt.LiveUpdateID DESC;
 `
 
