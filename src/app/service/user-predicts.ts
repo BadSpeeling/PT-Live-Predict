@@ -1,10 +1,27 @@
 import { GetPtCardPredictsRequest, GetPtCardPredictsResponse, PostPtCardPredictRequest, PostPtCardPredictResponse, PredictSearchType, PtCardPredict, GetPtCardPredictsQueryResult } from '../../types'
 import { ptCardsData } from '../data'
+import { getUserPredictsScript } from '../database/scripts'
+import { DatabaseDriver } from '../database/database'
 
-export const getUserPredicts = (requestBody: GetPtCardPredictsRequest) => {
+import sqlite3 from 'sqlite3'
+import { open, Database } from 'sqlite'
 
-    const getUserPredictsQueryResult = ptCardsData as GetPtCardPredictsQueryResult[];
-    getUserPredictsQueryResult.sort()
+// const db = new DatabaseDriver('./pt-live-predict.db');
+// db.openDatabase();
+
+export const getUserPredicts = async (requestBody: GetPtCardPredictsRequest) => {
+
+    const script = getUserPredictsScript([],[],[],[],false,false,false,1,10,'');
+    //const getUserPredictsQueryResult = await db.getAll<GetPtCardPredictsQueryResult>(script);
+    //const getUserPredictsQueryResult = ptCardsData as GetPtCardPredictsQueryResult[];
+
+        const db = await open({
+            filename: './pt-live-predict.db',
+            //filename: this.server,
+            driver: sqlite3.Database
+        });
+
+        const getUserPredictsQueryResult = await db.all<GetPtCardPredictsQueryResult[]>(script);
 
     const userCardPredicts = [] as PtCardPredict[]
 
@@ -29,7 +46,7 @@ export const getUserPredicts = (requestBody: GetPtCardPredictsRequest) => {
     }
 
     if (cardPredictionToAdd) userCardPredicts.push(cardPredictionToAdd);   
-    return {UserCardPredicts: userCardPredicts} as GetPtCardPredictsResponse;
+        return {UserCardPredicts: userCardPredicts} as GetPtCardPredictsResponse;
 
 }
 
