@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import { googleLogout, useGoogleLogin, TokenResponse } from '@react-oauth/google';
 
 export const Account = () => {
-    const [ user, setUser ] = useState(null);
+    const [ user, setUser ] = useState(null as TokenResponse | "error" | "error_description" | "error_uri" | null);
     const [ googleProfile, setGoogleProfile ] = useState(null);
     const [ ptPredictProfile, setPtPredictProfile ] = useState(null);
 
@@ -13,7 +13,7 @@ export const Account = () => {
 
     useEffect(
         () => {
-            if (user) {
+            if (user != null && typeof user === 'object') {
                 
                 fetch(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
                         headers: {
@@ -43,7 +43,7 @@ export const Account = () => {
 
                     })
                     .then((res) => {
-                        setPtPredictProfile(res);
+                        //setPtPredictProfile(res);
                     })
                     .catch((err) => console.log(err));
             }
