@@ -4,7 +4,7 @@ import { getUserPredicts, postUserPredict } from "../../service/user-predicts"
 export async function POST(request: Request) {
 
     const requestParameters = (await request.json()) as PostPtCardPredictRequest
-    const result = postUserPredict(requestParameters);
+    const result = await postUserPredict(requestParameters);
 
     return new Response(JSON.stringify(result), {
         status: 200,

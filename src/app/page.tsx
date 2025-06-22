@@ -16,7 +16,7 @@ import { GoogleLogin } from '@react-oauth/google';
 export default function Home() {
 
   const context = React.useContext(AppContext)
-  const cards = context.ptCardsPredict;
+  const cards = context.ptCardsPredicts;
 
   const cardsBody = cards.map((card, index) => {
     return (
@@ -47,7 +47,7 @@ export default function Home() {
     
     if (getPtCardPredictsResponseRaw.status === 200) {
         const getPtCardPredictsResponse = (await getPtCardPredictsResponseRaw.json()) as GetPtCardPredictsResponse
-        context.setPtCardsPredict(getPtCardPredictsResponse.UserCardPredicts);
+        context.setPtCardsPredicts(getPtCardPredictsResponse.UserCardPredicts);
     }
   }
 

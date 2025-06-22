@@ -6,8 +6,8 @@ import { ptCardsData, liveUpdate } from './data'
 import {Option} from 'react-multi-select-component'
 
 const appData = {
-    ptCardsPredict: [] as PtCardPredict[],
-    setPtCardsPredict: (val: PtCardPredict[]) => {},
+    ptCardsPredicts: [] as PtCardPredict[],
+    setPtCardsPredicts: (val: PtCardPredict[]) => {},
     selectedTier: [] as Option[],
     setSelectedTier: (opt: Option[]) => {},
     selectedTeam: [] as Option[],
@@ -26,15 +26,15 @@ export default function AppProvider({
     children: React.ReactNode
 }) {
 
-    const [ptCardsPredict, setPtCardsPredict] = React.useState([] as PtCardPredict[])
+    const [ptCardsPredicts, setPtCardsPredicts] = React.useState([] as PtCardPredict[])
     const [selectedTier,setSelectedTier] = React.useState([] as Option[]);
     const [selectedTeam,setSelectedTeam] = React.useState([] as Option[]);
     const [selectedDivision,setSelectedDivision] = React.useState([] as Option[]);
     const [selectedLeague,setSelectedLeague] = React.useState([] as Option[]);
 
     const appData = {
-        ptCardsPredict,
-        setPtCardsPredict,
+        ptCardsPredicts,
+        setPtCardsPredicts,
         selectedTier,
         setSelectedTier,
         selectedTeam,

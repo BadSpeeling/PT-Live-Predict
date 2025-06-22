@@ -13,7 +13,7 @@ export const getUserPredictsScript = (
 	WITH LatestLiveUpdate AS (
 		SELECT MAX(LiveUpdateID) val FROM LiveUpdate
 	)
-   SELECT pt.PtCardID,pt.CardID,pt.LiveUpdateID,pt.CardTitle,pt.CardValue,pt.Position,pr.PredictedTier,pr.UserID
+   SELECT pr.PtCardPredictID,pt.PtCardID,pt.CardID,pt.LiveUpdateID,pt.CardTitle,pt.CardValue,pt.Position,pr.PredictedTier,pr.UserID
     FROM (
         SELECT ROW_NUMBER() OVER (ORDER BY pt.CardID ASC) rn, pt.CardID, pt.PtCardID
         FROM PtCard pt
@@ -41,7 +41,7 @@ export const insertUserPredictsScript = (
     predictedTier: number,
     userID: string,
 ) => `
-    INSERT INTO PtCardPredict (PtCardID,Tier,UserID) VALUES (${ptCardID},${predictedTier},'${userID}');
+    INSERT INTO PtCardPredict (PtCardID,PredictedTier,UserID) VALUES (${ptCardID},${predictedTier},'${userID}');
 `
 
 export const updateUserPredictsScript = (

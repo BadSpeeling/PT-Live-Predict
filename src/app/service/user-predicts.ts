@@ -1,10 +1,7 @@
 import { GetPtCardPredictsRequest, GetPtCardPredictsResponse, PostPtCardPredictRequest, PostPtCardPredictResponse, PredictSearchType, PtCardPredict, GetPtCardPredictsQueryResult } from '../../types'
 import { ptCardsData } from '../data'
-import { getUserPredictsScript } from '../database/scripts'
-import { DatabaseDriver } from '../database/database'
-
-import sqlite3 from 'sqlite3'
-import { open, Database } from 'sqlite'
+import { getUserPredictsScript, insertUserPredictsScript, updateUserPredictsScript } from '../database/scripts'
+import { DatabaseDriver, getDatabase } from '../database/database'
 
 // const db = new DatabaseDriver('./pt-live-predict.db');
 // db.openDatabase();
@@ -12,16 +9,13 @@ import { open, Database } from 'sqlite'
 export const getUserPredicts = async (requestBody: GetPtCardPredictsRequest) => {
 
     const script = getUserPredictsScript([],[],[],[],false,false,false,1,10,'');
+    
+    const db = await getDatabase();
+    
     //const getUserPredictsQueryResult = await db.getAll<GetPtCardPredictsQueryResult>(script);
-    //const getUserPredictsQueryResult = ptCardsData as GetPtCardPredictsQueryResult[];
+    const getUserPredictsQueryResult = await db.all<GetPtCardPredictsQueryResult[]>(script);
 
-        const db = await open({
-            filename: './pt-live-predict.db',
-            //filename: this.server,
-            driver: sqlite3.Database
-        });
-
-        const getUserPredictsQueryResult = await db.all<GetPtCardPredictsQueryResult[]>(script);
+    db.close();
 
     const userCardPredicts = [] as PtCardPredict[]
 
@@ -46,23 +40,37 @@ export const getUserPredicts = async (requestBody: GetPtCardPredictsRequest) => 
     }
 
     if (cardPredictionToAdd) userCardPredicts.push(cardPredictionToAdd);   
-        return {UserCardPredicts: userCardPredicts} as GetPtCardPredictsResponse;
+        
+    return {UserCardPredicts: userCardPredicts} as GetPtCardPredictsResponse;
 
 }
 
-export const postUserPredict = (requestBody: PostPtCardPredictRequest) => {
+export const postUserPredict = async (requestBody: PostPtCardPredictRequest) => {
+
+    const db = await getDatabase();
+    let ptCardPredictID: number = -1;
 
     if (!requestBody.PtCardPredictID) {
-        const insertID = -1
-        return {
-            PostPtCardPredictID: insertID,
+        const insertScript = insertUserPredictsScript(requestBody.PtCardID, requestBody.PredictedTier, requestBody.UserID);
+        const insertResult = await db.run(insertScript.replace('--',''))
+
+        if (insertResult.lastID) {
+            ptCardPredictID = insertResult.lastID;
+        }
+        else {
+            throw Error("PtCard insert failed");
         }
     }
     else {
-        //do the update
-        return {
-            PostCArdPredictID: requestBody.PtCardPredictID,
-        }        
+        const updateScript = updateUserPredictsScript(requestBody.PtCardPredictID, requestBody.PredictedTier);
+        await db.exec(updateScript);
+        ptCardPredictID = requestBody.PtCardPredictID;
     }
+
+    return {
+        PtCardPredictID: ptCardPredictID,
+        PtCardID: requestBody.PtCardID,
+        CardID: requestBody.CardID,
+    } as PostPtCardPredictResponse
 
 }
