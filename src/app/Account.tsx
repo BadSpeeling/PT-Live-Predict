@@ -62,7 +62,7 @@ export const Account = () => {
             <h2>React Google Login</h2>
             <br />
             <br />
-            {googleProfile ? (
+            {/* {googleProfile ? (
                 <div>
                     <img src={googleProfile.picture} alt="user image" />
                     <h3>User Logged in</h3>
@@ -74,7 +74,7 @@ export const Account = () => {
                 </div>
             ) : (
                 <button onClick={login}>Sign in with Google 🚀 </button>
-            )}
+            )} */}
         </div>
     );
 }

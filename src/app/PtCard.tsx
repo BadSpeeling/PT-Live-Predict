@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { AppContext } from './appContext'
+//import { AppContext } from './appContext'
 import { TierSelector } from "./TierSelector"
+import {PtCardPredict} from '../types'
 
 type PtCardProps = {
+    card: PtCardPredict,
     index: number,
 }
 
-export const PtCard = ({ index }: PtCardProps) => {
+export const PtCard = ({ card, index }: PtCardProps) => {
 
-    const context = React.useContext(AppContext);
-    const ptCard = context.PtCards[index];
+    const ptCard = card
     const currentActivePtCard = ptCard.UserPredicts[0];
 
     return (

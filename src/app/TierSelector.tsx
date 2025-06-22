@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AppContext } from './appContext'
+import { AppContext } from './AppContext'
 import { Tier } from '../types'
 
 type TierSelectorProps = {
@@ -10,7 +10,7 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
 
     const context = React.useContext(AppContext);
     const tiers = [Tier.Iron, Tier.Bronze, Tier.Silver, Tier.Gold, Tier.Diamond, Tier.Perfect];
-    const currentActivePtCard = context.PtCards[ptCardIndex].UserPredicts[0];
+    const currentActivePtCard = context.ptCardsPredict[ptCardIndex].UserPredicts[0];
     const [selectedIndex, setSelectedIndex] = React.useState(currentActivePtCard.PredictedTier);
 
     const setSelectedIndexHandler = (index: number) => {
