@@ -29,7 +29,7 @@ export const getUserPredictsScript = (
         ${onlyLastYearsAwardWinners ? `AND p.IsLastYearAwardWinnerFlag` : ''}
     ) ptCardPage
     JOIN PtCard pt ON ptCardPage.CardID = pt.CardID 
-    LEFT JOIN PtCardPredict pr ON ptCardPage.PtCardID = pr.PtCardID
+    LEFT JOIN PtCardPredict pr ON pt.PtCardID = pr.PtCardID
     WHERE 1=1
     AND rn BETWEEN ${((pageCount-1)*pageSize)+1} AND ${((pageCount)*pageSize)}
     AND IFNULL(pr.UserID,'') = ''
