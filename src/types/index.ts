@@ -67,7 +67,8 @@ export enum PredictSearchType {
 }
 
 export interface AppData {
-    PtCards: PtCardPredict[],
+    ptCardsPredict: PtCardPredict[],
+    setPtCardsPredict: React.Dispatch<React.SetStateAction<PtCardPredict[]>>, 
     selectedTier: Option[],
     setSelectedTier: React.Dispatch<React.SetStateAction<Option[]>>,
     selectedTeam: Option[],

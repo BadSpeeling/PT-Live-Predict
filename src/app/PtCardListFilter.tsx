@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {MultiSelect,Option} from 'react-multi-select-component';
 import { Tier } from '../types'
-import { AppContext } from "./appContext";
+import { AppContext } from "./AppContext";
 
 export const PtCardListFilter = () => {
 
