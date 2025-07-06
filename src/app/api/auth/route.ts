@@ -4,8 +4,8 @@ import { createSession } from '../../service/session';
 import { GetAccountResponse } from '../../../types';
 
 const oAuth2Client = new OAuth2Client(
-  process.env.NEXT_PUBLIC_CLIENTSECRET,
-  process.env.GOOGLE_SECRET,
+  process.env.NEXT_PUBLIC_CLIENTID,
+  process.env.CLIENTSECRET,
   'postmessage',
 );
 
@@ -18,7 +18,7 @@ export async function POST (request: Request) {
 
         const ticket = await oAuth2Client.verifyIdToken({
             idToken: tokens.id_token,
-            audience: process.env.NEXT_PUBLIC_CLIENTSECRET,  // Specify the WEB_CLIENT_ID of the app that accesses the backend
+            audience: process.env.NEXT_PUBLIC_CLIENTID,  // Specify the WEB_CLIENT_ID of the app that accesses the backend
             // Or, if multiple clients access the backend:
             //[WEB_CLIENT_ID_1, WEB_CLIENT_ID_2, WEB_CLIENT_ID_3]
         });
