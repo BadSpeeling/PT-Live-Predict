@@ -24,16 +24,10 @@ export default function Home() {
     );
   });
 
-  const responseMessage = (response: any) => {
-      console.log(response);
-  };
-  const errorMessage = (error: any) => {
-      console.log(error);
-  };
-
   React.useEffect(() => {
+    if (context.activeUser?.SessionID && context.activeUser?.SessionID != '')
     handleCardLoad();
-  }, [])
+  }, [context.activeUser?.SessionID])
 
   const handleCardLoad = async () => {
     const options = {
@@ -41,7 +35,9 @@ export default function Home() {
       headers: {
           'Content-Type':"application/json"
       },
-      body: JSON.stringify({})
+      body: JSON.stringify({
+        SessionID: context.activeUser?.SessionID
+      })
     }
     const getPtCardPredictsResponseRaw = await fetch('/api/pt-card-predicts', options)
     
@@ -51,8 +47,10 @@ export default function Home() {
     }
   }
 
+  const s = process.env.NEXT_PUBLIC_CLIENTSECRET ?? ""
+
   return (
-    <GoogleOAuthProvider clientId="492138648450-a7vb6fufea0klv3cp08ihak29e4pp49r.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={s}>
       <Account />
       
         <div className="rounded-md bg-white px-20 py-4 my-8 w-4/5 m-auto">

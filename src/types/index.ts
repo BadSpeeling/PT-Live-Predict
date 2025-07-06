@@ -67,6 +67,8 @@ export enum PredictSearchType {
 }
 
 export interface AppData {
+    activeUser: ActiveUser | null,
+    setActiveUser: React.Dispatch<React.SetStateAction<ActiveUser>>, 
     ptCardsPredicts: PtCardPredict[],
     setPtCardsPredicts: React.Dispatch<React.SetStateAction<PtCardPredict[]>>, 
     selectedTier: Option[],
@@ -92,7 +94,7 @@ export interface GetPtCardPredictsRequest {
     OnlyRookiesFilter: boolean,
     OnlyLastYearsAllstars: boolean,
     OnlyLastYearsAwardWinners: boolean,
-    UserID: string,
+    SessionID: string,
     PageNumber: number,
     PageSize: number,
 }
@@ -118,7 +120,7 @@ export interface PostPtCardPredictRequest {
     CardID: number,
     PtCardID: number,
     PredictedTier: Tier,
-    UserID: string
+    SessionID: string
 }
 
 export interface PostPtCardPredictResponse {
@@ -130,4 +132,24 @@ export interface PostPtCardPredictResponse {
 export interface PtCardPredict {
     CardID: number,
     UserPredicts: GetPtCardPredictsQueryResult[],
+}
+
+export interface Account {
+    AccountID: number,
+    AuthenticatedUserID: string,
+    DisplayName: string,
+}
+
+export interface ActiveUser {
+    DisplayName: string,
+    SessionID: string,
+}
+
+export interface GetAccountResponse {
+    DisplayName: string,
+    SessionID: string,
+}
+
+export interface Session {
+    SessionID: string,
 }

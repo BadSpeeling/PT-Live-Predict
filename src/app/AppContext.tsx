@@ -1,11 +1,13 @@
 'use client'
 
 import * as React from 'react'
-import { AppData, PtCard, PtCardPredict, GetPtCardPredictsRequest, GetPtCardPredictsResponse } from '../types'
+import { AppData, PtCard, PtCardPredict, GetPtCardPredictsRequest, GetPtCardPredictsResponse, ActiveUser } from '../types'
 import { ptCardsData, liveUpdate } from './data'
 import {Option} from 'react-multi-select-component'
 
 const appData = {
+    activeUser: null,
+    setActiveUser: (val: null | ActiveUser) => {},
     ptCardsPredicts: [] as PtCardPredict[],
     setPtCardsPredicts: (val: PtCardPredict[]) => {},
     selectedTier: [] as Option[],
@@ -26,6 +28,7 @@ export default function AppProvider({
     children: React.ReactNode
 }) {
 
+    const [activeUser, setActiveUser] = React.useState(null as null | ActiveUser)
     const [ptCardsPredicts, setPtCardsPredicts] = React.useState([] as PtCardPredict[])
     const [selectedTier,setSelectedTier] = React.useState([] as Option[]);
     const [selectedTeam,setSelectedTeam] = React.useState([] as Option[]);
@@ -33,6 +36,8 @@ export default function AppProvider({
     const [selectedLeague,setSelectedLeague] = React.useState([] as Option[]);
 
     const appData = {
+        activeUser,
+        setActiveUser,
         ptCardsPredicts,
         setPtCardsPredicts,
         selectedTier,

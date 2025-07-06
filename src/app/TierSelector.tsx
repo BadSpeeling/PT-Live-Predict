@@ -26,7 +26,7 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
                 PtCardID: currentLivePtCard.PtCardID,
                 CardID: currentLivePtCard.CardID,
                 PredictedTier: selectedTier,
-                UserID: "",
+                SessionID: context.activeUser?.SessionID,
             })
         }
         const postPtCardPredictResponseRaw = await fetch('/api/pt-card-predict', options)

@@ -51,7 +51,7 @@ export const postUserPredict = async (requestBody: PostPtCardPredictRequest) => 
     let ptCardPredictID: number = -1;
 
     if (!requestBody.PtCardPredictID) {
-        const insertScript = insertUserPredictsScript(requestBody.PtCardID, requestBody.PredictedTier, requestBody.UserID);
+        const insertScript = insertUserPredictsScript(requestBody.PtCardID, requestBody.PredictedTier, requestBody.SessionID);
         const insertResult = await db.run(insertScript.replace('--',''))
 
         if (insertResult.lastID) {
@@ -62,7 +62,7 @@ export const postUserPredict = async (requestBody: PostPtCardPredictRequest) => 
         }
     }
     else {
-        const updateScript = updateUserPredictsScript(requestBody.PtCardPredictID, requestBody.PredictedTier);
+        const updateScript = updateUserPredictsScript(requestBody.PtCardID, requestBody.PredictedTier, requestBody.SessionID);
         await db.exec(updateScript);
         ptCardPredictID = requestBody.PtCardPredictID;
     }
