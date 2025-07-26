@@ -47,7 +47,7 @@ export default function Home() {
     }
   }
 
-  const s = process.env.NEXT_PUBLIC_CLIENTID ?? ""
+  const s = process.env.NEXT_PUBLIC_GOOGLECLIENTID ?? ""
 
   return (
     <GoogleOAuthProvider clientId={s}>
