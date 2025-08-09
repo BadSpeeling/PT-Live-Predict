@@ -52,19 +52,16 @@ export default function Home() {
   }
 
   return (
-    <GoogleOAuthProvider clientId="492138648450-a7vb6fufea0klv3cp08ihak29e4pp49r.apps.googleusercontent.com">
-      <Account />
-      
-        <div className="rounded-md bg-white px-20 py-4 my-8 w-4/5 m-auto">
-          <div className="font-serif">PT Live Predicting</div>
-          <div>
-            <PtCardListFilter />
-          </div>
-          <div>
-            {cardsBody}
-          </div>
+    <div>    
+      <div className="rounded-md bg-white px-20 py-4 my-8 w-4/5 m-auto">
+        <div className="font-serif">PT Live Predicting</div>
+        <div>
+          <PtCardListFilter />
         </div>
-      
-    </GoogleOAuthProvider>
+        <div>
+          {cardsBody}
+        </div>
+      </div>
+    </div>
   );
 }
