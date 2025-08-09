@@ -1,4 +1,4 @@
-import { PtCard, LiveUpdate, Tier, GetPtCardPredictsQueryResult } from '../types'
+import { LiveUpdate, GetPtCardPredictsQueryResult } from '../types'
 
 export const ptCardsData = [
     {

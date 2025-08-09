@@ -1,21 +1,20 @@
 'use client'
 
 import * as React from 'react'
-import { AppData, PtCard, PtCardPredict, GetPtCardPredictsRequest, GetPtCardPredictsResponse } from '../types'
-import { ptCardsData, liveUpdate } from './data'
+import { AppData, PtCardPredict } from '../types'
 import {Option} from 'react-multi-select-component'
 
 const appData = {
     ptCardsPredicts: [] as PtCardPredict[],
-    setPtCardsPredicts: (val: PtCardPredict[]) => {},
+    setPtCardsPredicts: (_: PtCardPredict[]) => {},
     selectedTier: [] as Option[],
-    setSelectedTier: (opt: Option[]) => {},
+    setSelectedTier: (_: Option[]) => {},
     selectedTeam: [] as Option[],
-    setSelectedTeam: (opt: Option[]) => {},
+    setSelectedTeam: (_: Option[]) => {},
     selectedDivision: [] as Option[],
-    setSelectedDivision: (opt: Option[]) => {},
+    setSelectedDivision: (_: Option[]) => {},
     selectedLeague: [] as Option[],
-    setSelectedLeague: (opt: Option[]) => {},
+    setSelectedLeague: (_: Option[]) => {},
 } as AppData
 
 export const AppContext = React.createContext(appData);

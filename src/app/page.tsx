@@ -1,17 +1,10 @@
 'use client'
 
-import Image from "next/image";
 import * as React from "react";
 import { AppContext } from "./AppContext";
 import { PtCard } from "./PtCard";
-import { Account } from './Account';
 import { PtCardListFilter } from "./PtCardListFilter"
-import { Option } from 'react-multi-select-component'
-import { Tier, PtCardPredict, GetPtCardPredictsResponse } from '../types'
-
-import ReactDOM from 'react-dom';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import { GoogleLogin } from '@react-oauth/google';
+import { GetPtCardPredictsResponse } from '../types'
 
 export default function Home() {
 
@@ -23,13 +16,6 @@ export default function Home() {
       <PtCard card={card} key={index} index={index} /> 
     );
   });
-
-  const responseMessage = (response: any) => {
-      console.log(response);
-  };
-  const errorMessage = (error: any) => {
-      console.log(error);
-  };
 
   React.useEffect(() => {
     //handleCardLoad();

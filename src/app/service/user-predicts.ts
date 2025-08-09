@@ -1,7 +1,6 @@
 import { GetPtCardPredictsRequest, GetPtCardPredictsResponse, PostPtCardPredictRequest, PostPtCardPredictResponse, PredictSearchType, PtCardPredict, GetPtCardPredictsQueryResult } from '../../types'
-import { ptCardsData } from '../data'
 import { getUserPredictsScript, insertUserPredictsScript, updateUserPredictsScript } from '../database/scripts'
-import { DatabaseDriver, getDatabase } from '../database/database'
+import { getDatabase } from '../database/database'
 
 // const db = new DatabaseDriver('./pt-live-predict.db');
 // db.openDatabase();

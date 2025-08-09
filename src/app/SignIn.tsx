@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect } from "react";
-import Link from "next/link";
 import {
   signInWithGoogle,
   signOut,
@@ -8,9 +7,9 @@ import {
 } from "../lib/firebase/auth.js";
 import { setCookie, deleteCookie } from "cookies-next";
 
-function useUserSession(initialUser) {
+function useUserSession(initialUser: any) {
   useEffect(() => {
-    return onIdTokenChanged(async (user) => {
+    return onIdTokenChanged(async (user: any) => {
       if (user) {
         const idToken = await user.getIdToken();
         await setCookie("__session", idToken);
@@ -27,25 +26,21 @@ function useUserSession(initialUser) {
   return initialUser;
 }
 
-export function SignIn({ initialUser }) {
+export function SignIn({ initialUser }: any) {
   const user = useUserSession(initialUser);
 
-  const handleSignOut = (event) => {
+  const handleSignOut = (event: any) => {
     event.preventDefault();
     signOut();
   };
 
-  const handleSignIn = (event) => {
+  const handleSignIn = (event: any) => {
     event.preventDefault();
     signInWithGoogle();
   };
 
   return (
     <header>
-      <Link href="/" className="logo">
-        <img src="/friendly-eats.svg" alt="FriendlyEats" />
-        Friendly Eats
-      </Link>
       {user ? (
         <>
           <div className="profile">
