@@ -1,8 +1,0 @@
-{
-  "projects": {
-    "default": "pt-live-predict",
-    "pt-live-predict": "pt-live-predict"
-  },
-  "targets": {},
-  "etags": {}
-}
