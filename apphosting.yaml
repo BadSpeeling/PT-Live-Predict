@@ -21,3 +21,22 @@ runConfig:
   # See https://firebase.google.com/docs/app-hosting/configure#secret-parameters
   # - variable: MY_SECRET
   #   secret: mySecretRef
+
+env:
+- variable: NEXT_PUBLIC_APIKEY
+  secret: FIREBASE_APIKEY
+  availability:
+  -   BUILD
+  -   RUNTIME
+
+- variable: NEXT_PUBLIC_MESSAGINGSENDERID
+  secret: FIREBASE_MESSAGINGSENDERID
+  availability:
+  -   BUILD
+  -   RUNTIME
+
+- variable: NEXT_PUBLIC_APPID
+  secret: FIREBASE_APPID
+  availability:
+  -   BUILD
+  -   RUNTIME
