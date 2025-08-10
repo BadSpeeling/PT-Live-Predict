@@ -8,12 +8,12 @@ export const getUserPredictsScript = (
     onlyLastYearsAwardWinners: boolean,
     pageCount: number,
     pageSize: number,
-    userID: string,
+    accountID: string,
 ) => `
 	WITH LatestLiveUpdate AS (
 		SELECT MAX(LiveUpdateID) val FROM LiveUpdate
 	)
-   SELECT pr.PtCardPredictID,pt.PtCardID,pt.CardID,pt.LiveUpdateID,pt.CardTitle,pt.CardValue,pt.Position,pr.PredictedTier,pr.UserID
+   SELECT pr.PtCardPredictID,pt.PtCardID,pt.CardID,pt.LiveUpdateID,pt.CardTitle,pt.CardValue,pt.Position,pr.PredictedTier,pr.AccountID
     FROM (
         SELECT ROW_NUMBER() OVER (ORDER BY pt.CardID ASC) rn, pt.CardID, pt.PtCardID
         FROM PtCard pt
@@ -29,10 +29,9 @@ export const getUserPredictsScript = (
         ${onlyLastYearsAwardWinners ? `AND p.IsLastYearAwardWinnerFlag` : ''}
     ) ptCardPage
     JOIN PtCard pt ON ptCardPage.CardID = pt.CardID 
-    LEFT JOIN PtCardPredict pr ON pt.PtCardID = pr.PtCardID
+    LEFT JOIN PtCardPredict pr ON pt.PtCardID = pr.PtCardID AND pr.AccountID = '${accountID}'
     WHERE 1=1
     AND rn BETWEEN ${((pageCount-1)*pageSize)+1} AND ${((pageCount)*pageSize)}
-    AND IFNULL(pr.UserID,'') = ''
     ORDER BY pt.CardID ASC, pt.LiveUpdateID DESC;
 `
 
@@ -41,7 +40,7 @@ export const insertUserPredictsScript = (
     predictedTier: number,
     userID: string,
 ) => `
-    INSERT INTO PtCardPredict (PtCardID,PredictedTier,UserID) VALUES (${ptCardID},${predictedTier},'${userID}');
+    INSERT INTO PtCardPredict (PtCardID,PredictedTier,AccountID) VALUES (${ptCardID},${predictedTier},'${userID}');
 `
 
 export const updateUserPredictsScript = (
