@@ -118,7 +118,6 @@ export interface PostPtCardPredictRequest {
     CardID: number,
     PtCardID: number,
     PredictedTier: Tier,
-    UserID: string
 }
 
 export interface PostPtCardPredictResponse {

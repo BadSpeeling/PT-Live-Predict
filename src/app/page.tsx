@@ -18,7 +18,7 @@ export default function Home() {
   });
 
   React.useEffect(() => {
-    //handleCardLoad();
+    handleCardLoad();
   }, [])
 
   const handleCardLoad = async () => {
