@@ -5,12 +5,12 @@ import "server-only";
 import { cookies } from "next/headers";
 import { initializeServerApp, initializeApp } from "firebase/app";
 
-import { getAuth } from "firebase/auth";
+import { getAuth, connectAuthEmulator } from "firebase/auth";
 import { firebaseConfig } from "./firebaseConfig";
 
 // Returns an authenticated client SDK instance for use in Server Side Rendering
 // and Static Site Generation
-export async function getAuthenticatedAppForUser() {
+export async function getAuthenticatedAppForUser(isLocalHostFlag) {
   const authIdToken = (await cookies()).get("__session")?.value;
 
   // Your web app's Firebase configuration
@@ -33,6 +33,9 @@ export async function getAuthenticatedAppForUser() {
   );
 
   const auth = getAuth(firebaseServerApp);
+  if (isLocalHostFlag) {
+    connectAuthEmulator(auth, "http://127.0.0.1:9099");
+  }
   await auth.authStateReady();
 
   return { firebaseServerApp, currentUser: auth.currentUser };

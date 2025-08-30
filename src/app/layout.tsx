@@ -4,6 +4,7 @@ import "./globals.css";
 import AppContext from './AppContext';
 import { getAuthenticatedAppForUser } from '../lib/firebase/serverApp'
 import { SignIn } from './SignIn';
+import { headers } from 'next/headers'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +27,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const { currentUser } = await getAuthenticatedAppForUser();
+  const host = (await headers()).get('host');
+  const isLocalHostFlag =  host != null && (host?.includes('localhost') || host?.includes('127.0.0.1'));
+
+  const { currentUser } = await getAuthenticatedAppForUser(isLocalHostFlag);
 
   return (
     <html lang="en">
