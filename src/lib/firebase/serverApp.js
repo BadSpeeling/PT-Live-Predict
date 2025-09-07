@@ -34,7 +34,7 @@ export async function getAuthenticatedAppForUser(isLocalHostFlag) {
 
   const auth = getAuth(firebaseServerApp);
   if (isLocalHostFlag) {
-    connectAuthEmulator(auth, "http://127.0.0.1:9099");
+    //connectAuthEmulator(auth, "http://127.0.0.1:9099");
   }
   await auth.authStateReady();
 

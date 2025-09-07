@@ -21,7 +21,7 @@ if (location.hostname === "127.0.0.1" || location.hostname === "localhost") {
 
     firebaseApp = initializeApp(clientFirebaseConfig);
     clientAuth = getAuth(firebaseApp);
-    connectAuthEmulator(clientAuth, "http://127.0.0.1:9099");
+    //connectAuthEmulator(clientAuth, "http://127.0.0.1:9099");
 
 }
 else {

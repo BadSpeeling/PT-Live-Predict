@@ -1,44 +1,47 @@
 import { GetPtCardPredictsRequest, GetPtCardPredictsResponse, PostPtCardPredictRequest, PostPtCardPredictResponse, PredictSearchType, PtCardPredict, GetPtCardPredictsQueryResult } from '../../types'
 import { getUserPredictsScript, insertUserPredictsScript, updateUserPredictsScript } from '../database/scripts'
 import { getDatabase } from '../database/database'
+import { getPtCardData } from '../../lib/firebase/data'
 
 // const db = new DatabaseDriver('./pt-live-predict.db');
 // db.openDatabase();
 
 export const getUserPredicts = async (requestBody: GetPtCardPredictsRequest) => {
 
-    const script = getUserPredictsScript([],[],[],[],false,false,false,1,10,'');
-    
-    const db = await getDatabase();
-    
-    //const getUserPredictsQueryResult = await db.getAll<GetPtCardPredictsQueryResult>(script);
-    const getUserPredictsQueryResult = await db.all<GetPtCardPredictsQueryResult[]>(script);
+    getPtCardData(true);
 
-    db.close();
+    // const script = getUserPredictsScript([],[],[],[],false,false,false,1,10,'');
+    
+    // const db = await getDatabase();
+    
+    // //const getUserPredictsQueryResult = await db.getAll<GetPtCardPredictsQueryResult>(script);
+    // const getUserPredictsQueryResult = await db.all<GetPtCardPredictsQueryResult[]>(script);
+
+    // db.close();
 
     const userCardPredicts = [] as PtCardPredict[]
 
-    let cardPredictionToAdd = null as null | PtCardPredict;
+    // let cardPredictionToAdd = null as null | PtCardPredict;
 
-    for (const curCardPredict of getUserPredictsQueryResult) {
+    // for (const curCardPredict of getUserPredictsQueryResult) {
 
-        if (cardPredictionToAdd != null && curCardPredict.CardID !== cardPredictionToAdd.CardID) {
-            userCardPredicts.push(cardPredictionToAdd);
-            cardPredictionToAdd = null;
-        }
+    //     if (cardPredictionToAdd != null && curCardPredict.CardID !== cardPredictionToAdd.CardID) {
+    //         userCardPredicts.push(cardPredictionToAdd);
+    //         cardPredictionToAdd = null;
+    //     }
 
-        if (cardPredictionToAdd === null) {
-            cardPredictionToAdd = {
-                CardID: curCardPredict.CardID,
-                UserPredicts: []
-            };
-        }
+    //     if (cardPredictionToAdd === null) {
+    //         cardPredictionToAdd = {
+    //             CardID: curCardPredict.CardID,
+    //             UserPredicts: []
+    //         };
+    //     }
 
-        cardPredictionToAdd.UserPredicts.push(curCardPredict)
+    //     cardPredictionToAdd.UserPredicts.push(curCardPredict)
 
-    }
+    // }
 
-    if (cardPredictionToAdd) userCardPredicts.push(cardPredictionToAdd);   
+    // if (cardPredictionToAdd) userCardPredicts.push(cardPredictionToAdd);   
         
     return {UserCardPredicts: userCardPredicts} as GetPtCardPredictsResponse;
 
