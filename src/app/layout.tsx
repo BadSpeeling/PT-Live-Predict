@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import AppContext from './AppContext';
 import { getAuthenticatedAppForUser } from '../lib/firebase/serverApp'
 import { SignIn } from './SignIn';
 
@@ -31,12 +30,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <AppContext>
-          <div className="bg-gray-500 border">
-            <SignIn initialUser={currentUser?.toJSON()} />
+        <div className="bg-gray-500 border">
+          <SignIn initialUser={currentUser?.toJSON()} />
             {children}
-          </div>
-        </AppContext>
+        </div>
       </body>
     </html>
   );
