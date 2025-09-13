@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { getAuthenticatedAppForUser } from '../lib/firebase/serverApp'
 import { SignIn } from './SignIn';
+import { headers } from 'next/headers';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +26,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const { currentUser } = await getAuthenticatedAppForUser();
+  const host = (await headers()).get('host');
+  const isLocalhost = host?.startsWith('localhost') || host?.startsWith('127.0.0.1');
+
+  const { currentUser } = await getAuthenticatedAppForUser(isLocalhost);
 
   return (
     <html lang="en">
