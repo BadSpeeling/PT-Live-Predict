@@ -1,10 +1,9 @@
 import * as React from 'react';
-//import { AppContext } from './appContext'
 import { TierSelector } from "./TierSelector"
-import {PtCardPredict} from '../types'
+import { PtPredictPlayer } from '../types'
 
 type PtCardProps = {
-    card: PtCardPredict,
+    card: PtPredictPlayer,
     index: number,
 }
 

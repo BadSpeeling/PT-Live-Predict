@@ -10,7 +10,7 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
 
     const context = React.useContext(AppContext);
     const tiers = [Tier.Iron, Tier.Bronze, Tier.Silver, Tier.Gold, Tier.Diamond, Tier.Perfect];
-    const currentLivePtCard = context.ptCardsPredicts[ptCardIndex].UserPredicts[0];
+    const currentLivePtCard = context.ptPredictPlayers[ptCardIndex].UserPredicts[0];
     const [selectedIndex, setSelectedIndex] = React.useState(currentLivePtCard.PredictedTier);
 
     const setSelectedIndexHandler = async (selectedTier: number) => {
@@ -22,7 +22,7 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
                 'Content-Type':"application/json"
             },
             body: JSON.stringify({
-                PtCardPredictID: currentLivePtCard.PtCardPredictID,
+                PtCardPredictID: currentLivePtCard.PtPredictID,
                 PtCardID: currentLivePtCard.PtCardID,
                 CardID: currentLivePtCard.CardID,
                 PredictedTier: selectedTier,
@@ -32,9 +32,9 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
         const postPtCardPredictResponseRaw = await fetch('/api/pt-card-predict', options)
         const postPtCardPredictResponse = await postPtCardPredictResponseRaw.json() as PostPtCardPredictResponse;
 
-        const updatedPtCardsPredicts = context.ptCardsPredicts.map((ptCard) => {
+        const updatedPtCardsPredicts = context.ptPredictPlayers.map((ptCard) => {
             if (postPtCardPredictResponse.CardID === ptCard.CardID) {
-                const ptCardPredict = context.ptCardsPredicts[ptCardIndex];
+                const ptCardPredict = context.ptPredictPlayers[ptCardIndex];
                 const updatedPtCardPredict = ptCardPredict.UserPredicts.map((userPredict) => {
                     if (userPredict.PtCardID === postPtCardPredictResponse.PtCardID) {
                         return {
@@ -59,7 +59,7 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
             }
         });
 
-        context.setPtCardsPredicts(updatedPtCardsPredicts);
+        context.setPtPredictPlayers(updatedPtCardsPredicts);
 
     }
 

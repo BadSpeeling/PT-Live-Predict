@@ -1,12 +1,12 @@
 'use client'
 
 import * as React from 'react'
-import { AppData, PtCardPredict } from '../types'
+import { AppData, PtPredictPlayer } from '../types'
 import {Option} from 'react-multi-select-component'
 
 const appData = {
-    ptCardsPredicts: [] as PtCardPredict[],
-    setPtCardsPredicts: (_: PtCardPredict[]) => {},
+    ptPredictPlayers: [] as PtPredictPlayer[],
+    setPtPredictPlayers: (_: PtPredictPlayer[]) => {},
     selectedTier: [] as Option[],
     setSelectedTier: (_: Option[]) => {},
     selectedTeam: [] as Option[],
@@ -25,15 +25,15 @@ export default function AppProvider({
     children: React.ReactNode
 }) {
 
-    const [ptCardsPredicts, setPtCardsPredicts] = React.useState([] as PtCardPredict[])
+    const [ptPredictPlayers, setPtPredictPlayers] = React.useState([] as PtPredictPlayer[])
     const [selectedTier,setSelectedTier] = React.useState([] as Option[]);
     const [selectedTeam,setSelectedTeam] = React.useState([] as Option[]);
     const [selectedDivision,setSelectedDivision] = React.useState([] as Option[]);
     const [selectedLeague,setSelectedLeague] = React.useState([] as Option[]);
 
     const appData = {
-        ptCardsPredicts,
-        setPtCardsPredicts,
+        ptPredictPlayers,
+        setPtPredictPlayers,
         selectedTier,
         setSelectedTier,
         selectedTeam,
