@@ -1,8 +1,8 @@
 import { getAuthenticatedAppForUser } from './serverApp'
-import { getFirestore, getDocs, query, collection } from "firebase/firestore";
+import { getFirestore, getDocs, query, collection, QuerySnapshot, DocumentData } from "firebase/firestore";
 import { PtPredictPlayer, PtCard, PtPredict } from "../../types"
 
-export async function getPtPredict (isLocalHostFlag: boolean) {
+export async function getPtPredicts (isLocalHostFlag: boolean) {
 
     const { firebaseDB } = await getFirestoreDB(isLocalHostFlag);
 
@@ -10,10 +10,16 @@ export async function getPtPredict (isLocalHostFlag: boolean) {
         collection(firebaseDB, "PtCard")
     )
 
-    const querySnapshot = await getDocs(getPtCardQuery);
+    const ptCardSnapshot = await getDocs(getPtCardQuery);
+    return mapFirebaseSnapshotToPtPredicts(ptCardSnapshot);
+
+}
+
+function mapFirebaseSnapshotToPtPredicts(ptCardSnapshot: QuerySnapshot<DocumentData, DocumentData>) {
+    
     const ptCardPredicts = [] as PtPredictPlayer[]
     
-    querySnapshot.forEach((ptCardDoc) => {
+    ptCardSnapshot.forEach((ptCardDoc) => {
         const data: PtCard = ptCardDoc.data() as PtCard
         ptCardPredicts.push(createPtPredict(data))
     })
@@ -25,7 +31,7 @@ export async function getPtPredict (isLocalHostFlag: boolean) {
 function createPtPredict(ptCardDoc: PtCard) {
     return {
         CardID: ptCardDoc.CardID,
-        UserPredicts: [
+        PtPredicts: [
             {
                 PtCardID: ptCardDoc.PtCardID,
                 CardID: ptCardDoc.CardID,

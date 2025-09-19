@@ -1,14 +1,14 @@
-import { GetPtCardPredictsRequest, GetPtCardPredictsResponse, PostPtCardPredictRequest, PostPtCardPredictResponse, PredictSearchType, PtPredict, PtPredict } from '../../types'
+import { GetPtCardPredictsRequest, PostPtCardPredictRequest, PostPtCardPredictResponse } from '../../types'
 import { getUserPredictsScript, insertUserPredictsScript, updateUserPredictsScript } from '../database/scripts'
 import { getDatabase } from '../database/database'
-import { getPtPredict } from '../../lib/firebase/data'
+import { getPtPredicts } from '../../lib/firebase/data'
 
 // const db = new DatabaseDriver('./pt-live-predict.db');
 // db.openDatabase();
 
 export const getUserPredicts = async (requestBody: GetPtCardPredictsRequest) => {
 
-    return await getPtPredict(true);
+    return await getPtPredicts(true);
 
     // const script = getUserPredictsScript([],[],[],[],false,false,false,1,10,'');
     

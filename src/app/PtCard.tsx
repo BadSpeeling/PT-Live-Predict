@@ -10,7 +10,7 @@ type PtCardProps = {
 export const PtCard = ({ card, index }: PtCardProps) => {
 
     const ptCard = card
-    const currentActivePtCard = ptCard.UserPredicts[0];
+    const currentActivePtCard = ptCard.PtPredicts[0];
 
     return (
         <div className="my-4 card-list-row">

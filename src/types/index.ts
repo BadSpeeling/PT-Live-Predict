@@ -113,7 +113,7 @@ export interface PostPtCardPredictResponse {
 
 export interface PtPredictPlayer {
     CardID: number,
-    UserPredicts: PtPredict[],
+    PtPredicts: PtPredict[],
 }
 
 export interface PtCard {

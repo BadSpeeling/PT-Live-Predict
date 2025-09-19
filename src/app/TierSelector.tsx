@@ -10,7 +10,7 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
 
     const context = React.useContext(AppContext);
     const tiers = [Tier.Iron, Tier.Bronze, Tier.Silver, Tier.Gold, Tier.Diamond, Tier.Perfect];
-    const currentLivePtCard = context.ptPredictPlayers[ptCardIndex].UserPredicts[0];
+    const currentLivePtCard = context.ptPredictPlayers[ptCardIndex].PtPredicts[0];
     const [selectedIndex, setSelectedIndex] = React.useState(currentLivePtCard.PredictedTier);
 
     const setSelectedIndexHandler = async (selectedTier: number) => {
@@ -35,7 +35,7 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
         const updatedPtCardsPredicts = context.ptPredictPlayers.map((ptCard) => {
             if (postPtCardPredictResponse.CardID === ptCard.CardID) {
                 const ptCardPredict = context.ptPredictPlayers[ptCardIndex];
-                const updatedPtCardPredict = ptCardPredict.UserPredicts.map((userPredict) => {
+                const updatedPtCardPredict = ptCardPredict.PtPredicts.map((userPredict) => {
                     if (userPredict.PtCardID === postPtCardPredictResponse.PtCardID) {
                         return {
                             ...userPredict,
@@ -50,7 +50,7 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
                 
                 return {
                     ...ptCard,
-                    UserPredicts: updatedPtCardPredict
+                    PtPredicts: updatedPtCardPredict
                 }
 
             }
