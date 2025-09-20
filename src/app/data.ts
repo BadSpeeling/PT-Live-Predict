@@ -1,4 +1,4 @@
-import { LiveUpdate, GetPtCardPredictsQueryResult } from '../types'
+import { LiveUpdate, PtPredict } from '../types'
 
 export const ptCardsData = [
     {
@@ -64,7 +64,7 @@ export const ptCardsData = [
         "Position": 1,
         "PredictedTier": 1,
     }
-] as GetPtCardPredictsQueryResult[]
+] as PtPredict[]
 
 export const liveUpdate = [
     {
