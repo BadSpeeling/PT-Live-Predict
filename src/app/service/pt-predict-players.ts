@@ -1,14 +1,21 @@
 import { GetPtCardPredictsRequest, PostPtCardPredictRequest, PostPtCardPredictResponse } from '../../types'
-import { getUserPredictsScript, insertUserPredictsScript, updateUserPredictsScript } from '../database/scripts'
+import { insertUserPredictsScript, updateUserPredictsScript } from '../database/scripts'
 import { getDatabase } from '../database/database'
-import { getPtPredicts } from '../../lib/firebase/data'
+import FirebaseClient from '../../lib/firebase/FirebaseClient'
+import { mapFirebaseSnapshotToPtPredicts } from '../../lib/firebase/mappers'
 
 // const db = new DatabaseDriver('./pt-live-predict.db');
 // db.openDatabase();
 
-export const getUserPredicts = async (requestBody: GetPtCardPredictsRequest) => {
+export const getPtPredictPlayers = async (requestBody: GetPtCardPredictsRequest, isLocalHostFlag: boolean) => {
 
-    return await getPtPredicts(true);
+    const firebaseClient = new FirebaseClient(isLocalHostFlag);
+    await firebaseClient.initialize();
+
+    const ptCards = await firebaseClient.getPtCards();
+    const ptPredictsPlayers = mapFirebaseSnapshotToPtPredicts(ptCards);
+
+    return ptPredictsPlayers;
 
     // const script = getUserPredictsScript([],[],[],[],false,false,false,1,10,'');
     

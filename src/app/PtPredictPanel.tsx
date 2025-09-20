@@ -26,6 +26,9 @@ export const PtPredictPanel = () => {
             const ptPredictPlayers = (await getPtCardPredictsRaw.json()) as PtPredictPlayer[]
             context.setPtPredictPlayers(ptPredictPlayers)
         }
+        else {
+          alert('Could not load cards!')
+        }
     }
 
     const cardsBody = context.ptPredictPlayers.map((card, index) => {

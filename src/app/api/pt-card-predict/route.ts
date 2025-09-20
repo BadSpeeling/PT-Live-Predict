@@ -1,5 +1,5 @@
 import { PostPtCardPredictRequest } from '../../../types'
-import { postUserPredict } from "../../service/user-predicts"
+import { postUserPredict } from "../../service/pt-predict-players"
 
 export async function POST(request: Request) {
 
