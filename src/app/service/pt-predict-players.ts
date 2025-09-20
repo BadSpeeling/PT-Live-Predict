@@ -56,30 +56,30 @@ export const getPtPredictPlayers = async (requestBody: GetPtCardPredictsRequest,
 
 export const postUserPredict = async (requestBody: PostPtCardPredictRequest) => {
 
-    const db = await getDatabase();
-    let ptCardPredictID: number = -1;
+    // const db = await getDatabase();
+    // let ptCardPredictID: number = -1;
 
-    if (!requestBody.PtCardPredictID) {
-        const insertScript = insertUserPredictsScript(requestBody.PtCardID, requestBody.PredictedTier, requestBody.UserID);
-        const insertResult = await db.run(insertScript.replace('--',''))
+    // if (!requestBody.PtCardPredictID) {
+    //     const insertScript = insertUserPredictsScript(requestBody.PtCardID, requestBody.PredictedTier, requestBody.UserID);
+    //     const insertResult = await db.run(insertScript.replace('--',''))
 
-        if (insertResult.lastID) {
-            ptCardPredictID = insertResult.lastID;
-        }
-        else {
-            throw Error("PtCard insert failed");
-        }
-    }
-    else {
-        const updateScript = updateUserPredictsScript(requestBody.PtCardPredictID, requestBody.PredictedTier);
-        await db.exec(updateScript);
-        ptCardPredictID = requestBody.PtCardPredictID;
-    }
+    //     if (insertResult.lastID) {
+    //         ptCardPredictID = insertResult.lastID;
+    //     }
+    //     else {
+    //         throw Error("PtCard insert failed");
+    //     }
+    // }
+    // else {
+    //     const updateScript = updateUserPredictsScript(requestBody.PtCardPredictID, requestBody.PredictedTier);
+    //     await db.exec(updateScript);
+    //     ptCardPredictID = requestBody.PtCardPredictID;
+    // }
 
-    return {
-        PtCardPredictID: ptCardPredictID,
-        PtCardID: requestBody.PtCardID,
-        CardID: requestBody.CardID,
-    } as PostPtCardPredictResponse
+    // return {
+    //     PtCardPredictID: ptCardPredictID,
+    //     PtCardID: requestBody.PtCardID,
+    //     CardID: requestBody.CardID,
+    // } as PostPtCardPredictResponse
 
 }
