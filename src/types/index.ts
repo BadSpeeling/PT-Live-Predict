@@ -87,7 +87,7 @@ export interface GetPtCardPredictsRequest {
 }
 
 export interface PtPredict {
-    PtPredictID?: number,
+    PtPredictID?: string,
     PtCardID: number,
     CardID: number,
     LiveUpdateID: number,
@@ -98,17 +98,20 @@ export interface PtPredict {
     UserID?: string,
 }
 
-export interface PostPtCardPredictRequest {
-    PtCardPredictID?: number,
+export interface PostPtPredictRequest {
+    PtPredictID?: string,
     CardID: number,
     PtCardID: number,
     PredictedTier: Tier,
+    LiveUpdateID: number,
 }
 
-export interface PostPtCardPredictResponse {
-    PtCardPredictID: number,
+export interface PostPtPredictResponse {
+    PtPredictID: string,
     PtCardID: number,
     CardID: number,
+    PredictedTier: Tier,
+    LiveUpdateID: number,
 }
 
 export interface PtPredictPlayer {

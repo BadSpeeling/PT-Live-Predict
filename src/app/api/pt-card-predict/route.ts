@@ -1,14 +1,27 @@
-import { PostPtCardPredictRequest } from '../../../types'
+import { PostPtPredictRequest } from '../../../types'
 import { postUserPredict } from "../../service/pt-predict-players"
+import { isRequestToLocalhost } from '../../../lib/utils'
 
 export async function POST(request: Request) {
 
-    const requestParameters = (await request.json()) as PostPtCardPredictRequest
-    const result = await postUserPredict(requestParameters);
+    try {
 
-    return new Response(JSON.stringify(result), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-    });
+        const requestParameters = (await request.json()) as PostPtPredictRequest
+        const result = await postUserPredict(requestParameters, isRequestToLocalhost(request));
+
+        return new Response(JSON.stringify(result), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+    }
+    catch (err) {
+        console.log(err);
+        return new Response(JSON.stringify({"message": "An error occured"}), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
 
 }

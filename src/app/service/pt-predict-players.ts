@@ -1,4 +1,4 @@
-import { GetPtCardPredictsRequest, PostPtCardPredictRequest, PostPtCardPredictResponse } from '../../types'
+import { GetPtCardPredictsRequest, PostPtPredictRequest, PostPtPredictResponse } from '../../types'
 import { insertUserPredictsScript, updateUserPredictsScript } from '../database/scripts'
 import { getDatabase } from '../database/database'
 import FirebaseClient from '../../lib/firebase/FirebaseClient'
@@ -54,7 +54,13 @@ export const getPtPredictPlayers = async (requestBody: GetPtCardPredictsRequest,
 
 }
 
-export const postUserPredict = async (requestBody: PostPtCardPredictRequest) => {
+export const postUserPredict = async (requestBody: PostPtPredictRequest, isLocalHostFlag: boolean) => {
+
+    const firebaseClient = new FirebaseClient(isLocalHostFlag);
+    await firebaseClient.initialize();
+
+    const postPtPredictResponse: PostPtPredictResponse = await firebaseClient.postPtPredict(requestBody);
+    return postPtPredictResponse;
 
     // const db = await getDatabase();
     // let ptCardPredictID: number = -1;
