@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AppContext } from './AppContext'
-import { Tier, PostPtCardPredictResponse } from '../types'
+import { Tier, PostPtPredictRequest, PostPtPredictResponse, PtPredict, PtPredictPlayer } from '../types'
 
 type TierSelectorProps = {
     ptCardIndex: number,
@@ -22,15 +22,15 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
                 'Content-Type':"application/json"
             },
             body: JSON.stringify({
-                PtCardPredictID: currentLivePtCard.PtPredictID,
+                PtPredictID: currentLivePtCard.PtPredictID,
                 PtCardID: currentLivePtCard.PtCardID,
                 CardID: currentLivePtCard.CardID,
                 PredictedTier: selectedTier,
-                UserID: "",
-            })
+                LiveUpdateID: currentLivePtCard.LiveUpdateID
+            } as PostPtPredictRequest)
         }
         const postPtCardPredictResponseRaw = await fetch('/api/pt-card-predict', options)
-        const postPtCardPredictResponse = await postPtCardPredictResponseRaw.json() as PostPtCardPredictResponse;
+        const postPtCardPredictResponse = await postPtCardPredictResponseRaw.json() as PostPtPredictResponse;
 
         const updatedPtCardsPredicts = context.ptPredictPlayers.map((ptCard) => {
             if (postPtCardPredictResponse.CardID === ptCard.CardID) {
@@ -40,8 +40,8 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
                         return {
                             ...userPredict,
                             PredictedTier: selectedTier,
-                            PtCardPredictID: postPtCardPredictResponse.PtCardPredictID
-                        }
+                            PtPredictID: postPtCardPredictResponse.PtPredictID
+                        } as PtPredict
                     }
                     else {
                         return userPredict;
@@ -51,7 +51,7 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
                 return {
                     ...ptCard,
                     PtPredicts: updatedPtCardPredict
-                }
+                } as PtPredictPlayer
 
             }
             else {
