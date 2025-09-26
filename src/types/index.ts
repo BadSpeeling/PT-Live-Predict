@@ -56,8 +56,8 @@ export enum PredictSearchType {
 }
 
 export interface AppData {
-    ptPredictPlayers: PtPredictPlayer[],
-    setPtPredictPlayers: React.Dispatch<React.SetStateAction<PtPredictPlayer[]>>, 
+    cardPredictions: CardPrediction[],
+    setCardPredictions: React.Dispatch<React.SetStateAction<CardPrediction[]>>, 
     selectedTier: Option[],
     setSelectedTier: React.Dispatch<React.SetStateAction<Option[]>>,
     selectedTeam: Option[],
@@ -86,7 +86,7 @@ export interface GetPtCardPredictsRequest {
     PageSize: number,
 }
 
-export interface PtPredict {
+export interface PtCardPrediction {
     PtPredictID?: string,
     PtCardID: number,
     CardID: number,
@@ -95,7 +95,6 @@ export interface PtPredict {
     CardValue: number,
     Position: Position,
     PredictedTier?: number,
-    UserID?: string,
 }
 
 export interface PostPtPredictRequest {
@@ -114,9 +113,9 @@ export interface PostPtPredictResponse {
     LiveUpdateID: number,
 }
 
-export interface PtPredictPlayer {
+export interface CardPrediction {
     CardID: number,
-    PtPredicts: PtPredict[],
+    PtCardPredictions: PtCardPrediction[],
 }
 
 export interface PtCard {
@@ -237,4 +236,12 @@ export interface PtCard {
     date:number,
     LiveUpdateID:number,
     PtCardID:number,
+}
+
+export interface PtPredict {
+    PtPredictID: string,
+    PtCardID: number,
+    CardID: number,
+    LiveUpdateID: number,
+    PredictedTier: number,
 }

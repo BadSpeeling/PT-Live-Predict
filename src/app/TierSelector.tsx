@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AppContext } from './AppContext'
-import { Tier, PostPtPredictRequest, PostPtPredictResponse, PtPredict, PtPredictPlayer } from '../types'
+import { Tier, PostPtPredictRequest, PostPtPredictResponse, PtCardPrediction, CardPrediction } from '../types'
 
 type TierSelectorProps = {
     ptCardIndex: number,
@@ -10,7 +10,7 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
 
     const context = React.useContext(AppContext);
     const tiers = [Tier.Iron, Tier.Bronze, Tier.Silver, Tier.Gold, Tier.Diamond, Tier.Perfect];
-    const currentLivePtCard = context.ptPredictPlayers[ptCardIndex].PtPredicts[0];
+    const currentLivePtCard = context.cardPredictions[ptCardIndex].PtCardPredictions[0];
     const [selectedIndex, setSelectedIndex] = React.useState(currentLivePtCard.PredictedTier);
 
     const setSelectedIndexHandler = async (selectedTier: number) => {
@@ -32,16 +32,16 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
         const postPtCardPredictResponseRaw = await fetch('/api/pt-card-predict', options)
         const postPtCardPredictResponse = await postPtCardPredictResponseRaw.json() as PostPtPredictResponse;
 
-        const updatedPtCardsPredicts = context.ptPredictPlayers.map((ptCard) => {
+        const updatedCardPrediction = context.cardPredictions.map((ptCard) => {
             if (postPtCardPredictResponse.CardID === ptCard.CardID) {
-                const ptCardPredict = context.ptPredictPlayers[ptCardIndex];
-                const updatedPtCardPredict = ptCardPredict.PtPredicts.map((userPredict) => {
+                const cardPrediction = context.cardPredictions[ptCardIndex];
+                const updatedPtCardPrediction = cardPrediction.PtCardPredictions.map((userPredict) => {
                     if (userPredict.PtCardID === postPtCardPredictResponse.PtCardID) {
                         return {
                             ...userPredict,
                             PredictedTier: selectedTier,
                             PtPredictID: postPtCardPredictResponse.PtPredictID
-                        } as PtPredict
+                        } as PtCardPrediction
                     }
                     else {
                         return userPredict;
@@ -50,8 +50,8 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
                 
                 return {
                     ...ptCard,
-                    PtPredicts: updatedPtCardPredict
-                } as PtPredictPlayer
+                    PtCardPredictions: updatedPtCardPrediction
+                } as CardPrediction
 
             }
             else {
@@ -59,7 +59,7 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
             }
         });
 
-        context.setPtPredictPlayers(updatedPtCardsPredicts);
+        context.setCardPredictions(updatedCardPrediction);
 
     }
 
