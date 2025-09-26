@@ -9,11 +9,13 @@ type PtCardProps = {
 
 export const PtCard = ({ card, index }: PtCardProps) => {
 
-    const currentActivePtCard = card.PtCardPredictions[0];
+    const liveUpdateID = card.PtCardPredictions.map(p => p.LiveUpdateID).reduce((maxLiveUpdate, currentLiveUpdate) => Math.max(maxLiveUpdate,currentLiveUpdate))
+
+    const currentActivePtCard = card.PtCardPredictions.find(p => p.LiveUpdateID == liveUpdateID);
 
     return (
         <div className="my-4 card-list-row">
-            <div>{currentActivePtCard.CardTitle}</div>
+            <div>{currentActivePtCard?.CardTitle}</div>
             <TierSelector ptCardIndex={index} />
         </div>
     )
