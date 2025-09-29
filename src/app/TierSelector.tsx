@@ -3,15 +3,14 @@ import { AppContext } from './AppContext'
 import { Tier, PostPtPredictRequest, PostPtPredictResponse, PtCardPrediction, CardPrediction } from '../types'
 
 type TierSelectorProps = {
-    ptCardIndex: number,
+    ptCardPrediction: PtCardPrediction,
 }
 
-export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
+export const TierSelector = ({ ptCardPrediction }: TierSelectorProps) => {
 
     const context = React.useContext(AppContext);
     const tiers = [Tier.Iron, Tier.Bronze, Tier.Silver, Tier.Gold, Tier.Diamond, Tier.Perfect];
-    const currentLivePtCard = context.cardPredictions[ptCardIndex].PtCardPredictions[0];
-    const [selectedIndex, setSelectedIndex] = React.useState(currentLivePtCard.PredictedTier);
+    const [selectedIndex, setSelectedIndex] = React.useState(ptCardPrediction.PredictedTier);
 
     const setSelectedIndexHandler = async (selectedTier: number) => {
         setSelectedIndex(selectedTier);
@@ -22,40 +21,40 @@ export const TierSelector = ({ptCardIndex}: TierSelectorProps) => {
                 'Content-Type':"application/json"
             },
             body: JSON.stringify({
-                PtPredictID: currentLivePtCard.PtPredictID,
-                PtCardID: currentLivePtCard.PtCardID,
-                CardID: currentLivePtCard.CardID,
+                PtPredictID: ptCardPrediction.PtPredictID,
+                PtCardID: ptCardPrediction.PtCardID,
+                CardID: ptCardPrediction.CardID,
                 PredictedTier: selectedTier,
-                LiveUpdateID: currentLivePtCard.LiveUpdateID
+                LiveUpdateID: ptCardPrediction.LiveUpdateID
             } as PostPtPredictRequest)
         }
         const postPtCardPredictResponseRaw = await fetch('/api/pt-card-predict', options)
         const postPtCardPredictResponse = await postPtCardPredictResponseRaw.json() as PostPtPredictResponse;
 
-        const updatedCardPrediction = context.cardPredictions.map((ptCard) => {
-            if (postPtCardPredictResponse.CardID === ptCard.CardID) {
-                const cardPrediction = context.cardPredictions[ptCardIndex];
-                const updatedPtCardPrediction = cardPrediction.PtCardPredictions.map((userPredict) => {
-                    if (userPredict.PtCardID === postPtCardPredictResponse.PtCardID) {
+        const updatedCardPrediction = context.cardPredictions.map((currCardPrediction) => {
+            if (postPtCardPredictResponse.CardID === currCardPrediction.CardID) {
+                
+                const updatedPtCardPrediction = currCardPrediction.PtCardPredictions.map((currPtCardPrediction) => {                    
+                    if (currPtCardPrediction.PtCardID === postPtCardPredictResponse.PtCardID) {
                         return {
-                            ...userPredict,
+                            ...currPtCardPrediction,
                             PredictedTier: selectedTier,
                             PtPredictID: postPtCardPredictResponse.PtPredictID
                         } as PtCardPrediction
                     }
                     else {
-                        return userPredict;
+                        return currPtCardPrediction;
                     }
                 });
                 
                 return {
-                    ...ptCard,
+                    ...currCardPrediction,
                     PtCardPredictions: updatedPtCardPrediction
                 } as CardPrediction
 
             }
             else {
-                return ptCard;
+                return currCardPrediction;
             }
         });
 

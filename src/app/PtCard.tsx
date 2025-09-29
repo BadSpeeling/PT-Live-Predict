@@ -3,20 +3,18 @@ import { TierSelector } from "./TierSelector"
 import { CardPrediction } from '../types'
 
 type PtCardProps = {
-    card: CardPrediction,
-    index: number,
+    cardPrediction: CardPrediction,
 }
 
-export const PtCard = ({ card, index }: PtCardProps) => {
+export const PtCard = ({ cardPrediction }: PtCardProps) => {
 
-    const liveUpdateID = card.PtCardPredictions.map(p => p.LiveUpdateID).reduce((maxLiveUpdate, currentLiveUpdate) => Math.max(maxLiveUpdate,currentLiveUpdate))
-
-    const currentActivePtCard = card.PtCardPredictions.find(p => p.LiveUpdateID == liveUpdateID);
+    const currentLiveUpdateID = cardPrediction.PtCardPredictions.map(p => p.LiveUpdateID).reduce((maxLiveUpdate, currentLiveUpdate) => Math.max(maxLiveUpdate,currentLiveUpdate))
+    const ptCardPrediction = cardPrediction.PtCardPredictions.find(p => p.LiveUpdateID == currentLiveUpdateID);
 
     return (
         <div className="my-4 card-list-row">
-            <div>{currentActivePtCard?.CardTitle}</div>
-            <TierSelector ptCardIndex={index} />
+            <div>{ptCardPrediction?.CardTitle}</div>
+            { ptCardPrediction && <TierSelector ptCardPrediction={ptCardPrediction} /> }
         </div>
     )
 

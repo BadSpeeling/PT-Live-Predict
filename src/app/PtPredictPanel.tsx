@@ -31,9 +31,9 @@ export const PtPredictPanel = () => {
         }
     }
 
-    const cardsBody = context.cardPredictions.map((card, index) => {
+    const cardsBody = context.cardPredictions.map((cardPrediction, index) => {
       return (
-        <PtCard card={card} key={index} index={index} /> 
+        <PtCard cardPrediction={cardPrediction} key={index} /> 
       );
     });
 
