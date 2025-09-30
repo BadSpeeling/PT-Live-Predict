@@ -1,21 +1,20 @@
 import * as React from 'react';
 import { TierSelector } from "./TierSelector"
-import { PtPredictPlayer } from '../types'
+import { CardPrediction } from '../types'
 
 type PtCardProps = {
-    card: PtPredictPlayer,
-    index: number,
+    cardPrediction: CardPrediction,
 }
 
-export const PtCard = ({ card, index }: PtCardProps) => {
+export const PtCard = ({ cardPrediction }: PtCardProps) => {
 
-    const ptCard = card
-    const currentActivePtCard = ptCard.PtPredicts[0];
+    const currentLiveUpdateID = cardPrediction.PtCardPredictions.map(p => p.LiveUpdateID).reduce((maxLiveUpdate, currentLiveUpdate) => Math.max(maxLiveUpdate,currentLiveUpdate))
+    const ptCardPrediction = cardPrediction.PtCardPredictions.find(p => p.LiveUpdateID == currentLiveUpdateID);
 
     return (
         <div className="my-4 card-list-row">
-            <div>{currentActivePtCard.CardTitle}</div>
-            <TierSelector ptCardIndex={index} />
+            <div>{ptCardPrediction?.CardTitle}</div>
+            { ptCardPrediction && <TierSelector ptCardPrediction={ptCardPrediction} /> }
         </div>
     )
 

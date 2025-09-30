@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AppContext } from './AppContext'
 import { PtCardListFilter } from './PtCardListFilter'
-import { PtPredictPlayer } from '../types'
+import { CardPrediction } from '../types'
 import { PtCard } from './PtCard'
 
 export const PtPredictPanel = () => {
@@ -20,20 +20,20 @@ export const PtPredictPanel = () => {
         },
         body: JSON.stringify({})
         }
-        const getPtCardPredictsRaw = await fetch('/api/pt-card-predicts', options)
+        const getCardPredictions = await fetch('/api/pt-card-predicts', options)
         
-        if (getPtCardPredictsRaw.status === 200) {
-            const ptPredictPlayers = (await getPtCardPredictsRaw.json()) as PtPredictPlayer[]
-            context.setPtPredictPlayers(ptPredictPlayers)
+        if (getCardPredictions.status === 200) {
+            const cardPredictions = (await getCardPredictions.json()) as CardPrediction[]
+            context.setCardPredictions(cardPredictions)
         }
         else {
           alert('Could not load cards!')
         }
     }
 
-    const cardsBody = context.ptPredictPlayers.map((card, index) => {
+    const cardsBody = context.cardPredictions.map((cardPrediction, index) => {
       return (
-        <PtCard card={card} key={index} index={index} /> 
+        <PtCard cardPrediction={cardPrediction} key={index} /> 
       );
     });
 
