@@ -32,8 +32,8 @@ export default function AppProvider({
     const [selectedLeague,setSelectedLeague] = React.useState([] as Option[]);
 
     const appData = {
-        cardPredictions: cardPredictions,
-        setCardPredictions: setCardPredictions,
+        cardPredictions,
+        setCardPredictions,
         selectedTier,
         setSelectedTier,
         selectedTeam,
