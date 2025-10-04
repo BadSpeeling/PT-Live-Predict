@@ -10,7 +10,9 @@ export const PtPredictPanel = () => {
     const context = React.useContext(AppContext);
 
     React.useEffect(() => {
+      if (context.selectedTeam.length > 0) {
         handleCardLoad();
+      }
     }, [context.selectedTeam])
 
     const handleCardLoad = async () => {
