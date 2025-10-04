@@ -1,4 +1,4 @@
-import { GetPtCardPredictsRequest, PostPtPredictRequest, PostPtPredictResponse, PtCard, PtPredict } from '../../types'
+import { GetPtCardPredictsRequest, PostPtPredictRequest, PostPtPredictResponse, GetPtCardPredictsResponse } from '../../types'
 import FirebaseClient from '../../lib/firebase/FirebaseClient'
 import PtPredictDataFormatter from '../../lib/PtPredictDataFormatter'
 
@@ -7,13 +7,15 @@ export const getPtPredictPlayers = async (requestBody: GetPtCardPredictsRequest,
     const firebaseClient = new FirebaseClient(isLocalHostFlag);
     await firebaseClient.initialize();
 
-    const ptCards = await firebaseClient.getPtCards();
+    const ptCards = await firebaseClient.getPtCards(requestBody.TeamFilter[0], requestBody.LatestLiveUpdateID);
     const ptPredicts = await firebaseClient.getPtPredicts();
     
     const dataFormatter = new PtPredictDataFormatter(ptCards, ptPredicts);
     const cardPredictions = dataFormatter.getCardPredictions();
 
-    return cardPredictions;
+    return { 
+        CardPredictions: cardPredictions,
+    } as GetPtCardPredictsResponse;
 
 }
 

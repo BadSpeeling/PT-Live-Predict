@@ -17,12 +17,12 @@ export const PtCardListFilter = () => {
     ];
 
     const teams = [
-        {label:'Philadelphia Phillies', value: 0},
-        {label:'Atlanta Braves', value: 1},
-        {label:'Los Angeles Dodgers', value: 2},
-        {label:'New York Yankees', value: 3},
-        {label:'Cleveland Indians', value: 4},
-        {label:'Seattle Mariners', value: 5},
+        {label:'Philadelphia Phillies', value: 'Philadelphia Phillies'},
+        {label:'Atlanta Braves', value: 'Atlanta Braves'},
+        {label:'Los Angeles Dodgers', value: 'Los Angeles Dodgers'},
+        {label:'New York Yankees', value: 'New York Yankees'},
+        {label:'Cleveland Indians', value: 'Cleveland Indians'},
+        {label:'Seattle Mariners', value: 'Seattle Mariners'},
     ]
 
     const divisions = [

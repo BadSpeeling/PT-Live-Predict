@@ -1,8 +1,8 @@
 import { getAuthenticatedAppForUser } from './serverApp'
-import { getFirestore, getDocs, query, collection, QuerySnapshot, DocumentData } from "firebase/firestore";
+import { getFirestore, getDocs, query, collection, QuerySnapshot, DocumentData, Query } from "firebase/firestore";
 import { PtCard, PtPredict } from "../../types"
 import { User } from 'firebase/auth';
-import { Firestore, doc, setDoc } from 'firebase/firestore';
+import { Firestore, doc, setDoc, orderBy, where } from 'firebase/firestore';
 import { randomUUID } from "crypto"
 import { PostPtPredictRequest } from '../../types'
 
@@ -48,12 +48,15 @@ export default class FirebaseClient {
 
     }
 
-    async getPtCards () {
+    async getPtCards (teamName: string, latestLiveUpdateID: number) {
 
         this.#validateClient();
 
         const getPtCardQuery = query(
-            collection(this.firestore!, "PtCard")
+            collection(this.firestore!, "PtCard"),
+            where("LiveUpdateID", "==", latestLiveUpdateID),
+            where("Team", "==", teamName),
+            orderBy("PtCardID"),
         )
 
         const ptCardSnapshot = await getDocs(getPtCardQuery);
