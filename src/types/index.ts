@@ -90,6 +90,8 @@ export interface AppData {
     setSelectedDivision: React.Dispatch<React.SetStateAction<Option[]>>,
     selectedLeague: Option[],
     setSelectedLeague: React.Dispatch<React.SetStateAction<Option[]>>,
+    cardPage: CardPagination,
+    setCardPage: React.Dispatch<React.SetStateAction<CardPagination>>,
 }
 
 export interface LiveUpdate {
@@ -99,14 +101,22 @@ export interface LiveUpdate {
 
 export interface GetPtCardPredictsRequest {
     TierFilter: number[],
-    TeamFilter: number[],
+    TeamFilter: string[],
     DivisionFilter: number[],
     LeagueFilter: number[],
     OnlyRookiesFilter: boolean,
     OnlyLastYearsAllstars: boolean,
     OnlyLastYearsAwardWinners: boolean,
-    UserID: string,
-    PageNumber: number,
+    CardPagination: CardPagination,
+    LatestLiveUpdateID: number,
+}
+
+export interface GetPtCardPredictsResponse {
+    CardPredictions: CardPrediction[],
+}
+
+export interface CardPagination {
+    CurrentPage: number,
     PageSize: number,
 }
 
