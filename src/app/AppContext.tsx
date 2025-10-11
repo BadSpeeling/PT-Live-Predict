@@ -19,7 +19,8 @@ const appData = {
         CurrentPage: 1,
         PageSize: 10
     },
-    setCardPage: (cardPage: CardPagination) => {}
+    setCardPage: (cardPage: CardPagination) => {},
+    currentLiveUpdateID: 1,
 } as AppData
 
 export const AppContext = React.createContext(appData);
@@ -35,6 +36,8 @@ export default function AppProvider({
         PageSize: 10
     };
 
+    const currentLiveUpdateID = parseInt(process.env.NEXT_PUBLIC_CURRENTLIVEUPDATEID ?? "0")
+    
     const [cardPredictions, setCardPredictions] = React.useState([] as CardPrediction[])
     const [selectedTier,setSelectedTier] = React.useState([] as Option[]);
     const [selectedTeam,setSelectedTeam] = React.useState([] as Option[]);
@@ -55,6 +58,7 @@ export default function AppProvider({
         setSelectedLeague,
         cardPage,
         setCardPage,
+        currentLiveUpdateID,
     } as AppData
 
     return <AppContext.Provider value={appData}>{children}</AppContext.Provider>
