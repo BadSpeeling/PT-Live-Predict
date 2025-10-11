@@ -33,14 +33,14 @@ export const PtCardPagination = () => {
 
     })
 
-    const showLeftNavBtn = context.cardPage.CurrentPage !== 1;
-    const showRightNavBtn = context.cardPage.CurrentPage !== totalPages;
+    const showLeftNavBtnFlag = context.cardPage.CurrentPage !== 1;
+    const showRightNavBtnFlag = context.cardPage.CurrentPage !== totalPages;
 
     return (
         <div className="flex">
-            { showLeftNavBtn && <div className="flex-1 text-right"><button className="cursor-pointer border border-gray-600 hover:bg-gray-200 font-bold py-2 px-4 rounded" onClick={() => setCardPage(context.cardPage.CurrentPage-1)}>{"<"}</button></div> }
+            { showLeftNavBtnFlag && <div className="flex-1 text-right"><button className="cursor-pointer border border-gray-600 hover:bg-gray-200 font-bold py-2 px-4 rounded" onClick={() => setCardPage(context.cardPage.CurrentPage-1)}>{"<"}</button></div> }
             <div className="flex-1"><div className="items-center flex">{pageSelection}</div></div>
-            { showRightNavBtn && <div className="flex-1 text-left"><button className="cursor-pointer border border-gray-600 hover:bg-gray-200 font-bold py-2 px-4 rounded" onClick={() => setCardPage(context.cardPage.CurrentPage+1)}>{">"}</button></div> }
+            { showRightNavBtnFlag && <div className="flex-1 text-left"><button className="cursor-pointer border border-gray-600 hover:bg-gray-200 font-bold py-2 px-4 rounded" onClick={() => setCardPage(context.cardPage.CurrentPage+1)}>{">"}</button></div> }
         </div>
     )
 }

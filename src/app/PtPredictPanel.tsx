@@ -43,13 +43,15 @@ export const PtPredictPanel = () => {
       );
     });
 
+    const showPaginationFlag = Math.ceil(context.cardPredictions.length / context.cardPage.PageSize) > 1
+
     return (
         <div>   
           <div className="rounded-md bg-white px-20 py-4 my-8 w-4/5 m-auto">
             <div className="font-serif">PT Live Predicting</div>
             <div>            
                 <PtCardListFilter />
-                <PtCardPagination />
+                { showPaginationFlag && <PtCardPagination /> }
                 <div>
                     {cardsBody}
                 </div>
