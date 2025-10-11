@@ -5,11 +5,13 @@ export default class PtPredictDataFormatter {
     ptCards: PtCard[]
     ptPredictsMap: {[key: number]: PtPredict} = {};
     cardPredictionMap: {[key: number]: CardPrediction}
+    latestLiveUpdateID: number
 
-    constructor (ptCards: PtCard[], ptPredicts: PtPredict[]) {
+    constructor (ptCards: PtCard[], ptPredicts: PtPredict[], latestLiveUpdateID: number) {
         this.ptCards = ptCards;
         this.ptPredictsMap = this.#createPtPredictMap(ptPredicts);
-        this.cardPredictionMap = {}
+        this.cardPredictionMap = {};
+        this.latestLiveUpdateID = latestLiveUpdateID;
     }
 
     getCardPredictions () {
@@ -24,8 +26,34 @@ export default class PtPredictDataFormatter {
 
         })
 
-        const cardPredictions = this.#convertCardPredictionMapToArray();
+        const computedCardPredictions = this.#convertCardPredictionMapToArray();
+        const cardPredictions = this.#addActivePtCardPrediction(computedCardPredictions);
+
         return cardPredictions;
+
+    }
+
+    #addActivePtCardPrediction (cardPredictions: CardPrediction[]) {
+
+        return cardPredictions.map((getResult) => {
+            const activePtCardPrediction = this.#getActivePtCardPrediction(getResult);
+            return {
+                ...getResult,
+                ActivePtCardPrediction: activePtCardPrediction,
+            }
+        })
+
+    }
+
+    #getActivePtCardPrediction (cardPrediction: CardPrediction) {
+
+        const currentPtCardPrediction = cardPrediction.PtCardPredictions.find((pt) => pt.LiveUpdateID === this.latestLiveUpdateID);
+
+        if (!currentPtCardPrediction) {
+            throw Error (cardPrediction.CardID + " does not have a Card for " + this.latestLiveUpdateID)
+        }
+
+        return currentPtCardPrediction;
 
     }
 
@@ -73,11 +101,11 @@ export default class PtPredictDataFormatter {
         ptPredictPlayer.PtCardPredictions.push(ptPredictPtCard);
     }
 
-    #createCardPrediction (ptCard: PtCard) {
+    #createCardPrediction (ptCard: PtCard): CardPrediction {
 
         return {
             CardID: ptCard.CardID,
-            PtCardPredictions: []
+            PtCardPredictions: [] as PtCardPrediction[]
         } as CardPrediction
 
     }
