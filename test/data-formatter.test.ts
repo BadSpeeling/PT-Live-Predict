@@ -161,7 +161,7 @@ test('Simple data load with 2 cards, 2 predicts', () => {
 
     const ptCards = [PtCard1, PtCard2];
 
-    const formatter = new PtPredictDataFormatter(ptCards, [PtPredict1, PtPredict2]);
+    const formatter = new PtPredictDataFormatter(ptCards, [PtPredict1, PtPredict2], 2);
     const ptPredictPlayers = formatter.getCardPredictions();
 
     const ptPredictPlayer1 = ptPredictPlayers.find(player => player.CardID == PtCard1.CardID);
@@ -248,7 +248,7 @@ test('Load two different cards, 1 with a missing predict', () => {
 
     const ptCards = [PtCard1, PtCard2, PtCard3, PtCard4];
 
-    const formatter = new PtPredictDataFormatter(ptCards, [PtPredict1, PtPredict2, PtPredict4]);
+    const formatter = new PtPredictDataFormatter(ptCards, [PtPredict1, PtPredict2, PtPredict4], 2);
     const ptPredictPlayers = formatter.getCardPredictions();
 
     const ptPredictPlayer1 = ptPredictPlayers.find(player => player.CardID == PtCard3.CardID);
@@ -264,6 +264,84 @@ test('Load two different cards, 1 with a missing predict', () => {
 
     checkPtPredictPtCard(turnerPredict!, PtCard4, PtPredict4);
     expect(turnerNoPredict!.PredictedTier).toBeFalsy();
+
+})
+
+test('Load two different cards, 1 with a missing predict', () => {
+
+    const PtCard1 = {
+        ...basePtCard,
+        PtCardID: 1,
+        CardID: 1,
+        LiveUpdateID: 1,
+        CardTitle: "Bryce Harper, DH",
+        CardValue: 95,
+        Position: 10,
+    }
+
+    const PtCard2 = {
+        ...basePtCard,
+        PtCardID: 2,
+        CardID: 1,
+        LiveUpdateID: 2,
+        CardTitle: "Bryce Harper, 1B",
+        CardValue: 100,
+        Position: 3,
+    }
+
+    const PtCard3 = {
+        ...basePtCard,
+        PtCardID: 3,
+        CardID: 2,
+        LiveUpdateID: 1,
+        CardTitle: "Trea Turner, SS",
+        CardValue: 95,
+        Position: 6,
+    }
+
+    const PtCard4 = {
+        ...basePtCard,
+        PtCardID: 4,
+        CardID: 2,
+        LiveUpdateID: 2,
+        CardTitle: "Trea Turner, SS",
+        CardValue: 92,
+        Position: 6,
+    }
+
+    const PtPredict1 = {
+        PtPredictID: 'abcd',
+        PtCardID: 1,
+        CardID: 1,
+        LiveUpdateID: 1,
+        PredictedTier: 4,
+    }
+
+    const PtPredict2 = {
+        PtPredictID: 'efgh',
+        PtCardID: 2,
+        CardID: 1,
+        LiveUpdateID: 2,
+        PredictedTier: 5,
+    }
+
+    const PtPredict4 = {
+        PtPredictID: 'asdfsd',
+        PtCardID: 4,
+        CardID: 2,
+        LiveUpdateID: 2,
+        PredictedTier: 3,
+    }
+
+    const ptCards = [PtCard1, PtCard2, PtCard3, PtCard4];
+
+    const formatter = new PtPredictDataFormatter(ptCards, [PtPredict1, PtPredict2, PtPredict4], 2);
+    const ptPredictPlayers = formatter.getCardPredictions();
+
+    const ptPredictPlayer1 = ptPredictPlayers.find(player => player.CardID == PtCard3.CardID);
+    
+    expect(ptPredictPlayer1).toBeTruthy();
+    checkPtPredictPtCard(ptPredictPlayer1?.ActivePtCardPrediction!, PtCard4, PtPredict4);
 
 })
 

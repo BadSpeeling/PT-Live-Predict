@@ -4,6 +4,7 @@ import { PtCardListFilter } from './PtCardListFilter'
 import { PtCardPagination } from './PtCardPagination'
 import { GetPtCardPredictsResponse } from '../types'
 import { PtCard } from './PtCard'
+import { sortPtCardList } from './lib/pt-card-helper'
 
 export const PtPredictPanel = () => {
 
@@ -23,14 +24,15 @@ export const PtPredictPanel = () => {
           },
           body: JSON.stringify({
             TeamFilter: context.selectedTeam.map((team) => team.value),
-            LatestLiveUpdateID: 6,
+            LatestLiveUpdateID: context.currentLiveUpdateID,
           })
         }
         const getCardPredictions = await fetch('/api/pt-card-predicts', options)
         
         if (getCardPredictions.status === 200) {
             const getPtCardPredictsResponse = (await getCardPredictions.json()) as GetPtCardPredictsResponse
-            context.setCardPredictions(getPtCardPredictsResponse.CardPredictions)
+            const sortedCardPredictions = sortPtCardList(getPtCardPredictsResponse.CardPredictions)
+            context.setCardPredictions(sortedCardPredictions)
         }
         else {
           alert('Could not load cards!')

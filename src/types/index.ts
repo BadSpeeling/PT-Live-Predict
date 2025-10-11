@@ -92,6 +92,7 @@ export interface AppData {
     setSelectedLeague: React.Dispatch<React.SetStateAction<Option[]>>,
     cardPage: CardPagination,
     setCardPage: React.Dispatch<React.SetStateAction<CardPagination>>,
+    currentLiveUpdateID: number,
 }
 
 export interface LiveUpdate {
@@ -150,6 +151,7 @@ export interface PostPtPredictResponse {
 export interface CardPrediction {
     CardID: number,
     PtCardPredictions: PtCardPrediction[],
+    ActivePtCardPrediction: PtCardPrediction,
 }
 
 export interface PtCard {
