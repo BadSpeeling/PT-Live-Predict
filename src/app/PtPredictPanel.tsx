@@ -41,7 +41,7 @@ export const PtPredictPanel = () => {
 
     const cardsBody = context.cardPredictions.slice((context.cardPage.CurrentPage-1) * context.cardPage.PageSize, (context.cardPage.CurrentPage) * context.cardPage.PageSize).map((cardPrediction, index) => {
       return (
-        <PtCard cardPrediction={cardPrediction} key={index} /> 
+        <PtCard cardPrediction={cardPrediction} key={cardPrediction.CardID} /> 
       );
     });
 
