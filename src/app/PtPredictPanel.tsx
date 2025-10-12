@@ -49,16 +49,11 @@ export const PtPredictPanel = () => {
 
     return (
         <div>   
-          <div className="rounded-md bg-white px-20 py-4 my-8 w-4/5 m-auto">
-            <div className="font-serif">PT Live Predicting</div>
-            <div>            
-                <PtCardListFilter />
-                { showPaginationFlag && <PtCardPagination /> }
-                <div>
-                    {cardsBody}
-                </div>
+            <PtCardListFilter />
+            { showPaginationFlag && <PtCardPagination /> }
+            <div>
+                {cardsBody}
             </div>
-          </div>
         </div>        
     )
 
