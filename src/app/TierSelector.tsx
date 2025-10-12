@@ -49,7 +49,12 @@ export const TierSelector = ({ ptCardPrediction }: TierSelectorProps) => {
                 
                 return {
                     ...currCardPrediction,
-                    PtCardPredictions: updatedPtCardPrediction
+                    PtCardPredictions: updatedPtCardPrediction,
+                    ActivePtCardPrediction: {
+                        ...currCardPrediction.ActivePtCardPrediction,
+                        PredictedTier: selectedTier,
+                        PtPredictID: postPtCardPredictResponse.PtPredictID
+                    }
                 } as CardPrediction
 
             }
