@@ -18,7 +18,7 @@ export const PtCardListFilter = () => {
         <div>
             <div className="mb-2">
                 <div>Team</div>
-                <div className="w-1/5">
+                <div className="w-2/5 cursor-pointer">
                     <MultiSelect
                         options={teams}
                         value={selectedTeam}

@@ -50,11 +50,11 @@ export const PtPredictPanel = () => {
     return (
         <div>
             <WelcomePanel />   
-            <PtCardListFilter />
-            { showPaginationFlag && <PtCardPagination /> }
+            <PtCardListFilter />            
             <div>
                 {cardsBody}
             </div>
+            { showPaginationFlag && <PtCardPagination /> }
         </div>        
     )
 
@@ -65,7 +65,7 @@ export const WelcomePanel = () => {
   return (
     <div className="my-4">
       <p className="mb-2 text-xl">
-        Welcome to Pt Live Predicting!
+        Welcome to PT Live Predicting!
       </p>
       <p className="mb-2">
         This is a website about predicting which Perfect Team cards will have their tier promoted or demoted in an upcoming Live Update.
