@@ -30,15 +30,27 @@ export default async function RootLayout({
   const isLocalhost = host?.startsWith('localhost') || host?.startsWith('127.0.0.1');
 
   const { currentUser } = await getAuthenticatedAppForUser(isLocalhost);
+  const page = currentUser ? children : <NotSignedIn />
 
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div className="bg-gray-500 border">
           <SignIn initialUser={currentUser?.toJSON()} />
-            {children}
+          <div className="rounded-md bg-white px-20 py-4 my-8 w-4/5 m-auto">
+            <div className="font-serif">PT Live Predicting</div>
+            { page }
+          </div>  
         </div>
       </body>
     </html>
   );
+}
+
+function NotSignedIn () {
+  return (
+    <div>
+      <span>You are not signed in.  Please sign in above to use the website.</span>
+    </div>
+  )
 }

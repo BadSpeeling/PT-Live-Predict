@@ -40,7 +40,7 @@ export function SignIn({ initialUser }: any) {
   };
 
   return (
-    <header>
+    <div className="inline-block p-2 ml-2 mt-2 bg-white bord rounded">
       {user ? (
         <>
           <div className="profile">
@@ -50,17 +50,15 @@ export function SignIn({ initialUser }: any) {
                 src={user.photoURL || "/profile.svg"}
                 alt={user.email}
               />
-              {user.displayName}
             </p>
 
             <div className="menu">
-              ...
               <ul>
-                <li>{user.displayName}</li>
+                <li><small>{user.email}</small></li>
 
                 <li>
                   <a href="#" onClick={handleSignOut}>
-                    Sign Out
+                    <span className="border rounded p-1">Sign Out</span>
                   </a>
                 </li>
               </ul>
@@ -70,11 +68,10 @@ export function SignIn({ initialUser }: any) {
       ) : (
         <div className="profile">
           <a href="#" onClick={handleSignIn}>
-            <img src="/profile.svg" alt="A placeholder user image" />
-            Sign In with Google
+            <div className="inline-flex items-center"><div><img src="/Google__G__logo.svg" alt="A placeholder user image" /></div><div>Sign In with Google</div></div>
           </a>
         </div>
       )}
-    </header>
+    </div>
   );
 }
