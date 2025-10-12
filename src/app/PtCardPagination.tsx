@@ -20,7 +20,7 @@ export const PtCardPagination = () => {
 
     const pageSelection = [...Array(totalPages).keys()].map((pageNumber) => {
         
-        let styling = "cursor-pointer flex-1 mx-6 px-2 border border-gray-600 text-center font-bold py-2 rounded"
+        let styling = "cursor-pointer flex-1 mx-6 p-2 border border-gray-600 text-center font-bold rounded"
 
         if (pageNumber+1 === context.cardPage.CurrentPage) {
             styling += " bg-blue-800 text-white"
@@ -29,18 +29,33 @@ export const PtCardPagination = () => {
             styling += " hover:bg-gray-200"
         }
 
-        return <span key={pageNumber} className={styling} onClick={() => setCardPage(pageNumber+1)}>{pageNumber+1}</span>
+        return <div key={pageNumber} className={styling} onClick={() => setCardPage(pageNumber+1)}><div>{pageNumber+1}</div></div>
 
     })
 
-    const showLeftNavBtnFlag = context.cardPage.CurrentPage !== 1;
-    const showRightNavBtnFlag = context.cardPage.CurrentPage !== totalPages;
+    const leftNavBtnEnabledFlag = context.cardPage.CurrentPage !== 1;
+    const rightNavBtnEnabledFlag = context.cardPage.CurrentPage !== totalPages;
+
+    const getNavBtnClass = (navBtnEnabledFlag: boolean) => {
+        
+        let className = "border border-gray-600 font-bold py-2 px-4 rounded"
+
+        if (navBtnEnabledFlag) {
+            className += ' cursor-pointer hover:bg-gray-200'            
+        }
+        else {
+            className += ' bg-gray-400'
+        }
+
+        return className
+
+    }
 
     return (
         <div className="flex">
-            { showLeftNavBtnFlag && <div className="flex-1 text-right"><button className="cursor-pointer border border-gray-600 hover:bg-gray-200 font-bold py-2 px-4 rounded" onClick={() => setCardPage(context.cardPage.CurrentPage-1)}>{"<"}</button></div> }
-            <div className="flex-1"><div className="items-center flex">{pageSelection}</div></div>
-            { showRightNavBtnFlag && <div className="flex-1 text-left"><button className="cursor-pointer border border-gray-600 hover:bg-gray-200 font-bold py-2 px-4 rounded" onClick={() => setCardPage(context.cardPage.CurrentPage+1)}>{">"}</button></div> }
+            <div className="flex-4 text-right">{ <button className={getNavBtnClass(leftNavBtnEnabledFlag)} onClick={() => setCardPage(context.cardPage.CurrentPage-1)}>{"<"}</button>}</div> 
+            { pageSelection }
+            <div className="flex-4 text-left">{ <button className={getNavBtnClass(rightNavBtnEnabledFlag)} onClick={() => setCardPage(context.cardPage.CurrentPage+1)}>{">"}</button>}</div>
         </div>
     )
 }
