@@ -48,7 +48,8 @@ export const PtPredictPanel = () => {
     const showPaginationFlag = Math.ceil(context.cardPredictions.length / context.cardPage.PageSize) > 1
 
     return (
-        <div>   
+        <div>
+            <WelcomePanel />   
             <PtCardListFilter />
             { showPaginationFlag && <PtCardPagination /> }
             <div>
@@ -56,5 +57,26 @@ export const PtPredictPanel = () => {
             </div>
         </div>        
     )
+
+}
+
+export const WelcomePanel = () => {
+
+  return (
+    <div className="my-4">
+      <p className="mb-2 text-xl">
+        Welcome to Pt Live Predicting!
+      </p>
+      <p className="mb-2">
+        This is a website about predicting which Perfect Team cards will have their tier promoted or demoted in an upcoming Live Update.
+      </p>
+      <p className="mb-2">
+        To get started, select a team to view their live cards.
+      </p>
+      <p className="mb-2">
+        Once looking at a team navigate to a card for which you would like to make a prediction. Select the card tier under a card to which you think the card will be promoted or demoted. 
+      </p>
+    </div>
+  )
 
 }
