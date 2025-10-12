@@ -7,7 +7,7 @@ export const PtCardListFilter = () => {
 
     const { selectedTeam, setSelectedTeam } = React.useContext(AppContext);
 
-    const teams = [...Array(Object.keys(Team).length).keys()].map((enumIndex) => {
+    const teams = [...Array(30).keys()].map((enumIndex) => {
         return {
             label: Team[enumIndex],
             value: Team[enumIndex],
