@@ -274,4 +274,5 @@ export interface PtPredict {
     CardID: number,
     LiveUpdateID: number,
     PredictedTier: number,
+    UserID: string,
 }

@@ -69,7 +69,8 @@ export default class FirebaseClient {
         this.#validateClient();
 
         const getPtPredictQuery = query(
-            collection(this.firestore!, "PtPredict")
+            collection(this.firestore!, "PtPredict"),
+            where("UserID", "==", this.currentUser!.uid),
         )
 
         const ptPredictSnapshot = await getDocs(getPtPredictQuery);
@@ -86,6 +87,7 @@ export default class FirebaseClient {
         const ptLivePredictRef = doc(this.firestore!, 'PtPredict', ptPredictID);
         const ptLivePredictDoc: PtPredict = {
             PtPredictID: ptPredictID,
+            UserID: this.currentUser!.uid,
             ...postRequest
         };
 
