@@ -52,7 +52,9 @@ export const PtPredictPanel = () => {
             <WelcomePanel />   
             <PtCardListFilter />            
             <div>
-                {cardsBody}
+              <div className="flex flex-wrap justify-around">
+                  {cardsBody}
+              </div>
             </div>
             { showPaginationFlag && <PtCardPagination /> }
         </div>        
@@ -63,7 +65,7 @@ export const PtPredictPanel = () => {
 export const WelcomePanel = () => {
 
   return (
-    <div className="my-4">
+    <div className="welcome-text my-4">
       <p className="mb-2 text-xl">
         Welcome to PT Live Predicting!
       </p>

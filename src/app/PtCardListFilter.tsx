@@ -15,10 +15,10 @@ export const PtCardListFilter = () => {
     })
 
     return (
-        <div>
+        <div className="border p-4">
             <div className="mb-2">
                 <div>Team</div>
-                <div className="w-2/5 cursor-pointer">
+                <div className="lg:w-2/5 cursor-pointer">
                     <MultiSelect
                         options={teams}
                         value={selectedTeam}

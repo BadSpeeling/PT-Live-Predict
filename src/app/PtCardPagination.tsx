@@ -20,7 +20,7 @@ export const PtCardPagination = () => {
 
     const pageSelection = [...Array(totalPages).keys()].map((pageNumber) => {
         
-        let styling = "cursor-pointer flex-1 mx-6 p-2 border border-gray-600 text-center font-bold rounded"
+        let styling = "pagination-option cursor-pointer flex-1 py-2 border border-gray-600 text-center font-bold rounded"
 
         if (pageNumber+1 === context.cardPage.CurrentPage) {
             styling += " bg-blue-800 text-white"
@@ -38,7 +38,7 @@ export const PtCardPagination = () => {
 
     const getNavBtnClass = (navBtnEnabledFlag: boolean) => {
         
-        let className = "border border-gray-600 font-bold py-2 px-4 rounded"
+        let className = "pagination-nav border border-gray-600 font-bold py-2 rounded"
 
         if (navBtnEnabledFlag) {
             className += ' cursor-pointer hover:bg-gray-200'            

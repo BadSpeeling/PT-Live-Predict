@@ -69,12 +69,12 @@ export const TierSelector = ({ ptCardPrediction }: TierSelectorProps) => {
 
     const tierOptions = tiers.map((tier, index) => {
         return (
-            <div key={index} onClick={() => { setSelectedIndexHandler(index)}} className={`${index === selectedIndex ? "ptCardPredictSelection" : ""} inline-block bg-cover cursor-pointer card-tier-selector mr-4 ${Tier[tier].toString().toLowerCase()}`}></div>
+            <div key={index} onClick={() => { setSelectedIndexHandler(index)}} className={`${index === selectedIndex ? "ptCardPredictSelection" : ""} inline-block bg-cover cursor-pointer card-tier-selector ${Tier[tier].toString().toLowerCase()}`}></div>
         )
     })
 
     return (
-        <div className="">
+        <div className="tier-selector flex justify-around">
             {tierOptions}
         </div>
     )
