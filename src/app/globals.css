@@ -74,8 +74,8 @@ body {
   }
 
   .card-tier-selector {
-    width:24px;
-    height:36px;
+    width:18px;
+    height:27px;
   }
 
   .ptcard {
@@ -97,7 +97,6 @@ body {
     width: 150px;
     margin: auto;
     margin-bottom: 15px;
-
   }
 
   .page-wrapper {
