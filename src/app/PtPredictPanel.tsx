@@ -33,6 +33,10 @@ export const PtPredictPanel = () => {
             const getPtCardPredictsResponse = (await getCardPredictions.json()) as GetPtCardPredictsResponse
             const sortedCardPredictions = sortPtCardList(getPtCardPredictsResponse.CardPredictions)
             context.setCardPredictions(sortedCardPredictions)
+            context.setCardPage({
+              ...context.cardPage,
+              CurrentPage: 1,
+            })
         }
         else {
           alert('Could not load cards!')
