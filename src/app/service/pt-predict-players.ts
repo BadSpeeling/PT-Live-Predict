@@ -7,7 +7,7 @@ export const getPtPredictPlayers = async (requestBody: GetPtCardPredictsRequest,
     const firebaseClient = new FirebaseClient(isLocalHostFlag);
     await firebaseClient.initialize();
 
-    const ptCards = await firebaseClient.getPtCards(requestBody.TeamFilter[0], requestBody.LatestLiveUpdateID);
+    const ptCards = await firebaseClient.getPtCards(requestBody.TeamFilter, requestBody.LatestLiveUpdateID);
     const ptPredicts = await firebaseClient.getPtPredicts();
     
     const dataFormatter = new PtPredictDataFormatter(ptCards, ptPredicts, requestBody.LatestLiveUpdateID);

@@ -11,7 +11,7 @@ export const PtPredictPanel = () => {
     const context = React.useContext(AppContext);
 
     React.useEffect(() => {
-      if (context.selectedTeam.length > 0) {
+      if (context.selectedTeam.value) {
         handleCardLoad();
       }
     }, [context.selectedTeam])
@@ -23,7 +23,7 @@ export const PtPredictPanel = () => {
               'Content-Type':"application/json"
           },
           body: JSON.stringify({
-            TeamFilter: context.selectedTeam.map((team) => team.value),
+            TeamFilter: context.selectedTeam.value,
             LatestLiveUpdateID: context.currentLiveUpdateID,
           })
         }
@@ -33,6 +33,10 @@ export const PtPredictPanel = () => {
             const getPtCardPredictsResponse = (await getCardPredictions.json()) as GetPtCardPredictsResponse
             const sortedCardPredictions = sortPtCardList(getPtCardPredictsResponse.CardPredictions)
             context.setCardPredictions(sortedCardPredictions)
+            context.setCardPage({
+              ...context.cardPage,
+              CurrentPage: 1,
+            })
         }
         else {
           alert('Could not load cards!')
