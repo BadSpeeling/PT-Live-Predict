@@ -1,14 +1,13 @@
 'use client'
 
 import * as React from 'react'
-import { AppData, CardPrediction, CardPagination } from '../types'
-import {Option} from 'react-multi-select-component'
+import { AppData, CardPrediction, CardPagination, SelectOption } from '../types'
 
 const appData = {
     cardPredictions: [] as CardPrediction[],
     setCardPredictions: (_: CardPrediction[]) => {},
-    selectedTeam: [] as Option[],
-    setSelectedTeam: (_: Option[]) => {},
+    selectedTeam: {label:'', value:''} as SelectOption,
+    setSelectedTeam: (_: SelectOption) => {},
     cardPage: {
         CurrentPage: 1,
         PageSize: 10
@@ -33,7 +32,7 @@ export default function AppProvider({
     const currentLiveUpdateID = parseInt(process.env.NEXT_PUBLIC_CURRENTLIVEUPDATEID ?? "0")
     
     const [cardPredictions, setCardPredictions] = React.useState([] as CardPrediction[])
-    const [selectedTeam,setSelectedTeam] = React.useState([] as Option[]);
+    const [selectedTeam,setSelectedTeam] = React.useState({label:'', value:''} as SelectOption);
     const [cardPage, setCardPage] = React.useState(cardPagination);
 
     const appData = {

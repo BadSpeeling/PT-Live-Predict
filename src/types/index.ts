@@ -1,5 +1,3 @@
-import {Option} from 'react-multi-select-component'
-
 export enum Position {
     'P' = 1,
     'C' = 2,
@@ -79,11 +77,16 @@ export enum PredictSearchType {
     "LastYearsAwardWinners",
 }
 
+export interface SelectOption {
+    label: string,
+    value: string,
+}
+
 export interface AppData {
     cardPredictions: CardPrediction[],
     setCardPredictions: React.Dispatch<React.SetStateAction<CardPrediction[]>>, 
-    selectedTeam: Option[],
-    setSelectedTeam: React.Dispatch<React.SetStateAction<Option[]>>,
+    selectedTeam: SelectOption,
+    setSelectedTeam: React.Dispatch<React.SetStateAction<SelectOption>>,
     cardPage: CardPagination,
     setCardPage: React.Dispatch<React.SetStateAction<CardPagination>>,
     currentLiveUpdateID: number,
@@ -96,7 +99,7 @@ export interface LiveUpdate {
 
 export interface GetPtCardPredictsRequest {
     TierFilter: number[],
-    TeamFilter: string[],
+    TeamFilter: string,
     DivisionFilter: number[],
     LeagueFilter: number[],
     OnlyRookiesFilter: boolean,
