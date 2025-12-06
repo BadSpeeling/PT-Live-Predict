@@ -5,7 +5,7 @@ export const PtCardPagination = () => {
 
     const context = React.useContext(AppContext);
 
-    const totalPages = Math.ceil(context.cardPredictions.length / context.cardPage.PageSize);
+    const totalPages = Math.ceil(context.ptCards.length / context.cardPage.PageSize);
 
     const setCardPage = (pageNumber: number) => {
 

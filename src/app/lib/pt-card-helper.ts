@@ -1,15 +1,15 @@
-import { CardPrediction } from '../../types'
+import { PtCard } from '../../types/component'
 
-export const sortPtCardList = (cardPredictions: CardPrediction[]) => {
+export const sortPtCardList = (cardPredictions: PtCard[]) => {
 
-    return cardPredictions.sort((a: CardPrediction, b: CardPrediction) => {
-        const overallDiff = b.ActivePtCardPrediction.CardValue - a.ActivePtCardPrediction.CardValue;
+    return cardPredictions.sort((a: PtCard, b: PtCard) => {
+        const overallDiff = b.CardValue - a.CardValue;
 
         if (overallDiff != 0) {
             return overallDiff;
         }
 
-        return b.ActivePtCardPrediction.CardID - a.ActivePtCardPrediction.CardID;
+        return b.CardID - a.CardID;
 
     })
 

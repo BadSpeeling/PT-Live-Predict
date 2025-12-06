@@ -31,8 +31,8 @@ export const PtPredictPanel = () => {
         
         if (getCardPredictions.status === 200) {
             const getPtCardPredictsResponse = (await getCardPredictions.json()) as GetPtCardPredictsResponse
-            const sortedCardPredictions = sortPtCardList(getPtCardPredictsResponse.CardPredictions)
-            context.setCardPredictions(sortedCardPredictions)
+            const sortedCardPredictions = sortPtCardList(getPtCardPredictsResponse.PtCards)
+            context.setPtCards(sortedCardPredictions)
             context.setCardPage({
               ...context.cardPage,
               CurrentPage: 1,
@@ -43,13 +43,13 @@ export const PtPredictPanel = () => {
         }
     }
 
-    const cardsBody = context.cardPredictions.slice((context.cardPage.CurrentPage-1) * context.cardPage.PageSize, (context.cardPage.CurrentPage) * context.cardPage.PageSize).map((cardPrediction, index) => {
+    const cardsBody = context.ptCards.slice((context.cardPage.CurrentPage-1) * context.cardPage.PageSize, (context.cardPage.CurrentPage) * context.cardPage.PageSize).map((ptCard, index) => {
       return (
-        <PtCard cardPrediction={cardPrediction} key={cardPrediction.CardID} /> 
+        <PtCard ptCard={ptCard} key={ptCard.CardID} /> 
       );
     });
 
-    const showPaginationFlag = Math.ceil(context.cardPredictions.length / context.cardPage.PageSize) > 1
+    const showPaginationFlag = Math.ceil(context.ptCards.length / context.cardPage.PageSize) > 1
 
     return (
         <div>
