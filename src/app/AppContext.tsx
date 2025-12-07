@@ -1,11 +1,12 @@
 'use client'
 
 import * as React from 'react'
-import { AppData, CardPrediction, CardPagination, SelectOption } from '../types'
+import { AppData, CardPagination, SelectOption } from '../types'
+import { PtCard } from '../types/component'
 
 const appData = {
-    cardPredictions: [] as CardPrediction[],
-    setCardPredictions: (_: CardPrediction[]) => {},
+    ptCards: [] as PtCard[],
+    setPtCards: (_: PtCard[]) => {},
     selectedTeam: {label:'', value:''} as SelectOption,
     setSelectedTeam: (_: SelectOption) => {},
     cardPage: {
@@ -31,13 +32,13 @@ export default function AppProvider({
 
     const currentLiveUpdateID = parseInt(process.env.NEXT_PUBLIC_CURRENTLIVEUPDATEID ?? "0")
     
-    const [cardPredictions, setCardPredictions] = React.useState([] as CardPrediction[])
+    const [ptCards, setPtCards] = React.useState([] as PtCard[])
     const [selectedTeam,setSelectedTeam] = React.useState({label:'', value:''} as SelectOption);
     const [cardPage, setCardPage] = React.useState(cardPagination);
 
     const appData = {
-        cardPredictions,
-        setCardPredictions,
+        ptCards,
+        setPtCards,
         selectedTeam,
         setSelectedTeam,
         cardPage,

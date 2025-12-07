@@ -1,9 +1,8 @@
 import { getAuthenticatedAppForUser } from './serverApp'
 import { getFirestore, getDocs, query, collection, QuerySnapshot, DocumentData, Query } from "firebase/firestore";
-import { PtCard, PtPredict } from "../../types"
+import { PtCard } from "../../types/data"
 import { User } from 'firebase/auth';
 import { Firestore, doc, setDoc, orderBy, where } from 'firebase/firestore';
-import { randomUUID } from "crypto"
 import { PostPtPredictRequest } from '../../types'
 
 export default class FirebaseClient {
@@ -64,35 +63,19 @@ export default class FirebaseClient {
 
     }
 
-    async getPtPredicts () {
-
-        this.#validateClient();
-
-        const getPtPredictQuery = query(
-            collection(this.firestore!, "PtPredict"),
-            where("UserID", "==", this.currentUser!.uid),
-        )
-
-        const ptPredictSnapshot = await getDocs(getPtPredictQuery);
-        return this.#snapshotConverter<PtPredict>(ptPredictSnapshot);
-
-    }
-
     async postPtPredict (postRequest: PostPtPredictRequest) {
 
         this.#validateClient();
 
-        const ptPredictID = postRequest.PtPredictID ? postRequest.PtPredictID : randomUUID();
+        const userID = this.currentUser!.uid
 
-        const ptLivePredictRef = doc(this.firestore!, 'PtPredict', ptPredictID);
-        const ptLivePredictDoc: PtPredict = {
-            PtPredictID: ptPredictID,
-            UserID: this.currentUser!.uid,
-            ...postRequest
-        };
+        const ptCardRef = doc(this.firestore!, "PtCard", postRequest.PtCardID.toString());
+        const PtPredicts: {[index:string]: number} = {}
+        PtPredicts[userID] = postRequest.PredictedTier;
 
-        setDoc(ptLivePredictRef, ptLivePredictDoc);
-        return ptLivePredictDoc;
+        await setDoc(ptCardRef, {
+            PtPredicts
+        }, {merge: true})
 
     }
 
