@@ -33,9 +33,9 @@ export default async function RootLayout({
   const page = currentUser ? children : <NotSignedIn />
 
   return (
-    <html lang="en">
+    <html className="h-auto bg-gray-500" lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="bg-gray-500 border">
+        <div className="">
           <SignIn initialUser={currentUser?.toJSON()} />
           <div className="page-wrapper rounded-md bg-white py-4 my-8 m-auto">            
             <div className="flex flex-col items-center"><div><img src="/logo-white.png" alt="Pt Live Predicting" width="400" height="200"/></div></div>
