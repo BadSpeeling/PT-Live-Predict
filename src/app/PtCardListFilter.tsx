@@ -27,7 +27,13 @@ export const PtCardListFilter = () => {
                         options={teams}
                         value={selectedTeam}
                         onChange={onSelectedTeamChange}   
-                        instanceId={"selectedTeam"}                     
+                        instanceId={"selectedTeam"}
+                        styles={{
+                            "menu": (baseStyles, state) => ({
+                                ...baseStyles,
+                                paddingBottom: "10px"
+                            })
+                        }}             
                     />
                 </div>
             </div>
