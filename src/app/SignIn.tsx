@@ -66,11 +66,9 @@ export function SignIn({ initialUser }: any) {
           </div>
         </>
       ) : (
-        <div className="profile">
           <a href="#" onClick={handleSignIn}>
-            <div className="inline-flex items-center"><div><img src="/Google__G__logo.svg" alt="A placeholder user image" /></div><div>Sign In with Google</div></div>
+            <div className="flex items-center"><div className="mr-1"><img src="/Google__G__logo.svg" alt="A placeholder user image" /></div><div>Sign In with Google</div></div>
           </a>
-        </div>
       )}
     </div>
   );

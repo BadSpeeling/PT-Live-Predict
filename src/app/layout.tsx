@@ -50,7 +50,8 @@ export default async function RootLayout({
 function NotSignedIn () {
   return (
     <div className="mt-8 text-center">
-      <span>You are not signed in.  Please sign in above to use the website.</span>
+      <div><span>You are not signed in.  Please sign in above to use the website.</span></div>
+      <div className="mt-1"><span>NOTE: If you have trouble signing in check if a popup blocker is preventing the signin popup</span></div>
     </div>
   )
 }
