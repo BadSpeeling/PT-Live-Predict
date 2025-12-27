@@ -1,9 +1,10 @@
-import { GetPtCardPredictsRequest, PostPtPredictRequest, PostPtPredictResponse, GetPtCardPredictsResponse } from '../../types'
+import { GetPtCardPredictsRequest, PostPtPredictRequest, PostPtPredictResponse, GetPtCardPredictsResponse, Position } from '../../types'
 import FirebaseClient from '../../lib/firebase/FirebaseClient'
 import PtPredictDataFormatter from '../../lib/PtPredictDataFormatter'
 
 import { PtCard } from '../../types/component'
 import { PtCard as PtCardRecord } from '../../types/data'
+import { extractPositionFromCardTitle } from '@/lib/utils'
 
 export const getPtPredictPlayers = async (requestBody: GetPtCardPredictsRequest, isLocalHostFlag: boolean) => {
 
@@ -44,15 +45,25 @@ const mapPtCards = (ptCardRecords: PtCardRecord[], userID: string) => {
 }
 
 const mapPtCard = (ptCardRecord: PtCardRecord, userID: string) => {
+    
+    let position = '';
+
+    if (ptCardRecord.Position === 1) {        
+        position = extractPositionFromCardTitle(ptCardRecord.CardTitle)
+    }
+    else {
+        position = Position[ptCardRecord.Position];
+    }
+    
     return {
         PtCardID: ptCardRecord.PtCardID,
         CardID: ptCardRecord.CardID,
         LiveUpdateID: ptCardRecord.LiveUpdateID,
-        CardTitle: ptCardRecord.CardTitle,
+        CardTitle: `${position} ${ptCardRecord.FirstName} ${ptCardRecord.LastName} ${ptCardRecord.Franchise}`,
         CardValue: ptCardRecord.CardValue,
         Position: ptCardRecord.Position,
         PredictedTier: ptCardRecord.PtPredicts ? filterForUser(ptCardRecord.PtPredicts, userID): undefined,
-    } as PtCard
+    } as PtCard    
 }
 
 const filterForUser = (ptPredicts: {[key: string]: number}, userID: string) => {
