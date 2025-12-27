@@ -30,158 +30,110 @@ body {
   background-image: url("/perfectBackground.png");
 }
 
-.ptCardPredictSelection {
+.pt-card-predict-selection {
   outline: lightblue 3px solid
 }
 
-.card-list-row {
-  border-top: solid 2px black
+.pt-card {
+  width:calc(300px * var(--pt-card-scale));
+  margin-bottom: 40px;
 }
 
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 420px) {
+.card-rating-wrapper {
+  margin-left: calc(10px * var(--pt-card-scale));
+  margin-top: 5px;
+}
 
-  .pagination-nav {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
+.card-image {
+  height: calc(200px * var(--pt-card-scale));
+  width: calc(150px * var(--pt-card-scale));
+}
 
-  .pagination-option {
-    margin: 0 4px;
+.card-tier-selector {
+  width:calc(var(--card-tier-selector-scale) * 35px);
+  height:calc(var(--card-tier-selector-scale) * 45px);
+}
+
+.card-tier-selector-wrapper {
+  width: calc(var(--card-tier-selector-scale) * 300px);
+  margin: auto;
+  margin-bottom: 15px;
+}
+
+.card-image-wrapper {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.page-wrapper {
+  width: calc(var(--page-scale) * 80%);
+  padding: 10px 35px;
+}
+
+.pagination-nav {
+  padding-left: calc(var(--pagination-scale) * 8px);
+  padding-right: calc(var(--pagination-scale) * 8px);
+}
+
+.pagination-option {
+  margin: 0 calc(var(--pagination-scale) * 4px);
+}
+
+@media only screen and (max-width: 1000px) {
+
+  :root {
+    --pt-card-scale: 0.9;
+    --card-rating-wrapper-scale: 1.0;
+    --card-image-wrapper-scale: 1.0;
+    --card-tier-selector-scale: 0.75;
+    --card-name: 1.0;
+    --page-scale: 1.125;
+    --pagination-scale: 1.0;
   }
   
   .welcome-text {
     font-size: small;
   }
 
-  .card-tier-selector {
-    width:18px;
-    height:27px;
-  }
-
-  .ptcard {
-    width:200px;
-    margin-bottom: 40px;
-  }
-
-  .card-rating-wrapper {
-    margin-left: 15px;
-    margin-top: 15px;
-  }
-
-  .card-image-wrapper {
-    margin-top: 25px;
-    margin-bottom: 25px;
-  }
-
-  .tier-selector {
-    width: 150px;
-    margin: auto;
-    margin-bottom: 15px;
-  }
-
-  .page-wrapper {
-    width: 75%;
-    padding: 10px 10px
-  }
 
 }
 
 /* Extra small devices (phones, 600px and down) */
-@media only screen and (min-width: 420px) {
+@media only screen and (min-width: 1000px) {
 
-  .pagination-nav {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
-
-  .pagination-option {
-    margin: 0 4px;
+  :root {
+    --pt-card-scale: 1.05;
+    --card-rating-wrapper-scale: 1.0;
+    --card-image-wrapper-scale: 1.0;
+    --card-tier-selector-scale: 0.9;
+    --card-name: 1.0;
+    --page-scale: .9;
+    --pagination-scale: 1.0;
   }
   
   .welcome-text {
     font-size: small;
   }
 
-  .card-tier-selector {
-    width:24px;
-    height:36px;
-  }
-
-  .ptcard {
-    width:250px;
-    margin-bottom: 40px;
-  }
-
-  .card-rating-wrapper {
-    margin-left: 15px;
-    margin-top: 15px;
-  }
-
-  .card-image-wrapper {
-    margin-top: 25px;
-    margin-bottom: 25px;
-  }
-
-  .tier-selector {
-    width: 200px;
-    margin: auto;
-    margin-bottom: 15px;
-
-  }
-
-  .page-wrapper {
-    width: 75%;
-    padding: 10px 10px
-  }
 
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 1360px) {
 
-  .pagination-nav {
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-
-  .pagination-option {
-    margin: 0 8px;
+  :root {
+    --pt-card-scale: 1.2;
+    --card-rating-wrapper-scale: 1.0;
+    --card-image-wrapper-scale: 1.0;
+    --card-tier-selector-scale: 1.1;
+    --card-name-scale: 1.0;
+    --page-scale: 0.75;
+    --pagination-scale: 1.5;
   }
 
   .welcome-text {
     font-size: large;
   }
 
-  .card-tier-selector {
-    width:40px;
-    height:60px;
-  }
-
-  .ptcard {
-    width:400px;
-    margin-bottom: 40px;
-  }
-
-  .card-rating-wrapper {
-    margin-left: 35px;
-    margin-top: 15px;
-  }
-
-  .card-image-wrapper {
-    margin-top: 25px;
-    margin-bottom: 25px;
-  }
-
-  .tier-selector {
-    width: 300px;
-    margin: auto;
-    margin-bottom: 25px;
-  }
-
-  .page-wrapper {
-    width: 60%;
-    padding: 10px 35px;
-  }
 
 }
