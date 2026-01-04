@@ -1,9 +1,10 @@
 import { getAuthenticatedAppForUser } from './serverApp'
-import { getFirestore, getDocs, query, collection, QuerySnapshot, DocumentData, Query } from "firebase/firestore";
+import { getFirestore, getDocs, query, collection, QuerySnapshot, DocumentData, Query, Timestamp } from "firebase/firestore";
 import { PtCard } from "../../types/data"
 import { User } from 'firebase/auth';
 import { Firestore, doc, setDoc, orderBy, where } from 'firebase/firestore';
-import { PostPtPredictRequest } from '../../types'
+import { PostPtPredictRequest, PostErrorLogRequest } from '../../types'
+import { randomUUID } from 'crypto'
 
 export default class FirebaseClient {
 
@@ -49,6 +50,8 @@ export default class FirebaseClient {
 
     async getPtCards (teamName: string, latestLiveUpdateID: number) {
 
+        //throw Error();
+
         this.#validateClient();
 
         const getPtCardQuery = query(
@@ -65,6 +68,8 @@ export default class FirebaseClient {
 
     async postPtPredict (postRequest: PostPtPredictRequest) {
 
+        //throw Error("test msg");
+
         this.#validateClient();
 
         const userID = this.currentUser!.uid
@@ -76,6 +81,33 @@ export default class FirebaseClient {
         await setDoc(ptCardRef, {
             PtPredicts
         }, {merge: true})
+
+    }
+
+    async postErrorLog (postRequest: PostErrorLogRequest) {
+
+        this.#validateClient();
+
+        const guid = randomUUID();
+        const errorLogRef = doc(this.firestore!, "ErrorLog", guid);
+
+        try {
+            await setDoc(errorLogRef, {
+                ErrorType: postRequest.ErrorType,
+                ErrorMsg: postRequest.ErrorMsg,
+                ErrorStack: postRequest.ErrorStack,
+                ErrorRequestBody: postRequest.ErrorRequestBody,
+                Timestamp: Timestamp.fromDate(new Date()),
+            })
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                console.log('Could not write error log: ' + error.message);
+            }
+            else {
+                console.log('Could not write error log');
+            }
+        }
 
     }
 

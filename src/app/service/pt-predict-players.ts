@@ -4,14 +4,26 @@ import PtPredictDataFormatter from '../../lib/PtPredictDataFormatter'
 
 import { PtCard } from '../../types/component'
 import { PtCard as PtCardRecord } from '../../types/data'
-import { extractPositionFromCardTitle } from '@/lib/utils'
+import { extractPositionFromCardTitle, getError } from './utils'
 
 export const getPtPredictPlayers = async (requestBody: GetPtCardPredictsRequest, isLocalHostFlag: boolean) => {
 
     const firebaseClient = new FirebaseClient(isLocalHostFlag);
     await firebaseClient.initialize();
 
-    const ptCards = await firebaseClient.getPtCards(requestBody.TeamFilter, requestBody.LatestLiveUpdateID);
+    let ptCards: PtCardRecord[];
+
+    try {
+        ptCards = await firebaseClient.getPtCards(requestBody.TeamFilter, requestBody.LatestLiveUpdateID);
+    }
+    catch (e) {
+        
+        ptCards = [];
+
+        const error = getError(e, "GetPtCards", JSON.stringify(requestBody));
+        firebaseClient.postErrorLog(error);
+
+    }
 
     return { 
         PtCards: mapPtCards(ptCards, (firebaseClient.currentUser?.uid ?? "").toString()),
@@ -24,14 +36,18 @@ export const postUserPredict = async (requestBody: PostPtPredictRequest, isLocal
     const firebaseClient = new FirebaseClient(isLocalHostFlag);
     await firebaseClient.initialize();
 
-    let requestSucceded = false;
+    let requestSucceded;
 
     try {
         await firebaseClient.postPtPredict(requestBody);
         requestSucceded = true;
     }
     catch (e) {
-        //log?
+
+        requestSucceded = false;
+
+        const error = getError(e, "PostUserPredict", JSON.stringify(requestBody));
+        firebaseClient.postErrorLog(error);
     }
 
     return {
