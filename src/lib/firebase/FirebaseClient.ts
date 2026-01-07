@@ -50,8 +50,6 @@ export default class FirebaseClient {
 
     async getPtCards (teamName: string, latestLiveUpdateID: number) {
 
-        //throw Error();
-
         this.#validateClient();
 
         const getPtCardQuery = query(
@@ -67,8 +65,6 @@ export default class FirebaseClient {
     }
 
     async postPtPredict (postRequest: PostPtPredictRequest) {
-
-        //throw Error("test msg");
 
         this.#validateClient();
 
