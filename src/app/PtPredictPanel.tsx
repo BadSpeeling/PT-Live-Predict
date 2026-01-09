@@ -43,9 +43,6 @@ export const PtPredictPanel = () => {
               })
 
             }
-            else {
-              toast("Could not load cards!");
-            }
 
         }
         else {

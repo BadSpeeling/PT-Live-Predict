@@ -31,31 +31,22 @@ export const TierSelector = ({ ptCard }: TierSelectorProps) => {
         
         if (postPtCardPredictResponseRaw.status === 200) {
 
-            const postPtCardPredictResponse = await postPtCardPredictResponseRaw.json() as PostPtPredictResponse;
+            const updatedPtCards = context.ptCards.map((currPtCard) => {
+                if (ptCard.CardID === currPtCard.CardID) {
+                    
+                    return {
+                        ...currPtCard,
+                        PredictedTier: selectedIndex
+                    } as PtCardValues
 
-            if (postPtCardPredictResponse.RequestSucceeded) {
-                const updatedPtCards = context.ptCards.map((currPtCard) => {
-                    if (ptCard.CardID === currPtCard.CardID) {
-                        
-                        return {
-                            ...currPtCard,
-                            PredictedTier: selectedIndex
-                        } as PtCardValues
+                }
+                else {
+                    return currPtCard;
+                }
+            });
 
-                    }
-                    else {
-                        return currPtCard;
-                    }
-                });
+            context.setPtCards(updatedPtCards);
 
-                context.setPtCards(updatedPtCards);
-
-            }
-            else {            
-                toast('Could not save prediction!')
-                setSelectedIndex(ptCard.PredictedTier);
-            }
-            
         }
         else {
             toast('Could not save prediction!')

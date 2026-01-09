@@ -9,16 +9,16 @@ export async function POST(request: Request) {
 
     try {
         
-        const result = await postUserPredict(requestParameters, isRequestToLocalhost(request));
+        await postUserPredict(requestParameters, isRequestToLocalhost(request));
 
-        return new Response(JSON.stringify(result), {
+        return new Response(null, {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
         });
 
     }
     catch (err) {
-        writeErrorLog(err, "PostUserPredict", requestParameters);
+        writeErrorLog(err, "PostUserPredict", requestParameters, isRequestToLocalhost(request));
         return new Response(JSON.stringify({"message": "An error occured"}), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }

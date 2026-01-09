@@ -11,18 +11,10 @@ export const getPtPredictPlayers = async (requestBody: GetPtCardPredictsRequest,
     const firebaseClient = new FirebaseClient(isLocalHostFlag);
     await firebaseClient.initialize();
 
-    let ptCards: PtCardRecord[];
-
-    try {
-        ptCards = await firebaseClient.getPtCards(requestBody.TeamFilter, requestBody.LatestLiveUpdateID);
-    }
-    catch (e) {
-        
-        ptCards = [];
-
-        const error = getError(e, "GetPtCards", JSON.stringify(requestBody));
-        firebaseClient.postErrorLog(error);
-
+    const ptCards = await firebaseClient.getPtCards(requestBody.TeamFilter, requestBody.LatestLiveUpdateID);
+    
+    if (ptCards.length == 0) {
+        throw Error("No ptCards loaded");
     }
 
     return { 
@@ -36,24 +28,8 @@ export const postUserPredict = async (requestBody: PostPtPredictRequest, isLocal
     const firebaseClient = new FirebaseClient(isLocalHostFlag);
     await firebaseClient.initialize();
 
-    let requestSucceded;
-
-    try {
-        await firebaseClient.postPtPredict(requestBody);
-        requestSucceded = true;
-    }
-    catch (e) {
-
-        requestSucceded = false;
-
-        const error = getError(e, "PostUserPredict", JSON.stringify(requestBody));
-        firebaseClient.postErrorLog(error);
-    }
-
-    return {
-        RequestSucceeded: requestSucceded
-    } as PostPtPredictResponse;
-
+    await firebaseClient.postPtPredict(requestBody);
+    
 }
 
 const mapPtCards = (ptCardRecords: PtCardRecord[], userID: string) => {

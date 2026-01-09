@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
     }
     catch (err) {
-        writeErrorLog(err, "GetPtCards", requestParameters);
+        writeErrorLog(err, "GetPtCards", requestParameters, isRequestToLocalhost(request));
         return new Response(JSON.stringify({"message": "An error occured"}), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }
