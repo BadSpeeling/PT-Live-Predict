@@ -5,6 +5,7 @@ import { PtCardPagination } from './PtCardPagination'
 import { GetPtCardPredictsResponse } from '../types'
 import { PtCard } from './PtCard'
 import { sortPtCardList } from './lib/pt-card-helper'
+import { toast, ToastContainer } from 'react-toastify';
 
 export const PtPredictPanel = () => {
 
@@ -31,15 +32,24 @@ export const PtPredictPanel = () => {
         
         if (getCardPredictions.status === 200) {
             const getPtCardPredictsResponse = (await getCardPredictions.json()) as GetPtCardPredictsResponse
-            const sortedCardPredictions = sortPtCardList(getPtCardPredictsResponse.PtCards)
-            context.setPtCards(sortedCardPredictions)
-            context.setCardPage({
-              ...context.cardPage,
-              CurrentPage: 1,
-            })
+
+            if (getPtCardPredictsResponse.PtCards.length > 0) {
+            
+              const sortedCardPredictions = sortPtCardList(getPtCardPredictsResponse.PtCards)
+              context.setPtCards(sortedCardPredictions)
+              context.setCardPage({
+                ...context.cardPage,
+                CurrentPage: 1,
+              })
+
+            }
+            else {
+              toast("Could not load cards!");
+            }
+
         }
         else {
-          alert('Could not load cards!')
+          toast('Could not load cards!');
         }
     }
 
@@ -53,6 +63,7 @@ export const PtPredictPanel = () => {
 
     return (
         <div>
+            <ToastContainer />
             <WelcomePanel />   
             <PtCardListFilter />            
             <div>

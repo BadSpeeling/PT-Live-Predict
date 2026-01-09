@@ -1,12 +1,14 @@
 import { PostPtPredictRequest } from '../../../types'
 import { postUserPredict } from "../../service/pt-predict-players"
+import { writeErrorLog } from '../../service/base'
 import { isRequestToLocalhost } from '../../../lib/utils'
 
 export async function POST(request: Request) {
 
-    try {
+    const requestParameters = (await request.json()) as PostPtPredictRequest
 
-        const requestParameters = (await request.json()) as PostPtPredictRequest
+    try {
+        
         const result = await postUserPredict(requestParameters, isRequestToLocalhost(request));
 
         return new Response(JSON.stringify(result), {
@@ -16,7 +18,7 @@ export async function POST(request: Request) {
 
     }
     catch (err) {
-        console.log(err);
+        writeErrorLog(err, "PostUserPredict", requestParameters);
         return new Response(JSON.stringify({"message": "An error occured"}), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }

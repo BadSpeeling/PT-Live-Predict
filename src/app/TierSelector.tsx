@@ -2,6 +2,7 @@ import * as React from 'react';
 import { AppContext } from './AppContext'
 import { Tier, PostPtPredictRequest, PostPtPredictResponse } from '../types'
 import { PtCard as PtCardValues } from '../types/component'
+import { toast } from 'react-toastify';
 
 type TierSelectorProps = {
     ptCard: PtCardValues,
@@ -27,31 +28,40 @@ export const TierSelector = ({ ptCard }: TierSelectorProps) => {
             } as PostPtPredictRequest)
         }
         const postPtCardPredictResponseRaw = await fetch('/api/pt-card-predict', options)
-        const postPtCardPredictResponse = await postPtCardPredictResponseRaw.json() as PostPtPredictResponse;
+        
+        if (postPtCardPredictResponseRaw.status === 200) {
 
-        if (postPtCardPredictResponse.RequestSucceeded) {
-            const updatedPtCards = context.ptCards.map((currPtCard) => {
-                if (ptCard.CardID === currPtCard.CardID) {
-                    
-                    return {
-                        ...currPtCard,
-                        PredictedTier: selectedIndex
-                    } as PtCardValues
+            const postPtCardPredictResponse = await postPtCardPredictResponseRaw.json() as PostPtPredictResponse;
 
-                }
-                else {
-                    return currPtCard;
-                }
-            });
+            if (postPtCardPredictResponse.RequestSucceeded) {
+                const updatedPtCards = context.ptCards.map((currPtCard) => {
+                    if (ptCard.CardID === currPtCard.CardID) {
+                        
+                        return {
+                            ...currPtCard,
+                            PredictedTier: selectedIndex
+                        } as PtCardValues
 
-            context.setPtCards(updatedPtCards);
+                    }
+                    else {
+                        return currPtCard;
+                    }
+                });
 
+                context.setPtCards(updatedPtCards);
+
+            }
+            else {            
+                toast('Could not save prediction!')
+                setSelectedIndex(ptCard.PredictedTier);
+            }
+            
         }
-        else {            
-            alert('Could not save prediction!')
+        else {
+            toast('Could not save prediction!')
             setSelectedIndex(ptCard.PredictedTier);
         }
-
+             
     }
 
     const tierOptions = tiers.map((tier, index) => {
