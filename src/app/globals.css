@@ -55,8 +55,6 @@ body {
 }
 
 .card-tier-selector-wrapper {
-  width: calc(var(--card-tier-selector-scale) * 300px);
-  margin: auto;
   margin-bottom: 15px;
 }
 

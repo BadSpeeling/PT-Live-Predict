@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { TierSelector } from "./TierSelector"
 import { PtCard as PtCardValues } from '../types/component'
+import { Tier } from '../types/index'
 
 type PtCardProps = {
     ptCard: PtCardValues,
@@ -15,6 +16,7 @@ export const PtCard = ({ ptCard }: PtCardProps) => {
             </div>
             <div className="card-image-wrapper m-auto"><img className="m-auto block card-image" src={ptCard.Position === 1 ? "/pitcher-silhoutte.jpg" : "/batter-silhoutte.jpg"} /></div>
             <div className="text-center">{ptCard.CardTitle}</div>
+            <div className="text-xs py-1">Selected Tier: {ptCard.PredictedTier || ptCard.PredictedTier === 0 ? Tier[ptCard.PredictedTier] : "None"}</div>
             <TierSelector ptCard={ptCard} />
         </div>
     )

@@ -12,10 +12,27 @@ export const TierSelector = ({ ptCard }: TierSelectorProps) => {
 
     const context = React.useContext(AppContext);
     const tiers = [Tier.Iron, Tier.Bronze, Tier.Silver, Tier.Gold, Tier.Diamond, Tier.Perfect];
-    const [selectedIndex, setSelectedIndex] = React.useState(ptCard.PredictedTier);
+    const [selectedTier, setSelectedTier] = React.useState(ptCard.PredictedTier);
 
-    const setSelectedIndexHandler = async (selectedTier: number) => {
-        setSelectedIndex(selectedTier);
+    const setSelectedTierHandler = async (selectedTier: number) => {
+
+        setSelectedTier(selectedTier);
+
+        const updatedPtCards = context.ptCards.map((currPtCard) => {
+            if (ptCard.CardID === currPtCard.CardID) {
+                
+                return {
+                    ...currPtCard,
+                    PredictedTier: selectedTier
+                } as PtCardValues
+
+            }
+            else {
+                return currPtCard;
+            }
+        });
+
+        context.setPtCards(updatedPtCards);
 
         const options = {
             method: "POST",
@@ -29,40 +46,20 @@ export const TierSelector = ({ ptCard }: TierSelectorProps) => {
         }
         const postPtCardPredictResponseRaw = await fetch('/api/pt-card-predict', options)
         
-        if (postPtCardPredictResponseRaw.status === 200) {
-
-            const updatedPtCards = context.ptCards.map((currPtCard) => {
-                if (ptCard.CardID === currPtCard.CardID) {
-                    
-                    return {
-                        ...currPtCard,
-                        PredictedTier: selectedIndex
-                    } as PtCardValues
-
-                }
-                else {
-                    return currPtCard;
-                }
-            });
-
-            context.setPtCards(updatedPtCards);
-
-        }
-        else {
+        if (postPtCardPredictResponseRaw.status !== 200) {
             toast('Could not save prediction!')
-            setSelectedIndex(ptCard.PredictedTier);
         }
              
     }
 
     const tierOptions = tiers.map((tier, index) => {
         return (
-            <div key={index} onClick={() => { setSelectedIndexHandler(index)}} className={`${index === selectedIndex ? "pt-card-predict-selection" : ""} inline-block bg-cover cursor-pointer card-tier-selector ${Tier[tier].toString().toLowerCase()}`}></div>
+            <div key={index} onClick={() => { setSelectedTierHandler(index)}} className={`${index === selectedTier ? "pt-card-predict-selection" : ""} inline-block bg-cover cursor-pointer card-tier-selector ${Tier[tier].toString().toLowerCase()}`}></div>
         )
     })
 
     return (
-        <div className="card-tier-selector-wrapper flex justify-around">
+        <div className="card-tier-selector-wrapper flex justify-between">
             {tierOptions}
         </div>
     )
