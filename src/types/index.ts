@@ -91,6 +91,8 @@ export interface AppData {
     setSelectedTeam: React.Dispatch<React.SetStateAction<SelectOption>>,
     cardPage: CardPagination,
     setCardPage: React.Dispatch<React.SetStateAction<CardPagination>>,
+    isLoading: boolean,
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>, 
     currentLiveUpdateID: number,
 }
 
