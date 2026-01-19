@@ -66,7 +66,7 @@ export const PtPredictPanel = () => {
         { context.isLoading ? <div className="fixed loader-wrapper"><div className="loader"></div></div> : <></>}
         <ToastContainer />
         <WelcomePanel />   
-                <PtCardListFilter />            
+        <PtCardListFilter />            
         <div>
           <div className="flex flex-wrap justify-around">
               {cardsBody}
