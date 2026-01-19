@@ -16,9 +16,6 @@
       "functions"
     ]
   },
-  "storage": {
-    "rules": "storage.rules"
-  },
   "emulators": {
     "apphosting": {
       "port": 5002,
