@@ -7,7 +7,9 @@ import { PtPredictPanel } from "./PtPredictPanel";
 export default function Home() {
   return (
       <AppProvider>
-        <PtPredictPanel />
+        <div className="relative">
+          <PtPredictPanel />
+        </div>
       </AppProvider>
   );
 }

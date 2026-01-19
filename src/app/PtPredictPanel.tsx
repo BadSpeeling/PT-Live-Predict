@@ -28,6 +28,7 @@ export const PtPredictPanel = () => {
             LatestLiveUpdateID: context.currentLiveUpdateID,
           })
         }
+        context.setIsLoading(true);
         const getCardPredictions = await fetch('/api/pt-card-predicts', options)
         
         if (getCardPredictions.status === 200) {
@@ -48,6 +49,8 @@ export const PtPredictPanel = () => {
         else {
           toast('Could not load cards!');
         }
+        context.setIsLoading(false);
+
     }
 
     const cardsBody = context.ptCards.slice((context.cardPage.CurrentPage-1) * context.cardPage.PageSize, (context.cardPage.CurrentPage) * context.cardPage.PageSize).map((ptCard, index) => {
@@ -59,17 +62,18 @@ export const PtPredictPanel = () => {
     const showPaginationFlag = Math.ceil(context.ptCards.length / context.cardPage.PageSize) > 1
 
     return (
+      <>
+        { context.isLoading ? <div className="fixed loader-wrapper"><div className="loader"></div></div> : <></>}
+        <ToastContainer />
+        <WelcomePanel />   
+        <PtCardListFilter />            
         <div>
-            <ToastContainer />
-            <WelcomePanel />   
-            <PtCardListFilter />            
-            <div>
-              <div className="flex flex-wrap justify-around">
-                  {cardsBody}
-              </div>
-            </div>
-            { showPaginationFlag && <PtCardPagination /> }
-        </div>        
+          <div className="flex flex-wrap justify-around">
+              {cardsBody}
+          </div>
+        </div>
+        { showPaginationFlag && <PtCardPagination /> }
+      </>
     )
 
 }

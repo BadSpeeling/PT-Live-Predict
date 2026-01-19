@@ -15,6 +15,8 @@ const appData = {
     },
     setCardPage: (cardPage: CardPagination) => {},
     currentLiveUpdateID: 1,
+    isLoading: false,
+    setIsLoading: (isLoading: boolean) => {},
 } as AppData
 
 export const AppContext = React.createContext(appData);
@@ -35,6 +37,7 @@ export default function AppProvider({
     const [ptCards, setPtCards] = React.useState([] as PtCard[])
     const [selectedTeam,setSelectedTeam] = React.useState({label:'', value:''} as SelectOption);
     const [cardPage, setCardPage] = React.useState(cardPagination);
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const appData = {
         ptCards,
@@ -43,6 +46,8 @@ export default function AppProvider({
         setSelectedTeam,
         cardPage,
         setCardPage,
+        isLoading,
+        setIsLoading,
         currentLiveUpdateID,
     } as AppData
 
