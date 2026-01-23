@@ -19,7 +19,7 @@ export const PtCardListFilter = () => {
     }) 
 
     return (
-        <div className="border p-4">
+        <div className="border p-4 mb-2">
             <div className="mb-2">
                 <div>Team</div>
                 <div className="lg:w-2/5 cursor-pointer">
