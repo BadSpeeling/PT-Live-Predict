@@ -1,6 +1,6 @@
 import { getAuthenticatedAppForUser } from './serverApp'
 import { getFirestore, getDocs, query, collection, QuerySnapshot, DocumentData, Query, Timestamp } from "firebase/firestore";
-import { PtCard } from "../../types/data"
+import { PtCard, PtPredict } from "../../types/data"
 import { User } from 'firebase/auth';
 import { Firestore, doc, setDoc, orderBy, where } from 'firebase/firestore';
 import { PostPtPredictRequest, PostErrorLogRequest } from '../../types'
@@ -70,13 +70,13 @@ export default class FirebaseClient {
 
         const userID = this.currentUser!.uid
 
-        const ptCardRef = doc(this.firestore!, "PtCard", postRequest.PtCardID.toString());
-        const PtPredicts: {[index:string]: number} = {}
-        PtPredicts[userID] = postRequest.PredictedTier;
-
-        await setDoc(ptCardRef, {
-            PtPredicts
-        }, {merge: true})
+        const ptCardRef = doc(this.firestore!, "PtCard", postRequest.PtCardID.toString(), "PtPredicts", userID);
+        const ptPredict: PtPredict = {
+            UserID: userID,
+            PredictedTier: postRequest.PredictedTier,
+        }
+        
+        await setDoc(ptCardRef, ptPredict, {merge: true})
 
     }
 
