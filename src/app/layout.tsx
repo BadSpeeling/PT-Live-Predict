@@ -4,6 +4,7 @@ import "./globals.css";
 import { getAuthenticatedAppForUser } from '../lib/firebase/serverApp'
 import { SignIn } from './SignIn';
 import { headers } from 'next/headers';
+import { AccountCreation } from './AccountCreation';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -52,6 +53,7 @@ function NotSignedIn () {
     <div className="mt-8 text-center">
       <div><span>You are not signed in.  Please sign in above to use the website.</span></div>
       <div className="mt-1"><span>NOTE: If you have trouble signing in check if a popup blocker is preventing the signin popup</span></div>
+      <AccountCreation />
     </div>
   )
 }

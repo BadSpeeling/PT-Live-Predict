@@ -3,6 +3,7 @@ import {
   signInWithPopup,
   onAuthStateChanged as _onAuthStateChanged,
   onIdTokenChanged as _onIdTokenChanged,
+  createUserWithEmailAndPassword
 } from "firebase/auth";
 
 import { getFirebaseClient } from "./clientApp";
@@ -35,4 +36,19 @@ export async function signOut() {
   } catch (error) {
     console.error("Error signing out with Google", error);
   }
+}
+
+export const createAccount = (email, password) => {
+  
+  const { auth } = getFirebaseClient();
+  
+  createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
+          console.log(userCredentials);
+      })
+      .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode + ' ' + errorMessage);
+      });
 }
