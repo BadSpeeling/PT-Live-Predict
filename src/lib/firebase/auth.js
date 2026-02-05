@@ -3,7 +3,8 @@ import {
   signInWithPopup,
   onAuthStateChanged as _onAuthStateChanged,
   onIdTokenChanged as _onIdTokenChanged,
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 
 import { getFirebaseClient } from "./clientApp";
@@ -38,11 +39,26 @@ export async function signOut() {
   }
 }
 
-export const createAccount = (email, password) => {
+export const ptPredictingSignupWithEmailAndPassword = (email, password) => {
   
   const { auth } = getFirebaseClient();
   
   createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
+          console.log(userCredentials);
+      })
+      .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode + ' ' + errorMessage);
+      });
+}
+
+export const ptPredictingSignInWithEmailAndPassword = (email, password) => {
+
+  const { auth } = getFirebaseClient();
+
+  signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
           console.log(userCredentials);
       })
