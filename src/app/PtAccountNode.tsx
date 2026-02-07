@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
 import {
-  signInWithGoogle,
   signOut,
   onIdTokenChanged,
 } from "../lib/firebase/auth.js";
@@ -26,7 +25,7 @@ function useUserSession(initialUser: any) {
   return initialUser;
 }
 
-export function SignIn({ initialUser }: any) {
+export function PtAccountNode({ initialUser }: any) {
   const user = useUserSession(initialUser);
 
   const handleSignOut = (event: any) => {
@@ -34,15 +33,10 @@ export function SignIn({ initialUser }: any) {
     signOut();
   };
 
-  const handleSignIn = (event: any) => {
-    event.preventDefault();
-    signInWithGoogle();
-  };
-
   return (
-    <div className="inline-block p-2 ml-2 mt-2 bg-white bord rounded">
-      {user ? (
-        <>
+    <>
+      {user && (
+        <div className="inline-block p-2 ml-2 mt-2 bg-white bord rounded">
           <div className="profile">
             <p>
               <img
@@ -51,7 +45,6 @@ export function SignIn({ initialUser }: any) {
                 alt={user.email}
               />
             </p>
-
             <div className="menu">
               <ul>
                 <li><small>{user.email}</small></li>
@@ -64,12 +57,8 @@ export function SignIn({ initialUser }: any) {
               </ul>
             </div>
           </div>
-        </>
-      ) : (
-          <a href="#" onClick={handleSignIn}>
-            <div className="flex items-center"><div className="mr-1"><img src="/Google__G__logo.svg" alt="A placeholder user image" /></div><div>Sign In with Google</div></div>
-          </a>
+        </div>
       )}
-    </div>
+    </>
   );
 }
