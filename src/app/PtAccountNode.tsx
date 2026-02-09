@@ -38,20 +38,13 @@ export function PtAccountNode({ initialUser }: any) {
       {user && (
         <div className="inline-block p-2 ml-2 mt-2 bg-white bord rounded">
           <div className="profile">
-            <p>
-              <img
-                className="profileImage"
-                src={user.photoURL || "/profile.svg"}
-                alt={user.email}
-              />
-            </p>
             <div className="menu">
               <ul>
+                <li>Currently signed in as: </li>
                 <li><small>{user.email}</small></li>
-
                 <li>
-                  <a href="#" onClick={handleSignOut}>
-                    <span className="border rounded p-1">Sign Out</span>
+                  <a className="mt-2 inline-block" href="#" onClick={handleSignOut}>
+                    <span className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 cursor-pointer">Sign Out</span>
                   </a>
                 </li>
               </ul>

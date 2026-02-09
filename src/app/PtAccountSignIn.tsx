@@ -41,7 +41,7 @@ export function PtAccountSignIn() {
         <div>
             <div className="flex justify-center mt-4">
                 <a href="#" onClick={handleGoogleSignIn}>
-                    <div className="flex items-center"><div className="mr-1"><img src="/Google__G__logo.svg" alt="A placeholder user image" /></div><div className="bg-gray-500 p-1 rounded text-white">Sign In with Google</div></div>
+                    <div className="flex items-center"><div className="mr-1"><img src="/Google__G__logo.svg" alt="A placeholder user image" /></div><div className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 cursor-pointer">Sign In with Google</div></div>
                 </a>
             </div>
             <div className="flex justify-center mt-4">
