@@ -3,6 +3,9 @@ import {
   signInWithPopup,
   onAuthStateChanged as _onAuthStateChanged,
   onIdTokenChanged as _onIdTokenChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 
 import { getFirebaseClient } from "./clientApp";
@@ -35,4 +38,49 @@ export async function signOut() {
   } catch (error) {
     console.error("Error signing out with Google", error);
   }
+}
+
+export const ptPredictingSignupWithEmailAndPassword = (email, password) => {
+  
+  const { auth } = getFirebaseClient();
+  
+  createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
+      })
+      .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode + ' ' + errorMessage);
+      });
+}
+
+export const ptPredictingSigninWithEmailAndPassword = (email, password) => {
+
+  const { auth } = getFirebaseClient();
+
+  signInWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
+      })
+      .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode + ' ' + errorMessage);
+      });
+}
+
+export const ptPredictingPasswordReset = (email) => {
+
+  const { auth } = getFirebaseClient();
+
+  sendPasswordResetEmail(auth, email)
+      .then(() => {
+        // Password reset email sent!
+        // ..
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
+
 }
