@@ -51,7 +51,7 @@ export default async function RootLayout({
 function NotSignedIn () {
   return (
     <div className="mt-8 text-center">
-      <div><span>You are not signed in.  Sign-in below using a Google account or create an account using an email and password</span></div>
+      <div><span>You are not signed in.  Sign in below using a Google account or create an account using an email and password</span></div>
       <div className="mt-1"><span>NOTE: If you have trouble with signing in check if a popup blocker is preventing the sign-in popup</span></div>
       <PtAccountSignIn />
     </div>

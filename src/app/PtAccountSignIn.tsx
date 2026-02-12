@@ -34,8 +34,8 @@ export function PtAccountSignIn() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
 
-    const toggleText = displayIndex === 0 ? "create a new account" : "signin with an existing account";
-    const headerText = displayIndex === 0 ? "signin" : "create account";
+    const toggleText = displayIndex === 0 ? "create a new account" : "sign in with an existing account";
+    const headerText = displayIndex === 0 ? "sign in" : "create an account";
 
     return (
         <div>
