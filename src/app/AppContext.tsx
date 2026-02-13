@@ -29,7 +29,8 @@ export default function AppProvider({
 
     const cardPagination: CardPagination = {
         CurrentPage: 1,
-        PageSize: 10
+        PageSize: 10,
+        NavigationDirection: null, 
     };
 
     const currentLiveUpdateID = parseInt(process.env.NEXT_PUBLIC_CURRENTLIVEUPDATEID ?? "0")

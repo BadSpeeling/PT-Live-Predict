@@ -11,7 +11,7 @@ export const getPtPredictPlayers = async (requestBody: GetPtCardPredictsRequest,
     const firebaseClient = new FirebaseClient(isLocalHostFlag);
     await firebaseClient.initialize();
 
-    const ptCards = await firebaseClient.getPtCards(requestBody.TeamFilter, requestBody.LatestLiveUpdateID);
+    const ptCards = await firebaseClient.getPtCards(requestBody);
     
     if (ptCards.length == 0) {
         throw Error("No ptCards loaded");

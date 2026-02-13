@@ -15,7 +15,16 @@ export const PtPredictPanel = () => {
       if (context.selectedTeam.value) {
         handleCardLoad();
       }
-    }, [context.selectedTeam])
+    }, [context.selectedTeam, context.cardPage])
+
+    const getLastPtCardID = () => {
+      if (context.ptCards.length === 0) {
+        return null;
+      }
+      else {
+        return context.cardPage.NavigationDirection === "asc" ? context.ptCards[0] : context.ptCards[context.ptCards.length-1];
+      }
+    }
 
     const handleCardLoad = async () => {
         const options = {
@@ -26,6 +35,8 @@ export const PtPredictPanel = () => {
           body: JSON.stringify({
             TeamFilter: context.selectedTeam.value,
             LatestLiveUpdateID: context.currentLiveUpdateID,
+            NavigationDirection: context.cardPage.NavigationDirection,
+            LastPtCardID: getLastPtCardID(),
           })
         }
         context.setIsLoading(true);
@@ -36,12 +47,12 @@ export const PtPredictPanel = () => {
 
             if (getPtCardPredictsResponse.PtCards.length > 0) {
             
-              const sortedCardPredictions = sortPtCardList(getPtCardPredictsResponse.PtCards)
-              context.setPtCards(sortedCardPredictions)
-              context.setCardPage({
-                ...context.cardPage,
-                CurrentPage: 1,
-              })
+              //const sortedCardPredictions = sortPtCardList(getPtCardPredictsResponse.PtCards)
+              context.setPtCards(getPtCardPredictsResponse.PtCards);
+              // context.setCardPage({
+              //   ...context.cardPage,
+              //   CurrentPage: 1,
+              // })
 
             }
 
@@ -59,7 +70,7 @@ export const PtPredictPanel = () => {
       );
     });
 
-    const showPaginationFlag = Math.ceil(context.ptCards.length / context.cardPage.PageSize) > 1
+    const showPaginationFlag = true;//Math.ceil(context.ptCards.length / context.cardPage.PageSize) > 1
 
     return (
       <>

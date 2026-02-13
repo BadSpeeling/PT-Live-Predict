@@ -13,6 +13,7 @@ export const PtCardPagination = () => {
             context.setCardPage({
                 ...context.cardPage,
                 CurrentPage: pageNumber,
+                NavigationDirection: pageNumber - context.cardPage.CurrentPage > 0 ? "desc" : "asc",
             })
         }
 

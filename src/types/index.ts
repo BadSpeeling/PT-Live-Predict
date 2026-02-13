@@ -102,15 +102,11 @@ export interface LiveUpdate {
 }
 
 export interface GetPtCardPredictsRequest {
-    TierFilter: number[],
     TeamFilter: string,
-    DivisionFilter: number[],
-    LeagueFilter: number[],
-    OnlyRookiesFilter: boolean,
-    OnlyLastYearsAllstars: boolean,
-    OnlyLastYearsAwardWinners: boolean,
     CardPagination: CardPagination,
     LatestLiveUpdateID: number,
+    NavigationDirection: null | "asc" | "desc",
+    LastPtCardID: null | number,
 }
 
 export interface GetPtCardPredictsResponse {
@@ -120,6 +116,7 @@ export interface GetPtCardPredictsResponse {
 export interface CardPagination {
     CurrentPage: number,
     PageSize: number,
+    NavigationDirection: "asc" | "desc" | null,
 }
 
 export interface PostPtPredictRequest {
