@@ -89,8 +89,10 @@ body {
 }
 
 .pagination-nav {
-  padding-left: calc(var(--pagination-scale) * 8px);
-  padding-right: calc(var(--pagination-scale) * 8px);
+  padding-left: calc(var(--pagination-scale) * 40px);
+  padding-right: calc(var(--pagination-scale) * 40px);
+  margin-left: calc(var(--pagination-scale) * 10px);
+  margin-right: calc(var(--pagination-scale) * 10px);
 }
 
 .pagination-option {

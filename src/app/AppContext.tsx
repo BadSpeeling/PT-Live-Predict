@@ -7,6 +7,8 @@ import { PtCard } from '../types/component'
 const appData = {
     ptCards: [] as PtCard[],
     setPtCards: (_: PtCard[]) => {},
+    ptCardCount: 0 as number,
+    setPtCardCount: (_: number) => {},
     selectedTeam: {label:'', value:''} as SelectOption,
     setSelectedTeam: (_: SelectOption) => {},
     cardPage: {
@@ -36,6 +38,7 @@ export default function AppProvider({
     const currentLiveUpdateID = parseInt(process.env.NEXT_PUBLIC_CURRENTLIVEUPDATEID ?? "0")
     
     const [ptCards, setPtCards] = React.useState([] as PtCard[])
+    const [ptCardCount, setPtCardCount] = React.useState(0)
     const [selectedTeam,setSelectedTeam] = React.useState({label:'', value:''} as SelectOption);
     const [cardPage, setCardPage] = React.useState(cardPagination);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -43,6 +46,8 @@ export default function AppProvider({
     const appData = {
         ptCards,
         setPtCards,
+        ptCardCount,
+        setPtCardCount,
         selectedTeam,
         setSelectedTeam,
         cardPage,

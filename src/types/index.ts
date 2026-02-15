@@ -87,6 +87,8 @@ export interface SelectOption {
 export interface AppData {
     ptCards: PtCard[],
     setPtCards: React.Dispatch<React.SetStateAction<PtCard[]>>, 
+    ptCardCount: number,
+    setPtCardCount: React.Dispatch<React.SetStateAction<number>>,
     selectedTeam: SelectOption,
     setSelectedTeam: React.Dispatch<React.SetStateAction<SelectOption>>,
     cardPage: CardPagination,
@@ -111,6 +113,7 @@ export interface GetPtCardPredictsRequest {
 
 export interface GetPtCardPredictsResponse {
     PtCards: PtCard[],
+    PtCardCount: number,
 }
 
 export interface CardPagination {

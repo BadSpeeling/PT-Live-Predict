@@ -13,20 +13,24 @@ export const PtPredictPanel = () => {
 
     React.useEffect(() => {
       if (context.selectedTeam.value) {
-        handleCardLoad();
+        handleCardLoad(true);
       }
-    }, [context.selectedTeam, context.cardPage])
+    }, [context.selectedTeam])
 
+    React.useEffect(() => {
+        handleCardLoad(false);
+    }, [context.cardPage])
+    
     const getLastPtCardID = () => {
       if (context.ptCards.length === 0) {
         return null;
       }
       else {
-        return context.cardPage.NavigationDirection === "asc" ? context.ptCards[0] : context.ptCards[context.ptCards.length-1];
+        return context.cardPage.NavigationDirection === "asc" ? context.ptCards[0].PtCardID : context.ptCards[context.ptCards.length-1].PtCardID;
       }
     }
 
-    const handleCardLoad = async () => {
+    const handleCardLoad = async (ignoreLastPtCardID: boolean) => {
         const options = {
           method: "POST",
           headers: {
@@ -36,7 +40,7 @@ export const PtPredictPanel = () => {
             TeamFilter: context.selectedTeam.value,
             LatestLiveUpdateID: context.currentLiveUpdateID,
             NavigationDirection: context.cardPage.NavigationDirection,
-            LastPtCardID: getLastPtCardID(),
+            LastPtCardID: !ignoreLastPtCardID ? getLastPtCardID() : null,
           })
         }
         context.setIsLoading(true);
@@ -49,10 +53,7 @@ export const PtPredictPanel = () => {
             
               //const sortedCardPredictions = sortPtCardList(getPtCardPredictsResponse.PtCards)
               context.setPtCards(getPtCardPredictsResponse.PtCards);
-              // context.setCardPage({
-              //   ...context.cardPage,
-              //   CurrentPage: 1,
-              // })
+              context.setPtCardCount(getPtCardPredictsResponse.PtCardCount);
 
             }
 
@@ -64,7 +65,7 @@ export const PtPredictPanel = () => {
 
     }
 
-    const cardsBody = context.ptCards.slice((context.cardPage.CurrentPage-1) * context.cardPage.PageSize, (context.cardPage.CurrentPage) * context.cardPage.PageSize).map((ptCard, index) => {
+    const cardsBody = context.ptCards.map((ptCard) => {
       return (
         <PtCard ptCard={ptCard} key={ptCard.CardID} /> 
       );

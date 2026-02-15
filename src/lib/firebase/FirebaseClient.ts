@@ -1,5 +1,5 @@
 import { getAuthenticatedAppForUser } from './serverApp'
-import { Firestore, setDoc, orderBy, where, getFirestore, getDocs, query, Query, collection, QuerySnapshot, DocumentData, Timestamp, doc, startAfter, limit } from "firebase/firestore";
+import { Firestore, setDoc, orderBy, where, getFirestore, getDocs, query, Query, collection, QuerySnapshot, DocumentData, Timestamp, doc, startAfter, limit, getCountFromServer, getDoc } from "firebase/firestore";
 import { PtCard } from "../../types/data"
 import { User } from 'firebase/auth';
 import { GetPtCardPredictsRequest, PostPtPredictRequest, PostErrorLogRequest } from '../../types'
@@ -56,7 +56,7 @@ export default class FirebaseClient {
 
         if (request.LastPtCardID) {
             
-            const anchorDocument = doc(this.firestore!, "PtCard", request.LastPtCardID.toString());
+            const anchorDocument = await getDoc(doc(this.firestore!, "PtCard", request.LastPtCardID.toString()));
             
             pageQuery = query(collection(this.firestore!, "PtCard"),                
                 where("LiveUpdateID", "==", request.LatestLiveUpdateID), 
@@ -86,6 +86,22 @@ export default class FirebaseClient {
         }
 
         return ptCards;
+
+    }
+
+    async getPtCardsCount (request: GetPtCardPredictsRequest) {
+
+        this.#validateClient();
+
+        const countQuery = query(collection(this.firestore!, "PtCard"),
+            where("LiveUpdateID", "==", request.LatestLiveUpdateID), 
+            where("Team", "==", request.TeamFilter),
+        );
+
+        const snapshot = await getCountFromServer(countQuery);
+        const ptCardCount = snapshot.data().count; 
+
+        return ptCardCount;
 
     }
 

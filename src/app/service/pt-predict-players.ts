@@ -17,8 +17,11 @@ export const getPtPredictPlayers = async (requestBody: GetPtCardPredictsRequest,
         throw Error("No ptCards loaded");
     }
 
+    const ptCardCount = await firebaseClient.getPtCardsCount(requestBody);
+
     return { 
         PtCards: mapPtCards(ptCards, (firebaseClient.currentUser?.uid ?? "").toString()),
+        PtCardCount: ptCardCount,
     } as GetPtCardPredictsResponse;
 
 }
