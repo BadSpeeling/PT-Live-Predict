@@ -52,7 +52,6 @@ export const PtPredictPanel = () => {
 
             if (getPtCardPredictsResponse.PtCards.length > 0) {
             
-              //const sortedCardPredictions = sortPtCardList(getPtCardPredictsResponse.PtCards)
               context.setPtCards(getPtCardPredictsResponse.PtCards);
               context.setPtCardCount(getPtCardPredictsResponse.PtCardCount);
               
@@ -73,7 +72,7 @@ export const PtPredictPanel = () => {
       );
     });
 
-    const showPaginationFlag = true;//Math.ceil(context.ptCards.length / context.cardPage.PageSize) > 1
+    const showPaginationFlag = context.ptCards.length > 0;//Math.ceil(context.ptCards.length / context.cardPage.PageSize) > 1
 
     return (
       <>
