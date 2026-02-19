@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AppContext } from './AppContext'
 import { PtCardListFilter } from './PtCardListFilter'
 import { PtCardPagination } from './PtCardPagination'
-import { GetPtCardPredictsResponse } from '../types'
+import { GetPtCardPredictsResponse, CallServer } from '../types'
 import { PtCard } from './PtCard'
 import { sortPtCardList } from './lib/pt-card-helper'
 import { toast, ToastContainer } from 'react-toastify';
@@ -12,14 +12,15 @@ export const PtPredictPanel = () => {
     const context = React.useContext(AppContext);
 
     React.useEffect(() => {
-      if (context.selectedTeam.value) {
-        handleCardLoad(true);
+      switch (context.callServer) {
+        case CallServer.GetPtCards:
+          handleCardLoad(true);
+          break;
+        case CallServer.GetPtCardsPaginated:
+          handleCardLoad(false);
+          break;
       }
-    }, [context.selectedTeam])
-
-    React.useEffect(() => {
-        handleCardLoad(false);
-    }, [context.cardPage])
+    }, [context.callServer])
     
     const getLastPtCardID = () => {
       if (context.ptCards.length === 0) {
@@ -54,7 +55,7 @@ export const PtPredictPanel = () => {
               //const sortedCardPredictions = sortPtCardList(getPtCardPredictsResponse.PtCards)
               context.setPtCards(getPtCardPredictsResponse.PtCards);
               context.setPtCardCount(getPtCardPredictsResponse.PtCardCount);
-
+              
             }
 
         }
@@ -62,6 +63,7 @@ export const PtPredictPanel = () => {
           toast('Could not load cards!');
         }
         context.setIsLoading(false);
+        context.setCallServer(CallServer.None);
 
     }
 

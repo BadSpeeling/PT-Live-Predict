@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { AppContext } from "./AppContext";
+import { CallServer } from '@/types';
 
 export const PtCardPagination = () => {
 
@@ -15,6 +16,7 @@ export const PtCardPagination = () => {
                 CurrentPage: pageNumber,
                 NavigationDirection: pageNumber - context.cardPage.CurrentPage > 0 ? "desc" : "asc",
             })
+            context.setCallServer(CallServer.GetPtCardsPaginated);
         }
 
     }

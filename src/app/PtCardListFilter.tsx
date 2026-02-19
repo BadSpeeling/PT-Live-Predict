@@ -1,14 +1,20 @@
 import * as React from 'react';
 import Select from 'react-select';
-import { Team } from '../types'
+import { CallServer, Team } from '../types'
 import { AppContext } from "./AppContext";
 
 export const PtCardListFilter = () => {
 
-    const { selectedTeam, setSelectedTeam } = React.useContext(AppContext);
+    const context = React.useContext(AppContext);
 
     const onSelectedTeamChange = (newValue: any) => {
-        setSelectedTeam(newValue);
+        context.setSelectedTeam(newValue);
+        context.setCallServer(CallServer.GetPtCards);
+        context.setCardPage({
+            ...context.cardPage,
+            CurrentPage: 1,
+            NavigationDirection: null,
+        })
     }
 
     const teams = [...Array(30).keys()].map((enumIndex) => {
@@ -25,7 +31,7 @@ export const PtCardListFilter = () => {
                 <div className="lg:w-2/5 cursor-pointer">
                     <Select
                         options={teams}
-                        value={selectedTeam}
+                        value={context.selectedTeam}
                         onChange={onSelectedTeamChange}   
                         instanceId={"selectedTeam"}
                         styles={{

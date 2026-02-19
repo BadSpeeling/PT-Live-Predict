@@ -96,6 +96,12 @@ export interface AppData {
     isLoading: boolean,
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>, 
     currentLiveUpdateID: number,
+    callServer: CallServer,
+    setCallServer: React.Dispatch<React.SetStateAction<CallServer>>,
+}
+
+export enum CallServer {
+    GetPtCards,GetPtCardsPaginated,None
 }
 
 export interface LiveUpdate {

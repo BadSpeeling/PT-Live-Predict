@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { AppData, CardPagination, SelectOption } from '../types'
+import { AppData, CallServer, CardPagination, SelectOption } from '../types'
 import { PtCard } from '../types/component'
 
 const appData = {
@@ -19,6 +19,8 @@ const appData = {
     currentLiveUpdateID: 1,
     isLoading: false,
     setIsLoading: (isLoading: boolean) => {},
+    callServer: CallServer.None,
+    setCallServer: (callServer: CallServer) => {},
 } as AppData
 
 export const AppContext = React.createContext(appData);
@@ -42,6 +44,7 @@ export default function AppProvider({
     const [selectedTeam,setSelectedTeam] = React.useState({label:'', value:''} as SelectOption);
     const [cardPage, setCardPage] = React.useState(cardPagination);
     const [isLoading, setIsLoading] = React.useState(false);
+    const [callServer, setCallServer] = React.useState(CallServer.None);
 
     const appData = {
         ptCards,
@@ -55,6 +58,8 @@ export default function AppProvider({
         isLoading,
         setIsLoading,
         currentLiveUpdateID,
+        callServer,
+        setCallServer,
     } as AppData
 
     return <AppContext.Provider value={appData}>{children}</AppContext.Provider>
