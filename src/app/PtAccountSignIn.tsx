@@ -18,10 +18,21 @@ export function PtAccountSignIn() {
 
     const onSubmit = () => {
         if (displayIndex === 0) {
-            ptPredictingSigninWithEmailAndPassword(email, password);
+            ptPredictingSigninWithEmailAndPassword(email, password)
+                .catch(err => {                    
+                    if (err.message.includes("auth/invalid-credential")) {
+                        setSigninStatus("The provided email/password was incorrect");
+                    }
+                    else {
+                        setSigninStatus("There was an issue signing in");
+                    }
+                });
         }
         else if (displayIndex === 1) {
-            ptPredictingSignupWithEmailAndPassword(email, password);
+            ptPredictingSignupWithEmailAndPassword(email, password)
+                .catch(_ => {
+                    setSigninStatus("There was an issue creating an account");
+                });
         }
     }
 
@@ -33,6 +44,7 @@ export function PtAccountSignIn() {
     const [displayIndex, setDisplayIndex] = React.useState(0);
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
+    const [signinStatus, setSigninStatus] = React.useState("");
 
     const toggleText = displayIndex === 0 ? "create a new account" : "sign in with an existing account";
     const headerText = displayIndex === 0 ? "sign in" : "create an account";
@@ -47,6 +59,7 @@ export function PtAccountSignIn() {
             <div className="flex justify-center mt-4">
                 <div className="text-left">                    
                     <div className="text-center">Alternatively, {headerText} using an email and password</div>
+                    {signinStatus && <small className="text-red-500 font-small">{signinStatus}</small>}
                     <div className="my-1 ">
                         <label htmlFor="username" className="inline-block w-[100px] mr-1">Email:</label><input value={email} type="text" name="username" onChange={e => setEmail(e.target.value)} className="p-1 border rounded"/>
                     </div>
@@ -56,9 +69,9 @@ export function PtAccountSignIn() {
                     <div className="my-1">
                         <button className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 cursor-pointer" onClick={onSubmit}>Submit</button>
                     </div>
-                    {/* <div onClick={_ => ptPredictingPasswordReset(email)}>
+                    <div onClick={_ => ptPredictingPasswordReset(email)}>
                         Forgot your password?
-                    </div> */}
+                    </div>
                     <div>
                         <span className="text-blue-600 underline cursor-pointer hover:text-blue-800 active:text-blue-900 transition-colors" onClick={updateAccountDisplay}>Or, {toggleText}</span>
                     </div>
