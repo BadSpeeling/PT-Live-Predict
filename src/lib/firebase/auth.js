@@ -57,18 +57,6 @@ export const ptPredictingSigninWithEmailAndPassword = (email, password) => {
 export const ptPredictingPasswordReset = (email) => {
 
   const { auth } = getFirebaseClient();
-
-  sendPasswordResetEmail(auth, email)
-      .then(() => {
-        console.log('Reset sent!');
-        // Password reset email sent!
-        // ..
-      })
-      .catch((error) => {
-        console.log('Reset failed!');
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
+  return sendPasswordResetEmail(auth, email);
 
 }
