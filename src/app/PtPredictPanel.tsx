@@ -72,7 +72,7 @@ export const PtPredictPanel = () => {
       );
     });
 
-    const showPaginationFlag = context.ptCards.length > 0;//Math.ceil(context.ptCards.length / context.cardPage.PageSize) > 1
+    const showPaginationFlag = context.ptCards.length > 0;
 
     return (
       <>
