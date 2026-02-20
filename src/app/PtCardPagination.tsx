@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { AppContext } from "./AppContext";
+import { CallServer } from '@/types';
 
 export const PtCardPagination = () => {
 
     const context = React.useContext(AppContext);
 
-    const totalPages = Math.ceil(context.ptCards.length / context.cardPage.PageSize);
+    const totalPages = Math.ceil(context.ptCardCount / context.cardPage.PageSize);
 
     const setCardPage = (pageNumber: number) => {
 
@@ -13,32 +14,36 @@ export const PtCardPagination = () => {
             context.setCardPage({
                 ...context.cardPage,
                 CurrentPage: pageNumber,
+                NavigationDirection: pageNumber - context.cardPage.CurrentPage > 0 ? "desc" : "asc",
             })
+            context.setCallServer(CallServer.GetPtCardsPaginated);
         }
 
     }
 
-    const pageSelection = [...Array(totalPages).keys()].map((pageNumber) => {
+    const getPageSelections = () => {
+        return [...Array(totalPages).keys()].map((pageNumber) => {
         
-        let styling = "pagination-option cursor-pointer flex-1 py-2 border border-gray-600 text-center font-bold rounded"
+            let styling = "pagination-option cursor-pointer flex-1 py-2 border border-gray-600 text-center font-bold rounded"
 
-        if (pageNumber+1 === context.cardPage.CurrentPage) {
-            styling += " bg-blue-800 text-white"
-        }
-        else {
-            styling += " hover:bg-gray-200"
-        }
+            if (pageNumber+1 === context.cardPage.CurrentPage) {
+                styling += " bg-blue-800 text-white"
+            }
+            else {
+                styling += " hover:bg-gray-200"
+            }
 
-        return <div key={pageNumber} className={styling} onClick={() => setCardPage(pageNumber+1)}><div>{pageNumber+1}</div></div>
+            return <div key={pageNumber} className={styling} onClick={() => setCardPage(pageNumber+1)}><div>{pageNumber+1}</div></div>
 
-    })
+        })
+    }
 
     const leftNavBtnEnabledFlag = context.cardPage.CurrentPage !== 1;
     const rightNavBtnEnabledFlag = context.cardPage.CurrentPage !== totalPages;
 
     const getNavBtnClass = (navBtnEnabledFlag: boolean) => {
         
-        let className = "pagination-nav border border-gray-600 font-bold py-2 rounded"
+        let className = "pagination-nav border-2 border-gray-600 font-bold py-2 rounded"
 
         if (navBtnEnabledFlag) {
             className += ' cursor-pointer hover:bg-gray-200'            
@@ -54,7 +59,7 @@ export const PtCardPagination = () => {
     return (
         <div className="flex">
             <div className="flex-4 text-right">{ <button className={getNavBtnClass(leftNavBtnEnabledFlag)} onClick={() => setCardPage(context.cardPage.CurrentPage-1)}>{"<"}</button>}</div> 
-            { pageSelection }
+            {/* getPageSelections() */}
             <div className="flex-4 text-left">{ <button className={getNavBtnClass(rightNavBtnEnabledFlag)} onClick={() => setCardPage(context.cardPage.CurrentPage+1)}>{">"}</button>}</div>
         </div>
     )

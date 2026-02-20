@@ -1,12 +1,14 @@
 'use client'
 
 import * as React from 'react'
-import { AppData, CardPagination, SelectOption } from '../types'
+import { AppData, CallServer, CardPagination, SelectOption } from '../types'
 import { PtCard } from '../types/component'
 
 const appData = {
     ptCards: [] as PtCard[],
     setPtCards: (_: PtCard[]) => {},
+    ptCardCount: 0 as number,
+    setPtCardCount: (_: number) => {},
     selectedTeam: {label:'', value:''} as SelectOption,
     setSelectedTeam: (_: SelectOption) => {},
     cardPage: {
@@ -17,6 +19,8 @@ const appData = {
     currentLiveUpdateID: 1,
     isLoading: false,
     setIsLoading: (isLoading: boolean) => {},
+    callServer: CallServer.None,
+    setCallServer: (callServer: CallServer) => {},
 } as AppData
 
 export const AppContext = React.createContext(appData);
@@ -29,19 +33,24 @@ export default function AppProvider({
 
     const cardPagination: CardPagination = {
         CurrentPage: 1,
-        PageSize: 10
+        PageSize: 10,
+        NavigationDirection: null, 
     };
 
     const currentLiveUpdateID = parseInt(process.env.NEXT_PUBLIC_CURRENTLIVEUPDATEID ?? "0")
     
     const [ptCards, setPtCards] = React.useState([] as PtCard[])
+    const [ptCardCount, setPtCardCount] = React.useState(0)
     const [selectedTeam,setSelectedTeam] = React.useState({label:'', value:''} as SelectOption);
     const [cardPage, setCardPage] = React.useState(cardPagination);
     const [isLoading, setIsLoading] = React.useState(false);
+    const [callServer, setCallServer] = React.useState(CallServer.None);
 
     const appData = {
         ptCards,
         setPtCards,
+        ptCardCount,
+        setPtCardCount,
         selectedTeam,
         setSelectedTeam,
         cardPage,
@@ -49,6 +58,8 @@ export default function AppProvider({
         isLoading,
         setIsLoading,
         currentLiveUpdateID,
+        callServer,
+        setCallServer,
     } as AppData
 
     return <AppContext.Provider value={appData}>{children}</AppContext.Provider>
