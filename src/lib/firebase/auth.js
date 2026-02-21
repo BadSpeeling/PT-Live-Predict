@@ -43,44 +43,20 @@ export async function signOut() {
 export const ptPredictingSignupWithEmailAndPassword = (email, password) => {
   
   const { auth } = getFirebaseClient();
-  
-  createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredentials) => {
-      })
-      .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode + ' ' + errorMessage);
-      });
+  return createUserWithEmailAndPassword(auth, email, password)
+
 }
 
 export const ptPredictingSigninWithEmailAndPassword = (email, password) => {
 
   const { auth } = getFirebaseClient();
+  return signInWithEmailAndPassword(auth, email, password);
 
-  signInWithEmailAndPassword(auth, email, password)
-      .then((userCredentials) => {
-      })
-      .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode + ' ' + errorMessage);
-      });
 }
 
 export const ptPredictingPasswordReset = (email) => {
 
   const { auth } = getFirebaseClient();
-
-  sendPasswordResetEmail(auth, email)
-      .then(() => {
-        // Password reset email sent!
-        // ..
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
+  return sendPasswordResetEmail(auth, email);
 
 }
