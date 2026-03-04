@@ -116,7 +116,7 @@ export interface LiveUpdate {
 
 export interface GetPtCardPredictsRequest {
     TeamFilter: string,
-    TierFilter: string,
+    TierFilter: number,
     CardPagination: CardPagination,
     LatestLiveUpdateID: number,
     NavigationDirection: null | "asc" | "desc",

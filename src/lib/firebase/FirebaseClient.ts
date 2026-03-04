@@ -59,7 +59,7 @@ export default class FirebaseClient {
         if (request.TeamFilter) {
             queryConstraints.push(where("Team", "==", request.TeamFilter))
         }
-        else if (request.TierFilter) {
+        else if (request.TierFilter || request.TierFilter === 0) {
             queryConstraints.push(where("tier", "==", request.TierFilter))
         }
 
