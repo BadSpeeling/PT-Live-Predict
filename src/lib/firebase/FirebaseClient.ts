@@ -57,10 +57,14 @@ export default class FirebaseClient {
         ] as QueryConstraint[]
 
         if (request.TeamFilter) {
-            queryConstraints.push(where("Team", "==", request.TeamFilter))
+            queryConstraints.push(where("Team", "==", request.TeamFilter));
         }
-        else if (request.TierFilter || request.TierFilter === 0) {
-            queryConstraints.push(where("tier", "==", request.TierFilter))
+        else if (request.TierFilter >= 0 && request.TierFilter <= 5) {
+            queryConstraints.push(where("tier", "==", request.TierFilter));
+        }
+        else if (request.NameFilter.FirstName && request.NameFilter.LastName) {
+            queryConstraints.push(where("FirstName", "==", request.NameFilter.FirstName));
+            queryConstraints.push(where("LastName", "==", request.NameFilter.LastName));
         }
 
         queryConstraints.push(orderBy("CardValue", navigationDirection))
@@ -95,8 +99,12 @@ export default class FirebaseClient {
         if (request.TeamFilter) {
             queryConstraints.push(where("Team", "==", request.TeamFilter))
         }
-        else if (request.TierFilter) {
+        else if (request.TierFilter >= 0 && request.TierFilter <= 5) {
             queryConstraints.push(where("tier", "==", request.TierFilter))
+        }
+        else if (request.NameFilter.FirstName && request.NameFilter.LastName) {
+            queryConstraints.push(where("FirstName", "==", request.NameFilter.FirstName));
+            queryConstraints.push(where("LastName", "==", request.NameFilter.LastName));
         }
 
         const countQuery = query(collection(this.firestore!, "PtCard"), ...queryConstraints);

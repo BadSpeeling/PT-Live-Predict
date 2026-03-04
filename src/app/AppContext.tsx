@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { AppData, CallServer, CardPagination, SelectOption, PtCardFilters } from '../types'
+import { AppData, CallServer, CardPagination, SelectOption, PtCardFilters, PtPlayerName } from '../types'
 import { PtCard } from '../types/component'
 
 const appData = {
@@ -12,6 +12,7 @@ const appData = {
     ptCardFilters: {
         selectedTeam: {label:'', value:''} as SelectOption,
         selectedTier: {label:'', value:''} as SelectOption,
+        enteredName: {FirstName: '', LastName: ''} as PtPlayerName,
     },
     setPtCardFilters: (_: PtCardFilters) => {},
     cardPage: {
@@ -45,6 +46,7 @@ export default function AppProvider({
     const selectedPtCardFilters = {
         selectedTeam: {label:'', value:''} as SelectOption,
         selectedTier: {label:'', value:''} as SelectOption,
+        enteredName: {FirstName: '', LastName: ''} as PtPlayerName,
     } as PtCardFilters
 
     const [ptCards, setPtCards] = React.useState([] as PtCard[])

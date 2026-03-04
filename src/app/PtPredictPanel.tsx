@@ -42,6 +42,7 @@ export const PtPredictPanel = () => {
           body: JSON.stringify({
             TeamFilter: context.ptCardFilters.selectedTeam.value,
             TierFilter: Object.keys(Tier).indexOf(context.ptCardFilters.selectedTier.value),
+            NameFilter: context.ptCardFilters.enteredName,
             LatestLiveUpdateID: context.currentLiveUpdateID,
             NavigationDirection: context.cardPage.NavigationDirection,
             LastPtCardID: !ignoreLastPtCardID ? getLastPtCardID() : null,

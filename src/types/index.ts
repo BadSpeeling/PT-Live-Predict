@@ -103,6 +103,12 @@ export interface AppData {
 export interface PtCardFilters {
     selectedTeam: SelectOption,
     selectedTier: SelectOption,
+    enteredName: PtPlayerName,
+}
+
+export interface PtPlayerName {
+    FirstName: string,
+    LastName: string,
 }
 
 export enum CallServer {
@@ -117,6 +123,7 @@ export interface LiveUpdate {
 export interface GetPtCardPredictsRequest {
     TeamFilter: string,
     TierFilter: number,
+    NameFilter: PtPlayerName,
     CardPagination: CardPagination,
     LatestLiveUpdateID: number,
     NavigationDirection: null | "asc" | "desc",
