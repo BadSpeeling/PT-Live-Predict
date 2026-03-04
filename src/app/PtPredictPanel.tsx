@@ -14,9 +14,11 @@ export const PtPredictPanel = () => {
     React.useEffect(() => {
       switch (context.callServer) {
         case CallServer.GetPtCards:
+        case CallServer.GetPtCardsResult:
           handleCardLoad(true);
           break;
         case CallServer.GetPtCardsPaginated:
+        case CallServer.GetPtCardsResultPaginated:
           handleCardLoad(false);
           break;
       }
@@ -38,7 +40,7 @@ export const PtPredictPanel = () => {
               'Content-Type':"application/json"
           },
           body: JSON.stringify({
-            TeamFilter: context.selectedTeam.value,
+            TeamFilter: context.ptCardFilters.selectedTeam.value,
             LatestLiveUpdateID: context.currentLiveUpdateID,
             NavigationDirection: context.cardPage.NavigationDirection,
             LastPtCardID: !ignoreLastPtCardID ? getLastPtCardID() : null,

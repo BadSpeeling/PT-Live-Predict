@@ -89,8 +89,8 @@ export interface AppData {
     setPtCards: React.Dispatch<React.SetStateAction<PtCard[]>>, 
     ptCardCount: number,
     setPtCardCount: React.Dispatch<React.SetStateAction<number>>,
-    selectedTeam: SelectOption,
-    setSelectedTeam: React.Dispatch<React.SetStateAction<SelectOption>>,
+    ptCardFilters: PtCardFilters,
+    setPtCardFilters: React.Dispatch<React.SetStateAction<PtCardFilters>>, 
     cardPage: CardPagination,
     setCardPage: React.Dispatch<React.SetStateAction<CardPagination>>,
     isLoading: boolean,
@@ -100,8 +100,13 @@ export interface AppData {
     setCallServer: React.Dispatch<React.SetStateAction<CallServer>>,
 }
 
+export interface PtCardFilters {
+    selectedTeam: SelectOption,
+    selectedTier: SelectOption,
+}
+
 export enum CallServer {
-    GetPtCards,GetPtCardsPaginated,None
+    GetPtCards,GetPtCardsPaginated,GetPtCardsResult,GetPtCardsResultPaginated,None
 }
 
 export interface LiveUpdate {
