@@ -15,7 +15,6 @@ export const PtCardListFilter = () => {
         context.setCallServer(CallServer.GetPtCards);
         context.setCardPage({
             ...context.cardPage,
-            PageSize: 10,
             CurrentPage: 1,
             NavigationDirection: null,
         })
@@ -29,7 +28,6 @@ export const PtCardListFilter = () => {
         context.setCallServer(CallServer.GetPtCardsResult);
         context.setCardPage({
             ...context.cardPage,
-            PageSize: 20,
             CurrentPage: 1,
             NavigationDirection: null,
         })
@@ -42,10 +40,10 @@ export const PtCardListFilter = () => {
         }
     }) 
 
-    const tiers = [...Array(6).keys()].map((enumIndex) => {
+    const tiers = [...Object.keys(Tier)].map((enumValue) => {
         return {
-            label: Tier[enumIndex],
-            value: Tier[enumIndex],
+            label: enumValue,
+            value: enumValue,
         }
     })
 

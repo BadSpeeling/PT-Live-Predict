@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AppContext } from './AppContext'
 import { PtCardListFilter } from './PtCardListFilter'
 import { PtCardPagination } from './PtCardPagination'
-import { GetPtCardPredictsResponse, CallServer } from '../types'
+import { GetPtCardPredictsResponse, CallServer, Tier } from '../types'
 import { PtCard } from './PtCard'
 import { sortPtCardList } from './lib/pt-card-helper'
 import { toast, ToastContainer } from 'react-toastify';
@@ -41,6 +41,7 @@ export const PtPredictPanel = () => {
           },
           body: JSON.stringify({
             TeamFilter: context.ptCardFilters.selectedTeam.value,
+            TierFilter: Object.keys(Tier).indexOf(context.ptCardFilters.selectedTier.value),
             LatestLiveUpdateID: context.currentLiveUpdateID,
             NavigationDirection: context.cardPage.NavigationDirection,
             LastPtCardID: !ignoreLastPtCardID ? getLastPtCardID() : null,

@@ -1,8 +1,8 @@
 import { getAuthenticatedAppForUser } from './serverApp'
-import { Firestore, setDoc, orderBy, where, getFirestore, getDocs, query, Query, collection, QuerySnapshot, DocumentData, Timestamp, doc, startAfter, limit, getCountFromServer, getDoc } from "firebase/firestore";
+import { Firestore, setDoc, orderBy, where, getFirestore, getDocs, query, Query, collection, QuerySnapshot, DocumentData, Timestamp, doc, startAfter, limit, getCountFromServer, getDoc, QueryConstraint } from "firebase/firestore";
 import { PtCard } from "../../types/data"
 import { User } from 'firebase/auth';
-import { GetPtCardPredictsRequest, PostPtPredictRequest, PostErrorLogRequest } from '../../types'
+import { GetPtCardPredictsRequest, PostPtPredictRequest, PostErrorLogRequest, Tier } from '../../types'
 import { randomUUID } from 'crypto'
 
 export default class FirebaseClient {
@@ -52,31 +52,26 @@ export default class FirebaseClient {
         this.#validateClient();
         const navigationDirection = request.NavigationDirection ?? "desc"
 
-        let pageQuery: Query<DocumentData, DocumentData>;
+        const queryConstraints = [
+            where("LiveUpdateID", "==", request.LatestLiveUpdateID),
+        ] as QueryConstraint[]
+
+        if (request.TeamFilter) {
+            queryConstraints.push(where("Team", "==", request.TeamFilter))
+        }
+        else if (request.TierFilter) {
+            queryConstraints.push(where("tier", "==", request.TierFilter))
+        }
+
+        queryConstraints.push(orderBy("CardValue", navigationDirection))
 
         if (request.LastPtCardID) {
-            
-            const anchorDocument = await getDoc(doc(this.firestore!, "PtCard", request.LastPtCardID.toString()));
-            
-            pageQuery = query(collection(this.firestore!, "PtCard"),                
-                where("LiveUpdateID", "==", request.LatestLiveUpdateID), 
-                where("Team", "==", request.TeamFilter), 
-                orderBy("CardValue", navigationDirection), 
-                startAfter(anchorDocument),
-                limit(10),                
-            );
-
+            const anchorDocument = await getDoc(doc(this.firestore!, "PtCard", request.LastPtCardID.toString()));            
+            queryConstraints.push(startAfter(anchorDocument));
         }
-        else {
 
-            pageQuery = query(collection(this.firestore!, "PtCard"),                
-                where("LiveUpdateID", "==", request.LatestLiveUpdateID), 
-                where("Team", "==", request.TeamFilter), 
-                orderBy("CardValue", navigationDirection), 
-                limit(10),                
-            );
-
-        }
+        queryConstraints.push(limit(10));                
+        const pageQuery = query(collection(this.firestore!, "PtCard"), ...queryConstraints);
 
         const ptCardSnapshot = await getDocs(pageQuery);
         const ptCards = this.#snapshotConverter<PtCard>(ptCardSnapshot);
@@ -93,10 +88,18 @@ export default class FirebaseClient {
 
         this.#validateClient();
 
-        const countQuery = query(collection(this.firestore!, "PtCard"),
-            where("LiveUpdateID", "==", request.LatestLiveUpdateID), 
-            where("Team", "==", request.TeamFilter),
-        );
+        const queryConstraints = [
+            where("LiveUpdateID", "==", request.LatestLiveUpdateID),
+        ] as QueryConstraint[]
+
+        if (request.TeamFilter) {
+            queryConstraints.push(where("Team", "==", request.TeamFilter))
+        }
+        else if (request.TierFilter) {
+            queryConstraints.push(where("tier", "==", request.TierFilter))
+        }
+
+        const countQuery = query(collection(this.firestore!, "PtCard"), ...queryConstraints);
 
         const snapshot = await getCountFromServer(countQuery);
         const ptCardCount = snapshot.data().count; 

@@ -14,12 +14,12 @@ export enum Position {
 }
 
 export enum Tier {
-    'Iron',
-    'Bronze',
-    'Silver',
-    'Gold',
-    'Diamond',
-    'Perfect'
+    'Iron' = 'Iron',
+    'Bronze' = 'Bronze',
+    'Silver' = 'Silver',
+    'Gold' = 'Gold',
+    'Diamond' = 'Diamond',
+    'Perfect' = 'Perfect'
 }
 
 export enum Team {
@@ -116,6 +116,7 @@ export interface LiveUpdate {
 
 export interface GetPtCardPredictsRequest {
     TeamFilter: string,
+    TierFilter: string,
     CardPagination: CardPagination,
     LatestLiveUpdateID: number,
     NavigationDirection: null | "asc" | "desc",
@@ -135,7 +136,7 @@ export interface CardPagination {
 
 export interface PostPtPredictRequest {
     PtCardID: number,
-    PredictedTier: Tier,
+    PredictedTier: number,
 }
 
 export interface PostPtPredictResponse {

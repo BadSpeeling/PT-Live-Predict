@@ -7,16 +7,7 @@ export const PtCardPagination = () => {
     const context = React.useContext(AppContext);
 
     const getCallServer = () => {
-        switch (context.callServer) {
-            case CallServer.GetPtCards:
-            case CallServer.GetPtCardsPaginated:
-                return CallServer.GetPtCardsPaginated;
-            case CallServer.GetPtCardsResult:
-            case CallServer.GetPtCardsResultPaginated:
-                return CallServer.GetPtCardsResultPaginated;
-            default:
-                return CallServer.None;
-        }
+        return CallServer.GetPtCardsPaginated;
     }
 
     const totalPages = Math.ceil(context.ptCardCount / context.cardPage.PageSize);
