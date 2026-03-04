@@ -143,12 +143,3 @@ export interface PostErrorLogRequest {
     ErrorStack: string,
     ErrorRequestBody: any,
 }
-
-export interface PtPredict {
-    PtPredictID: string,
-    PtCardID: number,
-    CardID: number,
-    LiveUpdateID: number,
-    PredictedTier: number,
-    UserID: string,
-}

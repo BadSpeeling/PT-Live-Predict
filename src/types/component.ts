@@ -1,7 +1,6 @@
 import { Position } from './index'
 
 export interface PtCard {
-    PtPredictID?: string,
     PtCardID: number,
     CardID: number,
     LiveUpdateID: number,
