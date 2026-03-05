@@ -61,7 +61,7 @@ export const PtCardPagination = () => {
     }
 
     return (
-        <div className="flex">
+        totalPages > 1 && <div className="flex">
             <div className="flex-4 text-right">{ <button className={getNavBtnClass(leftNavBtnEnabledFlag)} onClick={() => setCardPage(context.cardPage.CurrentPage-1)}>{"<"}</button>}</div> 
             {/* getPageSelections() */}
             <div className="flex-4 text-left">{ <button className={getNavBtnClass(rightNavBtnEnabledFlag)} onClick={() => setCardPage(context.cardPage.CurrentPage+1)}>{">"}</button>}</div>
