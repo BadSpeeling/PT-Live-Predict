@@ -6,6 +6,10 @@ export const PtCardPagination = () => {
 
     const context = React.useContext(AppContext);
 
+    const getCallServer = () => {
+        return CallServer.GetPtCardsPaginated;
+    }
+
     const totalPages = Math.ceil(context.ptCardCount / context.cardPage.PageSize);
 
     const setCardPage = (pageNumber: number) => {
@@ -16,7 +20,7 @@ export const PtCardPagination = () => {
                 CurrentPage: pageNumber,
                 NavigationDirection: pageNumber - context.cardPage.CurrentPage > 0 ? "desc" : "asc",
             })
-            context.setCallServer(CallServer.GetPtCardsPaginated);
+            context.setCallServer(getCallServer());
         }
 
     }
@@ -57,7 +61,7 @@ export const PtCardPagination = () => {
     }
 
     return (
-        <div className="flex">
+        totalPages > 1 && <div className="flex">
             <div className="flex-4 text-right">{ <button className={getNavBtnClass(leftNavBtnEnabledFlag)} onClick={() => setCardPage(context.cardPage.CurrentPage-1)}>{"<"}</button>}</div> 
             {/* getPageSelections() */}
             <div className="flex-4 text-left">{ <button className={getNavBtnClass(rightNavBtnEnabledFlag)} onClick={() => setCardPage(context.cardPage.CurrentPage+1)}>{">"}</button>}</div>

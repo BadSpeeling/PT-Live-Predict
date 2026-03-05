@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AppContext } from './AppContext'
 import { PtCardListFilter } from './PtCardListFilter'
 import { PtCardPagination } from './PtCardPagination'
-import { GetPtCardPredictsResponse, CallServer } from '../types'
+import { GetPtCardPredictsResponse, CallServer, Tier } from '../types'
 import { PtCard } from './PtCard'
 import { sortPtCardList } from './lib/pt-card-helper'
 import { toast, ToastContainer } from 'react-toastify';
@@ -14,9 +14,11 @@ export const PtPredictPanel = () => {
     React.useEffect(() => {
       switch (context.callServer) {
         case CallServer.GetPtCards:
+        case CallServer.GetPtCardsResult:
           handleCardLoad(true);
           break;
         case CallServer.GetPtCardsPaginated:
+        case CallServer.GetPtCardsResultPaginated:
           handleCardLoad(false);
           break;
       }
@@ -38,7 +40,9 @@ export const PtPredictPanel = () => {
               'Content-Type':"application/json"
           },
           body: JSON.stringify({
-            TeamFilter: context.selectedTeam.value,
+            TeamFilter: context.ptCardFilters.selectedTeam.value,
+            TierFilter: Object.keys(Tier).indexOf(context.ptCardFilters.selectedTier.value),
+            NameFilter: context.ptCardFilters.enteredName,
             LatestLiveUpdateID: context.currentLiveUpdateID,
             NavigationDirection: context.cardPage.NavigationDirection,
             LastPtCardID: !ignoreLastPtCardID ? getLastPtCardID() : null,

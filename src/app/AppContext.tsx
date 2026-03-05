@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { AppData, CallServer, CardPagination, SelectOption } from '../types'
+import { AppData, CallServer, CardPagination, SelectOption, PtCardFilters, PtPlayerName } from '../types'
 import { PtCard } from '../types/component'
 
 const appData = {
@@ -9,8 +9,12 @@ const appData = {
     setPtCards: (_: PtCard[]) => {},
     ptCardCount: 0 as number,
     setPtCardCount: (_: number) => {},
-    selectedTeam: {label:'', value:''} as SelectOption,
-    setSelectedTeam: (_: SelectOption) => {},
+    ptCardFilters: {
+        selectedTeam: {label:'', value:''} as SelectOption,
+        selectedTier: {label:'', value:''} as SelectOption,
+        enteredName: {FirstName: '', LastName: ''} as PtPlayerName,
+    },
+    setPtCardFilters: (_: PtCardFilters) => {},
     cardPage: {
         CurrentPage: 1,
         PageSize: 10
@@ -39,9 +43,15 @@ export default function AppProvider({
 
     const currentLiveUpdateID = parseInt(process.env.NEXT_PUBLIC_CURRENTLIVEUPDATEID ?? "0")
     
+    const selectedPtCardFilters = {
+        selectedTeam: {label:'', value:''} as SelectOption,
+        selectedTier: {label:'', value:''} as SelectOption,
+        enteredName: {FirstName: '', LastName: ''} as PtPlayerName,
+    } as PtCardFilters
+
     const [ptCards, setPtCards] = React.useState([] as PtCard[])
     const [ptCardCount, setPtCardCount] = React.useState(0)
-    const [selectedTeam,setSelectedTeam] = React.useState({label:'', value:''} as SelectOption);
+    const [ptCardFilters,setPtCardFilters] = React.useState(selectedPtCardFilters);
     const [cardPage, setCardPage] = React.useState(cardPagination);
     const [isLoading, setIsLoading] = React.useState(false);
     const [callServer, setCallServer] = React.useState(CallServer.None);
@@ -51,8 +61,8 @@ export default function AppProvider({
         setPtCards,
         ptCardCount,
         setPtCardCount,
-        selectedTeam,
-        setSelectedTeam,
+        ptCardFilters,
+        setPtCardFilters,
         cardPage,
         setCardPage,
         isLoading,

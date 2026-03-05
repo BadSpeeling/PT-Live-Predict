@@ -14,12 +14,12 @@ export enum Position {
 }
 
 export enum Tier {
-    'Iron',
-    'Bronze',
-    'Silver',
-    'Gold',
-    'Diamond',
-    'Perfect'
+    'Iron' = 'Iron',
+    'Bronze' = 'Bronze',
+    'Silver' = 'Silver',
+    'Gold' = 'Gold',
+    'Diamond' = 'Diamond',
+    'Perfect' = 'Perfect'
 }
 
 export enum Team {
@@ -89,8 +89,8 @@ export interface AppData {
     setPtCards: React.Dispatch<React.SetStateAction<PtCard[]>>, 
     ptCardCount: number,
     setPtCardCount: React.Dispatch<React.SetStateAction<number>>,
-    selectedTeam: SelectOption,
-    setSelectedTeam: React.Dispatch<React.SetStateAction<SelectOption>>,
+    ptCardFilters: PtCardFilters,
+    setPtCardFilters: React.Dispatch<React.SetStateAction<PtCardFilters>>, 
     cardPage: CardPagination,
     setCardPage: React.Dispatch<React.SetStateAction<CardPagination>>,
     isLoading: boolean,
@@ -100,8 +100,19 @@ export interface AppData {
     setCallServer: React.Dispatch<React.SetStateAction<CallServer>>,
 }
 
+export interface PtCardFilters {
+    selectedTeam: SelectOption,
+    selectedTier: SelectOption,
+    enteredName: PtPlayerName,
+}
+
+export interface PtPlayerName {
+    FirstName: string,
+    LastName: string,
+}
+
 export enum CallServer {
-    GetPtCards,GetPtCardsPaginated,None
+    GetPtCards,GetPtCardsPaginated,GetPtCardsResult,GetPtCardsResultPaginated,None
 }
 
 export interface LiveUpdate {
@@ -111,6 +122,8 @@ export interface LiveUpdate {
 
 export interface GetPtCardPredictsRequest {
     TeamFilter: string,
+    TierFilter: number,
+    NameFilter: PtPlayerName,
     CardPagination: CardPagination,
     LatestLiveUpdateID: number,
     NavigationDirection: null | "asc" | "desc",
@@ -130,7 +143,7 @@ export interface CardPagination {
 
 export interface PostPtPredictRequest {
     PtCardID: number,
-    PredictedTier: Tier,
+    PredictedTier: number,
 }
 
 export interface PostPtPredictResponse {
@@ -142,13 +155,4 @@ export interface PostErrorLogRequest {
     ErrorMsg: string,
     ErrorStack: string,
     ErrorRequestBody: any,
-}
-
-export interface PtPredict {
-    PtPredictID: string,
-    PtCardID: number,
-    CardID: number,
-    LiveUpdateID: number,
-    PredictedTier: number,
-    UserID: string,
 }
