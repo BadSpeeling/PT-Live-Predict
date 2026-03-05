@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AppContext } from './AppContext'
 import { PtCardListFilter } from './PtCardListFilter'
 import { PtCardPagination } from './PtCardPagination'
-import { GetPtCardPredictsResponse, CallServer, Tier } from '../types'
+import { GetPtCardPredictsRequest, GetPtCardPredictsResponse, CallServer, GridMode, Tier } from '../types'
 import { PtCard } from './PtCard'
 import { sortPtCardList } from './lib/pt-card-helper'
 import { toast, ToastContainer } from 'react-toastify';
@@ -12,17 +12,15 @@ export const PtPredictPanel = () => {
     const context = React.useContext(AppContext);
 
     React.useEffect(() => {
-      switch (context.callServer) {
-        case CallServer.GetPtCards:
-        case CallServer.GetPtCardsResult:
+      switch (context.pageState.CallServer) {
+        case CallServer.GetStandard:        
           handleCardLoad(true);
           break;
-        case CallServer.GetPtCardsPaginated:
-        case CallServer.GetPtCardsResultPaginated:
+        case CallServer.GetPaginated:
           handleCardLoad(false);
           break;
       }
-    }, [context.callServer])
+    }, [context.pageState.CallServer])
     
     const getLastPtCardID = () => {
       if (context.ptCards.length === 0) {
@@ -30,6 +28,15 @@ export const PtPredictPanel = () => {
       }
       else {
         return context.cardPage.NavigationDirection === "asc" ? context.ptCards[0].PtCardID : context.ptCards[context.ptCards.length-1].PtCardID;
+      }
+    }
+
+    const getLiveUpdateID = () => {
+      switch(context.pageState.GridMode) {
+        case GridMode.PtCard:
+          return context.currentLiveUpdateID;
+        case GridMode.ResultingTier:
+          return context.currentLiveUpdateID-1;
       }
     }
 
@@ -43,10 +50,12 @@ export const PtPredictPanel = () => {
             TeamFilter: context.ptCardFilters.selectedTeam.value,
             TierFilter: Object.keys(Tier).indexOf(context.ptCardFilters.selectedTier.value),
             NameFilter: context.ptCardFilters.enteredName,
-            LatestLiveUpdateID: context.currentLiveUpdateID,
+            LiveUpdateID: getLiveUpdateID(),
             NavigationDirection: context.cardPage.NavigationDirection,
             LastPtCardID: !ignoreLastPtCardID ? getLastPtCardID() : null,
-          })
+            PageSize: context.cardPage.PageSize,
+            GridMode: context.pageState.GridMode,
+          } as GetPtCardPredictsRequest)
         }
         context.setIsLoading(true);
         const getCardPredictions = await fetch('/api/pt-card-predicts', options)
@@ -66,7 +75,10 @@ export const PtPredictPanel = () => {
           toast('Could not load cards!');
         }
         context.setIsLoading(false);
-        context.setCallServer(CallServer.None);
+        context.setPageState({
+          ...context.pageState,
+          CallServer: CallServer.None,
+        });
 
     }
 

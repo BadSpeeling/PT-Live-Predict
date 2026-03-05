@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Select from 'react-select';
-import { CallServer, Team, Tier } from '../types'
+import { CallServer, GridMode, Team, Tier } from '../types'
 import { AppContext } from "./AppContext";
 import { toast } from 'react-toastify';
 
@@ -71,7 +71,10 @@ export const PtCardListFilter = () => {
             return;            
         }
 
-        context.setCallServer(CallServer.GetPtCardsResult);
+        context.setPageState({
+            ...context.pageState,
+            CallServer: CallServer.GetStandard,
+        });
         context.setCardPage({
             ...context.cardPage,
             CurrentPage: 1,
@@ -93,57 +96,83 @@ export const PtCardListFilter = () => {
         }
     })
 
+    const handlePtCardViewClick = () => {
+        context.setCardPage({
+            ...context.cardPage,
+            PageSize: 10,
+        })
+        context.setPageState({
+            CallServer: CallServer.GetStandard,
+            GridMode: GridMode.PtCard,
+        })
+    }
+
+    const handleResultingTierViewClick = () => {
+        context.setCardPage({
+            ...context.cardPage,
+            PageSize: 20,
+        })
+        context.setPageState({
+            CallServer: CallServer.GetStandard,
+            GridMode: GridMode.ResultingTier,
+        })
+    }
+
     return (
         <div className="border p-4">
-                <div className="mb-1">
-                    <div>Team</div>
-                    <div className="lg:w-2/5 cursor-pointer">
-                        <Select
-                            options={teams}
-                            value={context.ptCardFilters.selectedTeam}
-                            onChange={onSelectedTeamChange}   
-                            instanceId={"selectedTeam"}
-                            styles={{
-                                "menu": (baseStyles, state) => ({
-                                    ...baseStyles,
-                                    paddingBottom: "10px"
-                                })
-                            }}             
-                        />
+            <div>
+                <button onClick={handlePtCardViewClick}>PtCards</button>
+                <button onClick={handleResultingTierViewClick}>ResultingTier</button>
+            </div>
+            <div className="mb-1">
+                <div>Team</div>
+                <div className="lg:w-2/5 cursor-pointer">
+                    <Select
+                        options={teams}
+                        value={context.ptCardFilters.selectedTeam}
+                        onChange={onSelectedTeamChange}   
+                        instanceId={"selectedTeam"}
+                        styles={{
+                            "menu": (baseStyles, state) => ({
+                                ...baseStyles,
+                                paddingBottom: "10px"
+                            })
+                        }}             
+                    />
+                </div>
+            </div>
+            <div className="mb-1">
+                <div>Tier</div>
+                <div className="lg:w-2/5 cursor-pointer">
+                    <Select
+                        options={tiers}
+                        value={context.ptCardFilters.selectedTier}
+                        onChange={onSelectedTierChange}   
+                        instanceId={"selectedTier"}
+                        styles={{
+                            "menu": (baseStyles, state) => ({
+                                ...baseStyles,
+                                paddingBottom: "10px"
+                            })
+                        }}             
+                    />
+                </div>
+            </div>
+            <div className="mb-1">
+                <div className="inline-block">
+                    <div>First Name</div>
+                    <div className="lg:w-2/5">
+                        <input className="filter-border cursor-pointer" value={context.ptCardFilters.enteredName.FirstName} onChange={onFirstNameChange} />
                     </div>
                 </div>
-                <div className="mb-1">
-                    <div>Tier</div>
-                    <div className="lg:w-2/5 cursor-pointer">
-                        <Select
-                            options={tiers}
-                            value={context.ptCardFilters.selectedTier}
-                            onChange={onSelectedTierChange}   
-                            instanceId={"selectedTier"}
-                            styles={{
-                                "menu": (baseStyles, state) => ({
-                                    ...baseStyles,
-                                    paddingBottom: "10px"
-                                })
-                            }}             
-                        />
+                <div className="ml-1 inline-block">
+                    <div>Last Name</div>
+                    <div className="lg:w-2/5">
+                        <input className="filter-border cursor-pointer" value={context.ptCardFilters.enteredName.LastName} onChange={onLastNameChange} />
                     </div>
                 </div>
-                <div className="mb-1">
-                    <div className="inline-block">
-                        <div>First Name</div>
-                        <div className="lg:w-2/5">
-                            <input className="filter-border cursor-pointer" value={context.ptCardFilters.enteredName.FirstName} onChange={onFirstNameChange} />
-                        </div>
-                    </div>
-                    <div className="ml-1 inline-block">
-                        <div>Last Name</div>
-                        <div className="lg:w-2/5">
-                            <input className="filter-border cursor-pointer" value={context.ptCardFilters.enteredName.LastName} onChange={onLastNameChange} />
-                        </div>
-                    </div>
-                </div>
-                <span className="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 cursor-pointer" onClick={onFilterSubmit}>Submit</span>
+            </div>
+            <span className="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 cursor-pointer" onClick={onFilterSubmit}>Submit</span>
         </div>
     )
 

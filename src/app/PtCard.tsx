@@ -16,7 +16,7 @@ export const PtCard = ({ ptCard }: PtCardProps) => {
             </div>
             <div className="card-image-wrapper m-auto"><img className="m-auto block card-image" src={ptCard.Position === 1 ? "/pitcher-silhoutte.jpg" : "/batter-silhoutte.jpg"} /></div>
             <div className="text-center">{ptCard.CardTitle}</div>
-            <div className="text-xs py-1">Selected Tier: {ptCard.PredictedTier || ptCard.PredictedTier === 0 ? Object.keys(Tier)[ptCard.PredictedTier] : "None"}</div>
+            <div className="text-xs py-1">Selected Tier: {ptCard.PredictedTiers.length === 1 ? Object.keys(Tier)[ptCard.PredictedTiers[0]] : "None"}</div>
             <TierSelector ptCard={ptCard} />
         </div>
     )

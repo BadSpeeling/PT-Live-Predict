@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { AppData, CallServer, CardPagination, SelectOption, PtCardFilters, PtPlayerName } from '../types'
+import { AppData, CallServer, GridMode, PageState, CardPagination, SelectOption, PtCardFilters, PtPlayerName } from '../types'
 import { PtCard } from '../types/component'
 
 const appData = {
@@ -17,14 +17,15 @@ const appData = {
     setPtCardFilters: (_: PtCardFilters) => {},
     cardPage: {
         CurrentPage: 1,
-        PageSize: 10
+        PageSize: 10,
+        NavigationDirection: null,
     },
     setCardPage: (cardPage: CardPagination) => {},
     currentLiveUpdateID: 1,
     isLoading: false,
     setIsLoading: (isLoading: boolean) => {},
-    callServer: CallServer.None,
-    setCallServer: (callServer: CallServer) => {},
+    pageState: { CallServer: CallServer.None, GridMode: GridMode.PtCard},
+    setPageState: (pageState: PageState) => {},
 } as AppData
 
 export const AppContext = React.createContext(appData);
@@ -54,7 +55,7 @@ export default function AppProvider({
     const [ptCardFilters,setPtCardFilters] = React.useState(selectedPtCardFilters);
     const [cardPage, setCardPage] = React.useState(cardPagination);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [callServer, setCallServer] = React.useState(CallServer.None);
+    const [pageState, setPageState] = React.useState({ CallServer: CallServer.None, GridMode: GridMode.PtCard});
 
     const appData = {
         ptCards,
@@ -68,8 +69,8 @@ export default function AppProvider({
         isLoading,
         setIsLoading,
         currentLiveUpdateID,
-        callServer,
-        setCallServer,
+        pageState,
+        setPageState,
     } as AppData
 
     return <AppContext.Provider value={appData}>{children}</AppContext.Provider>

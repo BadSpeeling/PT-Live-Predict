@@ -7,5 +7,5 @@ export interface PtCard {
     CardTitle: string,
     CardValue: number,
     Position: Position,
-    PredictedTier?: number,
+    PredictedTiers: number[],
 }

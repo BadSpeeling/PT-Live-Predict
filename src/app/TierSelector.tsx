@@ -12,7 +12,8 @@ export const TierSelector = ({ ptCard }: TierSelectorProps) => {
 
     const context = React.useContext(AppContext);
     const tiers = [Tier.Iron, Tier.Bronze, Tier.Silver, Tier.Gold, Tier.Diamond, Tier.Perfect];
-    const [selectedTier, setSelectedTier] = React.useState(ptCard.PredictedTier);
+    const predictedTier = ptCard.PredictedTiers.length === 1 ? ptCard.PredictedTiers[0] : undefined;
+    const [selectedTier, setSelectedTier] = React.useState(predictedTier);
 
     const setSelectedTierHandler = async (selectedTier: number) => {
 
@@ -23,7 +24,7 @@ export const TierSelector = ({ ptCard }: TierSelectorProps) => {
                 
                 return {
                     ...currPtCard,
-                    PredictedTier: selectedTier
+                    PredictedTiers: [selectedTier]
                 } as PtCardValues
 
             }

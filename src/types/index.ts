@@ -96,8 +96,8 @@ export interface AppData {
     isLoading: boolean,
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>, 
     currentLiveUpdateID: number,
-    callServer: CallServer,
-    setCallServer: React.Dispatch<React.SetStateAction<CallServer>>,
+    pageState: PageState,
+    setPageState: React.Dispatch<React.SetStateAction<PageState>>,
 }
 
 export interface PtCardFilters {
@@ -112,7 +112,16 @@ export interface PtPlayerName {
 }
 
 export enum CallServer {
-    GetPtCards,GetPtCardsPaginated,GetPtCardsResult,GetPtCardsResultPaginated,None
+    GetStandard,GetPaginated,None
+}
+
+export enum GridMode {
+    PtCard,ResultingTier
+}
+
+export interface PageState {
+    CallServer: CallServer,
+    GridMode: GridMode,
 }
 
 export interface LiveUpdate {
@@ -125,9 +134,11 @@ export interface GetPtCardPredictsRequest {
     TierFilter: number,
     NameFilter: PtPlayerName,
     CardPagination: CardPagination,
-    LatestLiveUpdateID: number,
+    LiveUpdateID: number,
     NavigationDirection: null | "asc" | "desc",
     LastPtCardID: null | number,
+    PageSize: number,
+    GridMode: GridMode,
 }
 
 export interface GetPtCardPredictsResponse {

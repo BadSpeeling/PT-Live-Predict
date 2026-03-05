@@ -6,10 +6,6 @@ export const PtCardPagination = () => {
 
     const context = React.useContext(AppContext);
 
-    const getCallServer = () => {
-        return CallServer.GetPtCardsPaginated;
-    }
-
     const totalPages = Math.ceil(context.ptCardCount / context.cardPage.PageSize);
 
     const setCardPage = (pageNumber: number) => {
@@ -20,7 +16,10 @@ export const PtCardPagination = () => {
                 CurrentPage: pageNumber,
                 NavigationDirection: pageNumber - context.cardPage.CurrentPage > 0 ? "desc" : "asc",
             })
-            context.setCallServer(getCallServer());
+            context.setPageState({
+                ...context.pageState,
+                CallServer: CallServer.GetPaginated,
+            });
         }
 
     }

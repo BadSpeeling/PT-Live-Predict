@@ -1,4 +1,4 @@
-import { GetPtCardPredictsRequest, PostPtPredictRequest, PostPtPredictResponse, GetPtCardPredictsResponse, Position } from '../../types'
+import { GetPtCardPredictsRequest, PostPtPredictRequest, PostPtPredictResponse, GetPtCardPredictsResponse, Position, GridMode } from '../../types'
 import FirebaseClient from '../../lib/firebase/FirebaseClient'
 import PtPredictDataFormatter from '../../lib/PtPredictDataFormatter'
 
@@ -20,7 +20,7 @@ export const getPtPredictPlayers = async (requestBody: GetPtCardPredictsRequest,
     const ptCardCount = await firebaseClient.getPtCardsCount(requestBody);
 
     return { 
-        PtCards: mapPtCards(ptCards, (firebaseClient.currentUser?.uid ?? "").toString()),
+        PtCards: mapPtCards(ptCards, (firebaseClient.currentUser?.uid ?? "").toString(), requestBody.GridMode),
         PtCardCount: ptCardCount,
     } as GetPtCardPredictsResponse;
 
@@ -35,13 +35,29 @@ export const postUserPredict = async (requestBody: PostPtPredictRequest, isLocal
     
 }
 
-const mapPtCards = (ptCardRecords: PtCardRecord[], userID: string) => {
-    return ptCardRecords.map(r => mapPtCard(r, userID));
+const mapPtCards = (ptCardRecords: PtCardRecord[], userID: string, gridMode: GridMode) => {
+    return ptCardRecords.map(r => mapPtCard(r, userID, gridMode));
 }
 
-const mapPtCard = (ptCardRecord: PtCardRecord, userID: string) => {
+const mapPtCard = (ptCardRecord: PtCardRecord, userID: string, gridMode: GridMode) => {
     
     let position = '';
+
+    const getPredictedTiers = () => {
+        
+        if (ptCardRecord.PtPredicts) {
+            switch (gridMode) {
+                case GridMode.PtCard:
+                    return filterForUser(ptCardRecord.PtPredicts, userID);
+                case GridMode.ResultingTier:
+                default:
+                    return Object.values(ptCardRecord.PtPredicts);
+            }
+        }
+        else {
+            return [] as number[];
+        }
+    }
 
     if (ptCardRecord.Position === 1) {        
         position = extractPositionFromCardTitle(ptCardRecord.CardTitle)
@@ -57,17 +73,17 @@ const mapPtCard = (ptCardRecord: PtCardRecord, userID: string) => {
         CardTitle: `${position} ${ptCardRecord.FirstName} ${ptCardRecord.LastName} ${ptCardRecord.Franchise}`,
         CardValue: ptCardRecord.CardValue,
         Position: ptCardRecord.Position,
-        PredictedTier: ptCardRecord.PtPredicts ? filterForUser(ptCardRecord.PtPredicts, userID): undefined,
+        PredictedTiers: getPredictedTiers(),
     } as PtCard    
 }
 
 const filterForUser = (ptPredicts: {[key: string]: number}, userID: string) => {
     
     if (typeof ptPredicts[userID] !== 'undefined') {
-        return ptPredicts[userID];
+        return [ptPredicts[userID]];
     }
     else {
-        return undefined;
+        return [];
     }
 
 }
