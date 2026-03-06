@@ -12,19 +12,19 @@ export const TierSelector = ({ ptCard }: TierSelectorProps) => {
 
     const context = React.useContext(AppContext);
     const tiers = [Tier.Iron, Tier.Bronze, Tier.Silver, Tier.Gold, Tier.Diamond, Tier.Perfect];
-    const predictedTier = ptCard.PredictedTiers.length === 1 ? ptCard.PredictedTiers[0] : undefined;
+    const predictedTier = ptCard.PredictedTier;
     const [selectedTier, setSelectedTier] = React.useState(predictedTier);
 
     const setSelectedTierHandler = async (selectedTier: number) => {
 
         setSelectedTier(selectedTier);
 
-        const updatedPtCards = context.ptCards.map((currPtCard) => {
+        const updatedPtCards = context.loadedData.PtCards.map((currPtCard) => {
             if (ptCard.CardID === currPtCard.CardID) {
                 
                 return {
                     ...currPtCard,
-                    PredictedTiers: [selectedTier]
+                    PredictedTier: selectedTier
                 } as PtCardValues
 
             }
@@ -33,7 +33,10 @@ export const TierSelector = ({ ptCard }: TierSelectorProps) => {
             }
         });
 
-        context.setPtCards(updatedPtCards);
+        context.setLoadedData({
+            ...context.loadedData,
+            PtCards: updatedPtCards
+        });
 
         const options = {
             method: "POST",

@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { AppContext } from "./AppContext";
 import { CallServer } from '@/types';
+import { getActiveRecordCount } from '../app/lib/pt-card-helper'
 
-export const PtCardPagination = () => {
+type Props = {
+    totalPages: number,
+}
+
+export const PtCardPagination = ({totalPages}: Props) => {
 
     const context = React.useContext(AppContext);
-
-    const totalPages = Math.ceil(context.ptCardCount / context.cardPage.PageSize);
-
     const setCardPage = (pageNumber: number) => {
 
         if (pageNumber >= 1 && pageNumber <= totalPages) {
@@ -60,7 +62,7 @@ export const PtCardPagination = () => {
     }
 
     return (
-        totalPages > 1 && <div className="flex">
+        <div className="flex">
             <div className="flex-4 text-right">{ <button className={getNavBtnClass(leftNavBtnEnabledFlag)} onClick={() => setCardPage(context.cardPage.CurrentPage-1)}>{"<"}</button>}</div> 
             {/* getPageSelections() */}
             <div className="flex-4 text-left">{ <button className={getNavBtnClass(rightNavBtnEnabledFlag)} onClick={() => setCardPage(context.cardPage.CurrentPage+1)}>{">"}</button>}</div>

@@ -1,4 +1,4 @@
-import { PtCard } from './component'
+import { PtCard, PtCardResultingTier } from './component'
 
 export enum Position {
     'P' = 1,
@@ -85,10 +85,8 @@ export interface SelectOption {
 }
 
 export interface AppData {
-    ptCards: PtCard[],
-    setPtCards: React.Dispatch<React.SetStateAction<PtCard[]>>, 
-    ptCardCount: number,
-    setPtCardCount: React.Dispatch<React.SetStateAction<number>>,
+    loadedData: LoadedData,
+    setLoadedData: React.Dispatch<React.SetStateAction<LoadedData>>, 
     ptCardFilters: PtCardFilters,
     setPtCardFilters: React.Dispatch<React.SetStateAction<PtCardFilters>>, 
     cardPage: CardPagination,
@@ -98,6 +96,13 @@ export interface AppData {
     currentLiveUpdateID: number,
     pageState: PageState,
     setPageState: React.Dispatch<React.SetStateAction<PageState>>,
+}
+
+export interface LoadedData {
+    PtCards: PtCard[],
+    PtCardCount: number,
+    PtCardsResultingTier: PtCardResultingTier[],
+    PtCardResultingTierCount: number,
 }
 
 export interface PtCardFilters {
@@ -138,13 +143,29 @@ export interface GetPtCardPredictsRequest {
     NavigationDirection: null | "asc" | "desc",
     LastPtCardID: null | number,
     PageSize: number,
-    GridMode: GridMode,
 }
 
 export interface GetPtCardPredictsResponse {
     PtCards: PtCard[],
     PtCardCount: number,
 }
+
+export interface GetPtCardResultingTierRequest {
+    TeamFilter: string,
+    TierFilter: number,
+    NameFilter: PtPlayerName,
+    CardPagination: CardPagination,
+    LiveUpdateID: number,
+    NavigationDirection: null | "asc" | "desc",
+    LastPtCardID: null | number,
+    PageSize: number,
+}
+
+export interface GetPtCardResultingTierResponse {
+    PtCardsResultingTier: PtCardResultingTier[],
+    PtCardCount: number,
+}
+
 
 export interface CardPagination {
     CurrentPage: number,

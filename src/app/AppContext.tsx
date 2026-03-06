@@ -1,12 +1,16 @@
 'use client'
 
 import * as React from 'react'
-import { AppData, CallServer, GridMode, PageState, CardPagination, SelectOption, PtCardFilters, PtPlayerName } from '../types'
-import { PtCard } from '../types/component'
+import { AppData, CallServer, GridMode, PageState, CardPagination, SelectOption, PtCardFilters, PtPlayerName, LoadedData } from '../types'
 
 const appData = {
-    ptCards: [] as PtCard[],
-    setPtCards: (_: PtCard[]) => {},
+    loadedData: {
+        PtCards: [],
+        PtCardCount: 0,
+        PtCardsResultingTier: [],
+        PtCardResultingTierCount: 0,
+    } as LoadedData,
+    setLoadedData: (_: LoadedData) => {},
     ptCardCount: 0 as number,
     setPtCardCount: (_: number) => {},
     ptCardFilters: {
@@ -50,7 +54,12 @@ export default function AppProvider({
         enteredName: {FirstName: '', LastName: ''} as PtPlayerName,
     } as PtCardFilters
 
-    const [ptCards, setPtCards] = React.useState([] as PtCard[])
+    const [loadedData, setLoadedData] = React.useState({
+        PtCards: [],
+        PtCardCount: 0,
+        PtCardsResultingTier: [],
+        PtCardResultingTierCount: 0,
+    } as LoadedData);
     const [ptCardCount, setPtCardCount] = React.useState(0)
     const [ptCardFilters,setPtCardFilters] = React.useState(selectedPtCardFilters);
     const [cardPage, setCardPage] = React.useState(cardPagination);
@@ -58,8 +67,8 @@ export default function AppProvider({
     const [pageState, setPageState] = React.useState({ CallServer: CallServer.None, GridMode: GridMode.PtCard});
 
     const appData = {
-        ptCards,
-        setPtCards,
+        loadedData,
+        setLoadedData,
         ptCardCount,
         setPtCardCount,
         ptCardFilters,

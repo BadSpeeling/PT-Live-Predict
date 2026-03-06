@@ -2,9 +2,9 @@ import * as React from 'react';
 import { AppContext } from './AppContext'
 import { PtCardListFilter } from './PtCardListFilter'
 import { PtCardPagination } from './PtCardPagination'
-import { GetPtCardPredictsRequest, GetPtCardPredictsResponse, CallServer, GridMode, Tier } from '../types'
+import { GetPtCardPredictsRequest, GetPtCardPredictsResponse, GetPtCardResultingTierRequest, GetPtCardResultingTierResponse, CallServer, GridMode, Tier } from '../types'
 import { PtCard } from './PtCard'
-import { sortPtCardList } from './lib/pt-card-helper'
+import { getActiveData, getActiveRecordCount } from './lib/pt-card-helper'
 import { toast, ToastContainer } from 'react-toastify';
 
 export const PtPredictPanel = () => {
@@ -12,22 +12,37 @@ export const PtPredictPanel = () => {
     const context = React.useContext(AppContext);
 
     React.useEffect(() => {
-      switch (context.pageState.CallServer) {
-        case CallServer.GetStandard:        
-          handleCardLoad(true);
-          break;
-        case CallServer.GetPaginated:
-          handleCardLoad(false);
-          break;
+      if (context.pageState.GridMode === GridMode.PtCard) {
+        switch (context.pageState.CallServer) {
+          case CallServer.GetStandard:        
+            handleCardLoad(true);
+            break;
+          case CallServer.GetPaginated:
+            handleCardLoad(false);
+            break;
+        }
+      }
+      else if (context.pageState.GridMode === GridMode.ResultingTier) {
+        switch (context.pageState.CallServer) {
+          case CallServer.GetStandard:        
+            handlePtCardResultingTierLoad(true);
+            break;
+          case CallServer.GetPaginated:
+            handlePtCardResultingTierLoad(false);
+            break;
+        }
       }
     }, [context.pageState.CallServer])
     
+    const ptCards = getActiveData(context);
+    const activeCount = getActiveRecordCount(context);
+
     const getLastPtCardID = () => {
-      if (context.ptCards.length === 0) {
+      if (ptCards.length === 0) {
         return null;
       }
       else {
-        return context.cardPage.NavigationDirection === "asc" ? context.ptCards[0].PtCardID : context.ptCards[context.ptCards.length-1].PtCardID;
+        return context.cardPage.NavigationDirection === "asc" ? ptCards[0].PtCardID : ptCards[ptCards.length-1].PtCardID;
       }
     }
 
@@ -54,7 +69,6 @@ export const PtPredictPanel = () => {
             NavigationDirection: context.cardPage.NavigationDirection,
             LastPtCardID: !ignoreLastPtCardID ? getLastPtCardID() : null,
             PageSize: context.cardPage.PageSize,
-            GridMode: context.pageState.GridMode,
           } as GetPtCardPredictsRequest)
         }
         context.setIsLoading(true);
@@ -65,8 +79,11 @@ export const PtPredictPanel = () => {
 
             if (getPtCardPredictsResponse.PtCards.length > 0) {
             
-              context.setPtCards(getPtCardPredictsResponse.PtCards);
-              context.setPtCardCount(getPtCardPredictsResponse.PtCardCount);
+              context.setLoadedData({
+                ...context.loadedData,  
+                PtCards: getPtCardPredictsResponse.PtCards,
+                PtCardCount: getPtCardPredictsResponse.PtCardCount
+              });  
               
             }
 
@@ -82,13 +99,59 @@ export const PtPredictPanel = () => {
 
     }
 
-    const cardsBody = context.ptCards.map((ptCard) => {
-      return (
-        <PtCard ptCard={ptCard} key={ptCard.CardID} /> 
-      );
-    });
+    const handlePtCardResultingTierLoad = async (ignoreLastPtCardID: boolean) => {
+        const options = {
+          method: "POST",
+          headers: {
+              'Content-Type':"application/json"
+          },
+          body: JSON.stringify({
+            TeamFilter: context.ptCardFilters.selectedTeam.value,
+            TierFilter: Object.keys(Tier).indexOf(context.ptCardFilters.selectedTier.value),
+            NameFilter: context.ptCardFilters.enteredName,
+            LiveUpdateID: getLiveUpdateID(),
+            NavigationDirection: context.cardPage.NavigationDirection,
+            LastPtCardID: !ignoreLastPtCardID ? getLastPtCardID() : null,
+            PageSize: context.cardPage.PageSize,
+          } as GetPtCardResultingTierRequest)
+        }
+        context.setIsLoading(true);
+        const getCardPredictions = await fetch('/api/pt-cards-resulting-tier', options)
+        
+        if (getCardPredictions.status === 200) {
+            const getPtCardResultingTierResponse = (await getCardPredictions.json()) as GetPtCardResultingTierResponse
 
-    const showPaginationFlag = context.ptCards.length > 0;
+            if (getPtCardResultingTierResponse.PtCardsResultingTier.length > 0) {
+            
+              context.setLoadedData({
+                ...context.loadedData,  
+                PtCardsResultingTier: getPtCardResultingTierResponse.PtCardsResultingTier,
+                PtCardResultingTierCount: getPtCardResultingTierResponse.PtCardCount
+              });              
+              
+            }
+
+        }
+        else {
+          toast('Could not load cards!');
+        }
+        context.setIsLoading(false);
+        context.setPageState({
+          ...context.pageState,
+          CallServer: CallServer.None,
+        });
+
+    }
+
+    const cardsBody = () => {
+      return context.loadedData.PtCards.map((ptCard) => <PtCard ptCard={ptCard} key={ptCard.CardID} />)
+    };
+
+    const resultingTierBody = () => {
+      return context.loadedData.PtCardsResultingTier.map((ptCard) => <div key={ptCard.PtCardID}>{ptCard.CardTitle + ',' + ptCard.CardValue + ',' + ptCard.ResultingTier + ',' + ptCard.PredictedTiers.join(',') + ';'}</div>)
+    };
+
+    const totalPages = Math.ceil(activeCount / context.cardPage.PageSize);
 
     return (
       <>
@@ -98,10 +161,11 @@ export const PtPredictPanel = () => {
         <PtCardListFilter />            
         <div>
           <div className="flex flex-wrap justify-around">
-              {cardsBody}
+              {context.pageState.GridMode === GridMode.PtCard && cardsBody()}
+              {context.pageState.GridMode === GridMode.ResultingTier && resultingTierBody()}
           </div>
         </div>
-        { showPaginationFlag && <PtCardPagination /> }
+        { totalPages > 1 && <PtCardPagination totalPages={totalPages}/> }
       </>
     )
 
