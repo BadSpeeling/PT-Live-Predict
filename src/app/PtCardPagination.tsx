@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { AppContext } from "./AppContext";
 import { CallServer } from '@/types';
-import { getActiveRecordCount } from '../app/lib/pt-card-helper'
 
 type Props = {
     totalPages: number,

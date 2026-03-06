@@ -34,7 +34,7 @@ export const getPtCardsResultingTier = async (requestBody: GetPtCardResultingTie
     const ptCards = await firebaseClient.getPtCards(requestBody);
     
     if (ptCards.length == 0) {
-        throw Error("No ptCards loaded");
+        throw Error("No ptCardsResultingTier loaded");
     }
 
     const ptCardCount = await firebaseClient.getPtCardsCount(requestBody);

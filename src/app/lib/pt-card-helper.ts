@@ -24,7 +24,7 @@ export const countTiers = (tiers: number[]) => {
         tierCounts[tier] += 1;
     }
 
-    return 
+    return tierCounts;
 
 }
 
