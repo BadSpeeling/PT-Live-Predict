@@ -89,10 +89,10 @@ export const PtCardListFilter = () => {
         }
     }) 
 
-    const tiers = [...Object.keys(Tier)].map((enumValue) => {
+    const tiers = [...Array(6).keys()].map((enumIndex) => {
         return {
-            label: enumValue,
-            value: enumValue,
+            label: Tier[enumIndex],
+            value: enumIndex.toString(),
         }
     })
 

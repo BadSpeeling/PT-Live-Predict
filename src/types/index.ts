@@ -14,12 +14,12 @@ export enum Position {
 }
 
 export enum Tier {
-    'Iron' = 'Iron',
-    'Bronze' = 'Bronze',
-    'Silver' = 'Silver',
-    'Gold' = 'Gold',
-    'Diamond' = 'Diamond',
-    'Perfect' = 'Perfect'
+    'Iron' = 0,
+    'Bronze' = 1,
+    'Silver' = 2,
+    'Gold' = 3,
+    'Diamond' = 4,
+    'Perfect' = 5
 }
 
 export enum Team {

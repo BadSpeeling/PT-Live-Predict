@@ -11,7 +11,6 @@ type TierSelectorProps = {
 export const TierSelector = ({ ptCard }: TierSelectorProps) => {
 
     const context = React.useContext(AppContext);
-    const tiers = [Tier.Iron, Tier.Bronze, Tier.Silver, Tier.Gold, Tier.Diamond, Tier.Perfect];
     const predictedTier = ptCard.PredictedTier;
     const [selectedTier, setSelectedTier] = React.useState(predictedTier);
 
@@ -56,9 +55,9 @@ export const TierSelector = ({ ptCard }: TierSelectorProps) => {
              
     }
 
-    const tierOptions = tiers.map((tier, index) => {
+    const tierOptions = [...Array(6).keys()].map((tier) => {
         return (
-            <div key={index} onClick={() => { setSelectedTierHandler(index)}} className={`${index === selectedTier ? "pt-card-predict-selection" : ""} inline-block bg-cover cursor-pointer card-tier-selector ${Tier[tier].toString().toLowerCase()}`}></div>
+            <div key={tier} onClick={() => { setSelectedTierHandler(tier)}} className={`${tier === selectedTier ? "pt-card-predict-selection" : ""} inline-block bg-cover cursor-pointer card-tier-selector ${Tier[tier].toString().toLowerCase()}`}></div>
         )
     })
 
