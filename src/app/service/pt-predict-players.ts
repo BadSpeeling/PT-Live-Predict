@@ -101,6 +101,8 @@ const mapPtCardResultingTier = (ptCardRecord: PtCardRecord, userID: string) => {
         Position: ptCardRecord.Position,
         PredictedTiers: getPredictedTiers(),
         ResultingTier: ptCardRecord.ResultingTier,
+        ResultingCardValue: ptCardRecord.ResultingCardValue,
+        PreviousTier: ptCardRecord.tier,
     } as PtCardResultingTier    
 }
 

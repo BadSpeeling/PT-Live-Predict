@@ -116,8 +116,10 @@ export interface PtCard {
     date:number,
     LiveUpdateID:number,
     PtCardID:number,
-    PtPredicts?: PtPredicts,
+    PtPredicts?:PtPredicts,
     ResultingTier:number,
+    ResultingCardValue:number,
+    tier:number,
 }
 
 export interface PtPredicts {

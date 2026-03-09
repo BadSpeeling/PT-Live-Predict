@@ -19,4 +19,6 @@ export interface PtCardResultingTier {
     Position: Position,
     PredictedTiers: number[],
     ResultingTier: number,
+    ResultingCardValue: number,
+    PreviousTier: number,
 }

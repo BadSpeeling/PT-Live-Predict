@@ -4,6 +4,7 @@ import { PtCardListFilter } from './PtCardListFilter'
 import { PtCardPagination } from './PtCardPagination'
 import { GetPtCardPredictsRequest, GetPtCardPredictsResponse, GetPtCardResultingTierRequest, GetPtCardResultingTierResponse, CallServer, GridMode, Tier } from '../types'
 import { PtCard } from './PtCard'
+import { PtCardResultingTier } from './PtCardResultingTier'
 import { getActiveData, getActiveRecordCount } from './lib/pt-card-helper'
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -144,11 +145,11 @@ export const PtPredictPanel = () => {
     }
 
     const cardsBody = () => {
-      return context.loadedData.PtCards.map((ptCard) => <PtCard ptCard={ptCard} key={ptCard.CardID} />)
+      return context.loadedData.PtCards.map((ptCard) => <PtCard ptCard={ptCard} key={ptCard.PtCardID} />)
     };
 
     const resultingTierBody = () => {
-      return context.loadedData.PtCardsResultingTier.map((ptCard) => <div key={ptCard.PtCardID}>{ptCard.CardTitle + ',' + ptCard.CardValue + ',' + ptCard.ResultingTier + ',' + ptCard.PredictedTiers.join(',') + ';'}</div>)
+      return context.loadedData.PtCardsResultingTier.map((ptCardResultingTier) => <PtCardResultingTier ptCardResultingTier={ptCardResultingTier} key={ptCardResultingTier.PtCardID} />) 
     };
 
     const totalPages = Math.ceil(activeCount / context.cardPage.PageSize);
