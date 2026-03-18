@@ -50,7 +50,7 @@ export const PtCardResultingTier = ({ ptCardResultingTier }: PtCardResultingTier
     return (
         <div className="border-2 rounded-xl inline-block pt-card p-4 my-4 size-fit">
             <div>{ptCardResultingTier.CardTitle}</div>
-            <div>Rating Change: {ptCardResultingTier.CardValue} &rarr; <span className={getResultingCardValueColor()}>{ptCardResultingTier.ResultingCardValue}</span></div>
+            <div>Rating Change: {ptCardResultingTier.CardValue} &rarr; <span className={getResultingCardValueColor()}>{ptCardResultingTier.ResultingCardValue ?? "NR"}</span></div>
             <div className="mt-1">
                 <div>Total Votes: {totalVotes}</div>
                 {totalVotes !== 0 && <div className="border-1 p-1">{voteBars}</div>}
