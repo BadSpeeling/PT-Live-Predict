@@ -1,6 +1,5 @@
 import { GetPtCardPredictsRequest, GetPtCardResultingTierRequest, PostPtPredictRequest, PostPtPredictResponse, GetPtCardPredictsResponse, GetPtCardResultingTierResponse, Position, GridMode } from '../../types'
 import FirebaseClient from '../../lib/firebase/FirebaseClient'
-import PtPredictDataFormatter from '../../lib/PtPredictDataFormatter'
 
 import { PtCard, PtCardResultingTier } from '../../types/component'
 import { PtCard as PtCardRecord } from '../../types/data'
