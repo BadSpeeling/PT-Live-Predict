@@ -91,6 +91,11 @@ export const PtCardListFilter = () => {
             return;            
         }
 
+        if (context.pageState.GridMode === GridMode.ResultingTier && !context.ptCardFilters.selectedLiveUpdate.value) {
+            toast("A Live Update must be selected!");
+            return;
+        }
+
         context.setPageState({
             ...context.pageState,
             CallServer: CallServer.GetStandard,
