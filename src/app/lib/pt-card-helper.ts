@@ -45,3 +45,11 @@ export const getActiveRecordCount = (appData: AppData) => {
             return appData.loadedData.PtCardResultingTierCount;
     }
 }
+
+export const dateToString = (date: Date) => {
+    return `${date.getFullYear()}-${dateToStringHelper(date.getMonth()+1)}-${dateToStringHelper(date.getDate())}`
+}
+
+const dateToStringHelper = (dateSegment: number) => {
+    return dateSegment < 10 ? "0"+dateSegment.toString() : dateSegment.toString();
+}

@@ -1,8 +1,12 @@
 import * as React from 'react';
 import Select from 'react-select';
 import { CallServer, GridMode, Team, Tier } from '../types'
+import { liveUpdates } from '../types/data'
 import { AppContext } from "./AppContext";
 import { toast } from 'react-toastify';
+import { dateToString } from './lib/pt-card-helper'
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 export const PtCardListFilter = () => {
 
@@ -56,7 +60,23 @@ export const PtCardListFilter = () => {
         });
     }
 
+    const onSelectedLiveUpdateChange = (newValue: any) => {
+        context.setPtCardFilters({
+            ...context.ptCardFilters,
+            selectedLiveUpdate: newValue,
+        });
+    }
+
     const onFilterSubmit = () => {
+
+        const getPageSize = () => {
+            switch (context.pageState.GridMode) {
+                case GridMode.PtCard:
+                    return 10;
+                case GridMode.ResultingTier:
+                    return 20;
+            }
+        }
 
         const firstNameEntered = context.ptCardFilters.enteredName.FirstName !== '';
         const lastNameEntered = context.ptCardFilters.enteredName.LastName !== '';
@@ -79,6 +99,7 @@ export const PtCardListFilter = () => {
             ...context.cardPage,
             CurrentPage: 1,
             NavigationDirection: null,
+            PageSize: getPageSize(),
         })
     }
 
@@ -96,33 +117,52 @@ export const PtCardListFilter = () => {
         }
     })
 
-    const handlePtCardViewClick = () => {
-        context.setCardPage({
-            ...context.cardPage,
-            PageSize: 10,
-        })
-        context.setPageState({
-            CallServer: CallServer.GetStandard,
-            GridMode: GridMode.PtCard,
-        })
-    }
+    const liveUpdateOptions = liveUpdates.slice(0,-1).map((liveUpdate) => {
+        return {
+            label: `${dateToString(liveUpdate.EndDate!)}`,
+            value: liveUpdate.LiveUpdateID.toString(),
+        }
+    })
 
-    const handleResultingTierViewClick = () => {
-        context.setCardPage({
-            ...context.cardPage,
-            PageSize: 20,
-        })
+    const handleAlignment = (
+        event: React.MouseEvent<HTMLElement>,
+        newAlignment: '0'|'1',
+    ) => {
+
+        const getGridModeEnum = () => {
+            switch (newAlignment) {
+                case "0":
+                    return GridMode.PtCard;
+                case "1":
+                    return GridMode.ResultingTier;
+            }
+        }
+
+        const gridMode = getGridModeEnum();
+
         context.setPageState({
-            CallServer: CallServer.GetStandard,
-            GridMode: GridMode.ResultingTier,
+            ...context.pageState,
+            GridMode: gridMode,
         })
-    }
+
+    };
 
     return (
         <div className="border p-4">
             <div>
-                <button onClick={handlePtCardViewClick}>PtCards</button>
-                <button onClick={handleResultingTierViewClick}>ResultingTier</button>
+                <ToggleButtonGroup
+                    value={context.pageState.GridMode.toString()}
+                    exclusive
+                    onChange={handleAlignment}
+                    aria-label="text alignment"
+                    >
+                    <ToggleButton value="0">
+                        Current Cards
+                    </ToggleButton>
+                    <ToggleButton value="1">
+                        Past Updates
+                    </ToggleButton>
+                </ToggleButtonGroup>
             </div>
             <div className="mb-1">
                 <div>Team</div>
@@ -137,7 +177,8 @@ export const PtCardListFilter = () => {
                                 ...baseStyles,
                                 paddingBottom: "10px"
                             })
-                        }}             
+                        }}
+                        menuPlacement="top"                        
                     />
                 </div>
             </div>
@@ -154,7 +195,8 @@ export const PtCardListFilter = () => {
                                 ...baseStyles,
                                 paddingBottom: "10px"
                             })
-                        }}             
+                        }}
+                        menuPlacement="top"           
                     />
                 </div>
             </div>
@@ -172,6 +214,26 @@ export const PtCardListFilter = () => {
                     </div>
                 </div>
             </div>
+            {
+                context.pageState.GridMode === GridMode.ResultingTier && (<div className="mb-1">
+                    <div>Live Update</div>
+                    <div className="lg:w-2/5 cursor-pointer">
+                        <Select
+                            options={liveUpdateOptions}
+                            value={context.ptCardFilters.selectedLiveUpdate}
+                            onChange={onSelectedLiveUpdateChange}   
+                            instanceId={"selectedLiveUpdate"}
+                            styles={{
+                                "menu": (baseStyles, state) => ({
+                                    ...baseStyles,
+                                    paddingBottom: "10px"
+                                })
+                            }}   
+                            menuPlacement="top"                     
+                        />
+                    </div>
+                </div>)
+            }
             <span className="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 cursor-pointer" onClick={onFilterSubmit}>Submit</span>
         </div>
     )

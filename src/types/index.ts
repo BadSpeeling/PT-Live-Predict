@@ -1,4 +1,5 @@
 import { PtCard, PtCardResultingTier } from './component'
+import { LiveUpdate } from './data'
 
 export enum Position {
     'P' = 1,
@@ -103,12 +104,14 @@ export interface LoadedData {
     PtCardCount: number,
     PtCardsResultingTier: PtCardResultingTier[],
     PtCardResultingTierCount: number,
+    LiveUpdate: LiveUpdate,
 }
 
 export interface PtCardFilters {
     selectedTeam: SelectOption,
     selectedTier: SelectOption,
     enteredName: PtPlayerName,
+    selectedLiveUpdate: SelectOption,
 }
 
 export interface PtPlayerName {
@@ -127,11 +130,6 @@ export enum GridMode {
 export interface PageState {
     CallServer: CallServer,
     GridMode: GridMode,
-}
-
-export interface LiveUpdate {
-    LiveUpdateID: number,
-    EffectiveDate: string,
 }
 
 export interface GetPtCardPredictsRequest {

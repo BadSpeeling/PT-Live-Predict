@@ -9,6 +9,11 @@ const appData = {
         PtCardCount: 0,
         PtCardsResultingTier: [],
         PtCardResultingTierCount: 0,
+        LiveUpdate: {
+            LiveUpdateID: 0,
+            StartDate: new Date(),
+            CycleYear: 0,            
+        },
     } as LoadedData,
     setLoadedData: (_: LoadedData) => {},
     ptCardCount: 0 as number,
@@ -17,6 +22,7 @@ const appData = {
         selectedTeam: {label:'', value:''} as SelectOption,
         selectedTier: {label:'', value:''} as SelectOption,
         enteredName: {FirstName: '', LastName: ''} as PtPlayerName,
+        selectedLiveUpdate: {label:'', value:''} as SelectOption,
     },
     setPtCardFilters: (_: PtCardFilters) => {},
     cardPage: {
@@ -52,6 +58,7 @@ export default function AppProvider({
         selectedTeam: {label:'', value:''} as SelectOption,
         selectedTier: {label:'', value:''} as SelectOption,
         enteredName: {FirstName: '', LastName: ''} as PtPlayerName,
+        selectedLiveUpdate: {label:'',value:''} as SelectOption,
     } as PtCardFilters
 
     const [loadedData, setLoadedData] = React.useState({
@@ -59,6 +66,11 @@ export default function AppProvider({
         PtCardCount: 0,
         PtCardsResultingTier: [],
         PtCardResultingTierCount: 0,
+        LiveUpdate: {
+            LiveUpdateID: 0,
+            StartDate: new Date(),
+            CycleYear: 0,            
+        },
     } as LoadedData);
     const [ptCardCount, setPtCardCount] = React.useState(0)
     const [ptCardFilters,setPtCardFilters] = React.useState(selectedPtCardFilters);

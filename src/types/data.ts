@@ -122,6 +122,63 @@ export interface PtCard {
     tier:number,
 }
 
+export interface LiveUpdate {
+    LiveUpdateID: number,
+    StartDate: Date,
+    EndDate?: Date,
+    CycleYear: number,
+}
+
 export interface PtPredicts {
     [key: string]: number
 }
+
+export const liveUpdates = [
+    {
+        LiveUpdateID: 1,
+        StartDate: new Date(2025, 2, 14),
+        EndDate: new Date(2025, 4, 5),
+        CycleYear: 2026,
+    },
+    {
+        LiveUpdateID: 2,
+        StartDate: new Date(2025, 4, 5),
+        EndDate: new Date(2025, 5, 2),
+        CycleYear: 2026,
+    },
+    {
+        LiveUpdateID: 3,
+        StartDate: new Date(2025, 5, 2),
+        EndDate: new Date(2025, 6, 7),
+        CycleYear: 2026,
+    },
+    {
+        LiveUpdateID: 4,
+        StartDate: new Date(2025, 6, 7),
+        EndDate: new Date(2025, 7, 11),
+        CycleYear: 2026,
+    },
+    {
+        LiveUpdateID: 5,
+        StartDate: new Date(2025, 7, 11),
+        EndDate: new Date(2025, 8, 8),
+        CycleYear: 2026,
+    },
+    {
+        LiveUpdateID: 6,
+        StartDate: new Date(2025, 8, 8),
+        EndDate: new Date(2025, 9, 6),
+        CycleYear: 2026,
+    },
+    {
+        LiveUpdateID: 7,
+        StartDate: new Date(2025, 9, 6),
+        EndDate: new Date(2026, 2, 13),
+        CycleYear: 2026,
+    },
+    {
+        LiveUpdateID: 8,
+        StartDate: new Date(2026, 2, 13),
+        CycleYear: 2027,
+    }
+] as LiveUpdate[]
