@@ -7,5 +7,18 @@ export interface PtCard {
     CardTitle: string,
     CardValue: number,
     Position: Position,
-    PredictedTier?: number,
+    PredictedTier: number,
+}
+
+export interface PtCardResultingTier {
+    PtCardID: number,
+    CardID: number,
+    LiveUpdateID: number,
+    CardTitle: string,
+    CardValue: number,
+    Position: Position,
+    PredictedTiers: number[],
+    ResultingTier: number,
+    ResultingCardValue: number,
+    PreviousTier: number,
 }

@@ -53,7 +53,7 @@ export default class FirebaseClient {
         const navigationDirection = request.NavigationDirection ?? "desc"
 
         const queryConstraints = [
-            where("LiveUpdateID", "==", request.LatestLiveUpdateID),
+            where("LiveUpdateID", "==", request.LiveUpdateID),
         ] as QueryConstraint[]
 
         if (request.TeamFilter) {
@@ -74,7 +74,7 @@ export default class FirebaseClient {
             queryConstraints.push(startAfter(anchorDocument));
         }
 
-        queryConstraints.push(limit(10));                
+        queryConstraints.push(limit(request.PageSize));                
         const pageQuery = query(collection(this.firestore!, "PtCard"), ...queryConstraints);
 
         const ptCardSnapshot = await getDocs(pageQuery);
@@ -93,7 +93,7 @@ export default class FirebaseClient {
         this.#validateClient();
 
         const queryConstraints = [
-            where("LiveUpdateID", "==", request.LatestLiveUpdateID),
+            where("LiveUpdateID", "==", request.LiveUpdateID),
         ] as QueryConstraint[]
 
         if (request.TeamFilter) {

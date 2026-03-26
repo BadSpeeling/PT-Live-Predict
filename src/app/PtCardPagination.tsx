@@ -2,16 +2,13 @@ import * as React from 'react';
 import { AppContext } from "./AppContext";
 import { CallServer } from '@/types';
 
-export const PtCardPagination = () => {
+type Props = {
+    totalPages: number,
+}
+
+export const PtCardPagination = ({totalPages}: Props) => {
 
     const context = React.useContext(AppContext);
-
-    const getCallServer = () => {
-        return CallServer.GetPtCardsPaginated;
-    }
-
-    const totalPages = Math.ceil(context.ptCardCount / context.cardPage.PageSize);
-
     const setCardPage = (pageNumber: number) => {
 
         if (pageNumber >= 1 && pageNumber <= totalPages) {
@@ -20,7 +17,10 @@ export const PtCardPagination = () => {
                 CurrentPage: pageNumber,
                 NavigationDirection: pageNumber - context.cardPage.CurrentPage > 0 ? "desc" : "asc",
             })
-            context.setCallServer(getCallServer());
+            context.setPageState({
+                ...context.pageState,
+                CallServer: CallServer.GetPaginated,
+            });
         }
 
     }
@@ -61,7 +61,7 @@ export const PtCardPagination = () => {
     }
 
     return (
-        totalPages > 1 && <div className="flex">
+        <div className="flex">
             <div className="flex-4 text-right">{ <button className={getNavBtnClass(leftNavBtnEnabledFlag)} onClick={() => setCardPage(context.cardPage.CurrentPage-1)}>{"<"}</button>}</div> 
             {/* getPageSelections() */}
             <div className="flex-4 text-left">{ <button className={getNavBtnClass(rightNavBtnEnabledFlag)} onClick={() => setCardPage(context.cardPage.CurrentPage+1)}>{">"}</button>}</div>
