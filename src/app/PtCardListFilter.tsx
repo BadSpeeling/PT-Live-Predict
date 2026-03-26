@@ -154,8 +154,7 @@ export const PtCardListFilter = () => {
                     value={context.pageState.GridMode.toString()}
                     exclusive
                     onChange={handleAlignment}
-                    aria-label="text alignment"
-                    >
+                >
                     <ToggleButton value="0">
                         Current Cards
                     </ToggleButton>
@@ -201,13 +200,13 @@ export const PtCardListFilter = () => {
                 </div>
             </div>
             <div className="mb-1">
-                <div className="inline-block">
+                <div className="inline-block mr-1">
                     <div>First Name</div>
                     <div className="lg:w-2/5">
                         <input className="filter-border cursor-pointer" value={context.ptCardFilters.enteredName.FirstName} onChange={onFirstNameChange} />
                     </div>
                 </div>
-                <div className="ml-1 inline-block">
+                <div className="inline-block mr-1">
                     <div>Last Name</div>
                     <div className="lg:w-2/5">
                         <input className="filter-border cursor-pointer" value={context.ptCardFilters.enteredName.LastName} onChange={onLastNameChange} />
