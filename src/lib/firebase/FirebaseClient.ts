@@ -96,13 +96,13 @@ export default class FirebaseClient {
             where("LiveUpdateID", "==", request.LiveUpdateID),
         ] as QueryConstraint[]
 
-        if (request.TeamFilter) {
-            queryConstraints.push(where("Team", "==", request.TeamFilter))
+        if (request.TeamFilter !== null) {
+            queryConstraints.push(where("Team", "==", request.TeamFilter));
         }
-        else if (request.TierFilter >= 0 && request.TierFilter <= 5) {
-            queryConstraints.push(where("tier", "==", request.TierFilter))
+        else if (request.TierFilter !== null) {
+            queryConstraints.push(where("tier", "==", request.TierFilter));
         }
-        else if (request.NameFilter.FirstName && request.NameFilter.LastName) {
+        else if (request.NameFilter !== null) {
             queryConstraints.push(where("FirstName", "==", request.NameFilter.FirstName));
             queryConstraints.push(where("LastName", "==", request.NameFilter.LastName));
         }
