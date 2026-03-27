@@ -12,23 +12,18 @@ export const PtCardResultingTier = ({ ptCardResultingTier }: PtCardResultingTier
     const votingTiersResults = countTiers(ptCardResultingTier.PredictedTiers);
     const totalVotes = ptCardResultingTier.PredictedTiers.length;
 
-    const voteBars = [...Array(6).keys()].map((tierIndex) => {
+    const voteBars = [...Array(6).keys()].filter(tierIndex => votingTiersResults[tierIndex] !== 0).map((tierIndex) => {
 
         const tierVotes = votingTiersResults[tierIndex];
 
-        if (tierVotes === 0) {
-            return <></>
-        }
-        else {
-
-            const tierVoteShare = Math.round((tierVotes / totalVotes) * 100);
-            return (
-                <div className="w-full">
-                    <div className="text-xs w-1/3 inline-block">{Tier[tierIndex]} {`(${tierVotes})`}</div>
-                    <div className="w-2/3 inline-block"><div style={{width: `${tierVoteShare}%`}} className={`h-[10px] ${Tier[tierIndex].toString().toLowerCase()}`}></div></div>
-                </div>
-            )
-        }
+        const tierVoteShare = Math.round((tierVotes / totalVotes) * 100);
+        return (
+            <div key={tierIndex} className="w-full">
+                <div className="text-xs w-1/3 inline-block">{Tier[tierIndex]} {`(${tierVotes})`}</div>
+                <div className="w-2/3 inline-block"><div style={{width: `${tierVoteShare}%`}} className={`h-[10px] ${Tier[tierIndex].toString().toLowerCase()}`}></div></div>
+            </div>
+        )
+        
     })
 
     const getResultingCardValueColor = () => {
