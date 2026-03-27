@@ -133,9 +133,9 @@ export interface PageState {
 }
 
 export interface GetPtCardPredictsRequest {
-    TeamFilter: string,
-    TierFilter: number,
-    NameFilter: PtPlayerName,
+    TeamFilter: string | null,
+    TierFilter: number | null,
+    NameFilter: PtPlayerName | null,
     CardPagination: CardPagination,
     LiveUpdateID: number,
     NavigationDirection: null | "asc" | "desc",
@@ -149,9 +149,9 @@ export interface GetPtCardPredictsResponse {
 }
 
 export interface GetPtCardResultingTierRequest {
-    TeamFilter: string,
-    TierFilter: number,
-    NameFilter: PtPlayerName,
+    TeamFilter: string | null,
+    TierFilter: number | null,
+    NameFilter: PtPlayerName | null,
     CardPagination: CardPagination,
     LiveUpdateID: number,
     NavigationDirection: null | "asc" | "desc",

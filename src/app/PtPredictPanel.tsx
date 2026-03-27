@@ -57,9 +57,9 @@ export const PtPredictPanel = () => {
               'Content-Type':"application/json"
           },
           body: JSON.stringify({
-            TeamFilter: context.ptCardFilters.selectedTeam.value,
-            TierFilter: parseInt(context.ptCardFilters.selectedTier.value),
-            NameFilter: context.ptCardFilters.enteredName,
+            TeamFilter: context.ptCardFilters.selectedTeam.value ? context.ptCardFilters.selectedTeam.value : null,
+            TierFilter: context.ptCardFilters.selectedTier.value ? parseInt(context.ptCardFilters.selectedTier.value) : null,
+            NameFilter: context.ptCardFilters.enteredName.FirstName && context.ptCardFilters.enteredName.LastName ? context.ptCardFilters.enteredName : null,
             LiveUpdateID: queryLiveUpdateID,
             NavigationDirection: context.cardPage.NavigationDirection,
             LastPtCardID: !ignoreLastPtCardID ? getLastPtCardID() : null,
@@ -105,9 +105,9 @@ export const PtPredictPanel = () => {
               'Content-Type':"application/json"
           },
           body: JSON.stringify({
-            TeamFilter: context.ptCardFilters.selectedTeam.value,
-            TierFilter: Object.keys(Tier).indexOf(context.ptCardFilters.selectedTier.value),
-            NameFilter: context.ptCardFilters.enteredName,
+            TeamFilter: context.ptCardFilters.selectedTeam.value ? context.ptCardFilters.selectedTeam.value : null,
+            TierFilter: context.ptCardFilters.selectedTier.value ? parseInt(context.ptCardFilters.selectedTier.value) : null,
+            NameFilter: context.ptCardFilters.enteredName.FirstName && context.ptCardFilters.enteredName.LastName ? context.ptCardFilters.enteredName : null,
             LiveUpdateID: queryLiveUpdateID,
             NavigationDirection: context.cardPage.NavigationDirection,
             LastPtCardID: !ignoreLastPtCardID ? getLastPtCardID() : null,

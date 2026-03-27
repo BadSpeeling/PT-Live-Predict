@@ -208,13 +208,13 @@ export const PtCardListFilter = () => {
                 <div className="inline-block mr-1">
                     <div>First Name</div>
                     <div className="lg:w-2/5">
-                        <input className="filter-border cursor-pointer" value={context.ptCardFilters.enteredName.FirstName} onChange={onFirstNameChange} />
+                        <input className="filter-border cursor-text" value={context.ptCardFilters.enteredName.FirstName} onChange={onFirstNameChange} />
                     </div>
                 </div>
                 <div className="inline-block mr-1">
                     <div>Last Name</div>
                     <div className="lg:w-2/5">
-                        <input className="filter-border cursor-pointer" value={context.ptCardFilters.enteredName.LastName} onChange={onLastNameChange} />
+                        <input className="filter-border cursor-text" value={context.ptCardFilters.enteredName.LastName} onChange={onLastNameChange} />
                     </div>
                 </div>
             </div>
