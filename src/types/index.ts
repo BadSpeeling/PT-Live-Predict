@@ -1,4 +1,5 @@
-import { PtCard } from './component'
+import { PtCard, PtCardResultingTier } from './component'
+import { LiveUpdate } from './data'
 
 export enum Position {
     'P' = 1,
@@ -14,12 +15,12 @@ export enum Position {
 }
 
 export enum Tier {
-    'Iron' = 'Iron',
-    'Bronze' = 'Bronze',
-    'Silver' = 'Silver',
-    'Gold' = 'Gold',
-    'Diamond' = 'Diamond',
-    'Perfect' = 'Perfect'
+    'Iron' = 0,
+    'Bronze' = 1,
+    'Silver' = 2,
+    'Gold' = 3,
+    'Diamond' = 4,
+    'Perfect' = 5
 }
 
 export enum Team {
@@ -85,10 +86,8 @@ export interface SelectOption {
 }
 
 export interface AppData {
-    ptCards: PtCard[],
-    setPtCards: React.Dispatch<React.SetStateAction<PtCard[]>>, 
-    ptCardCount: number,
-    setPtCardCount: React.Dispatch<React.SetStateAction<number>>,
+    loadedData: LoadedData,
+    setLoadedData: React.Dispatch<React.SetStateAction<LoadedData>>, 
     ptCardFilters: PtCardFilters,
     setPtCardFilters: React.Dispatch<React.SetStateAction<PtCardFilters>>, 
     cardPage: CardPagination,
@@ -96,14 +95,23 @@ export interface AppData {
     isLoading: boolean,
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>, 
     currentLiveUpdateID: number,
-    callServer: CallServer,
-    setCallServer: React.Dispatch<React.SetStateAction<CallServer>>,
+    pageState: PageState,
+    setPageState: React.Dispatch<React.SetStateAction<PageState>>,
+}
+
+export interface LoadedData {
+    PtCards: PtCard[],
+    PtCardCount: number,
+    PtCardsResultingTier: PtCardResultingTier[],
+    PtCardResultingTierCount: number,
+    LiveUpdate: LiveUpdate,
 }
 
 export interface PtCardFilters {
     selectedTeam: SelectOption,
     selectedTier: SelectOption,
     enteredName: PtPlayerName,
+    selectedLiveUpdate: SelectOption,
 }
 
 export interface PtPlayerName {
@@ -112,28 +120,50 @@ export interface PtPlayerName {
 }
 
 export enum CallServer {
-    GetPtCards,GetPtCardsPaginated,GetPtCardsResult,GetPtCardsResultPaginated,None
+    GetStandard,GetPaginated,None
 }
 
-export interface LiveUpdate {
-    LiveUpdateID: number,
-    EffectiveDate: string,
+export enum GridMode {
+    PtCard,ResultingTier
+}
+
+export interface PageState {
+    CallServer: CallServer,
+    GridMode: GridMode,
 }
 
 export interface GetPtCardPredictsRequest {
-    TeamFilter: string,
-    TierFilter: number,
-    NameFilter: PtPlayerName,
+    TeamFilter: string | null,
+    TierFilter: number | null,
+    NameFilter: PtPlayerName | null,
     CardPagination: CardPagination,
-    LatestLiveUpdateID: number,
+    LiveUpdateID: number,
     NavigationDirection: null | "asc" | "desc",
     LastPtCardID: null | number,
+    PageSize: number,
 }
 
 export interface GetPtCardPredictsResponse {
     PtCards: PtCard[],
     PtCardCount: number,
 }
+
+export interface GetPtCardResultingTierRequest {
+    TeamFilter: string | null,
+    TierFilter: number | null,
+    NameFilter: PtPlayerName | null,
+    CardPagination: CardPagination,
+    LiveUpdateID: number,
+    NavigationDirection: null | "asc" | "desc",
+    LastPtCardID: null | number,
+    PageSize: number,
+}
+
+export interface GetPtCardResultingTierResponse {
+    PtCardsResultingTier: PtCardResultingTier[],
+    PtCardCount: number,
+}
+
 
 export interface CardPagination {
     CurrentPage: number,

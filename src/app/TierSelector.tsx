@@ -11,14 +11,14 @@ type TierSelectorProps = {
 export const TierSelector = ({ ptCard }: TierSelectorProps) => {
 
     const context = React.useContext(AppContext);
-    const tiers = [Tier.Iron, Tier.Bronze, Tier.Silver, Tier.Gold, Tier.Diamond, Tier.Perfect];
-    const [selectedTier, setSelectedTier] = React.useState(ptCard.PredictedTier);
+    const predictedTier = ptCard.PredictedTier;
+    const [selectedTier, setSelectedTier] = React.useState(predictedTier);
 
     const setSelectedTierHandler = async (selectedTier: number) => {
 
         setSelectedTier(selectedTier);
 
-        const updatedPtCards = context.ptCards.map((currPtCard) => {
+        const updatedPtCards = context.loadedData.PtCards.map((currPtCard) => {
             if (ptCard.CardID === currPtCard.CardID) {
                 
                 return {
@@ -32,7 +32,10 @@ export const TierSelector = ({ ptCard }: TierSelectorProps) => {
             }
         });
 
-        context.setPtCards(updatedPtCards);
+        context.setLoadedData({
+            ...context.loadedData,
+            PtCards: updatedPtCards
+        });
 
         const options = {
             method: "POST",
@@ -52,9 +55,9 @@ export const TierSelector = ({ ptCard }: TierSelectorProps) => {
              
     }
 
-    const tierOptions = tiers.map((tier, index) => {
+    const tierOptions = [...Array(6).keys()].map((tier) => {
         return (
-            <div key={index} onClick={() => { setSelectedTierHandler(index)}} className={`${index === selectedTier ? "pt-card-predict-selection" : ""} inline-block bg-cover cursor-pointer card-tier-selector ${Tier[tier].toString().toLowerCase()}`}></div>
+            <div key={tier} onClick={() => { setSelectedTierHandler(tier)}} className={`${tier === selectedTier ? "pt-card-predict-selection" : ""} inline-block bg-cover cursor-pointer card-tier-selector ${Tier[tier].toString().toLowerCase()}`}></div>
         )
     })
 
