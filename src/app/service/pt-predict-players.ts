@@ -4,13 +4,16 @@ import FirebaseClient from '../../lib/firebase/FirebaseClient'
 import { PtCardPrediction, PtCardResultingTier } from '../../types/component'
 import { PtCard as PtCardRecord } from '../../types/data'
 import { extractPositionFromCardTitle, getError } from './utils'
+import { PtCardPredictsToPtCardRequest, PtCardResultingTierToPtCardRequest, PtPredictRequestToFirebase } from './converters'
 
 export const getPtPredictPlayers = async (requestBody: GetPtCardPredictsRequest, isLocalHostFlag: boolean) => {
 
     const firebaseClient = new FirebaseClient(isLocalHostFlag);
     await firebaseClient.initialize();
 
-    const ptCards = await firebaseClient.getPtCards(requestBody);
+    const getPtCardsRequest = PtCardPredictsToPtCardRequest(requestBody);
+
+    const ptCards = await firebaseClient.getPtCards(getPtCardsRequest);
     
     if (ptCards.length == 0) {
         throw Error("No ptCards loaded");
@@ -30,7 +33,9 @@ export const getPtCardsResultingTier = async (requestBody: GetPtCardResultingTie
     const firebaseClient = new FirebaseClient(isLocalHostFlag);
     await firebaseClient.initialize();
 
-    const ptCards = await firebaseClient.getPtCards(requestBody);
+    const getPtCardsRequest = PtCardResultingTierToPtCardRequest(requestBody);
+
+    const ptCards = await firebaseClient.getPtCards(getPtCardsRequest);
     
     if (ptCards.length == 0) {
         throw Error("No ptCardsResultingTier loaded");
@@ -50,7 +55,9 @@ export const postPtPredict = async (requestBody: PostPtPredictRequest, isLocalHo
     const firebaseClient = new FirebaseClient(isLocalHostFlag);
     await firebaseClient.initialize();
 
-    await firebaseClient.postPtPredict(requestBody);
+    const postPtPredictRequest = PtPredictRequestToFirebase(requestBody);
+
+    await firebaseClient.postPtPredict(postPtPredictRequest);
     
 }
 

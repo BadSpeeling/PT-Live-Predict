@@ -2,7 +2,8 @@ import { getAuthenticatedAppForUser } from './serverApp'
 import { Firestore, setDoc, orderBy, where, getFirestore, getDocs, query, Query, collection, QuerySnapshot, DocumentData, Timestamp, doc, startAfter, limit, getCountFromServer, getDoc, QueryConstraint } from "firebase/firestore";
 import { PtCard } from "../../types/data"
 import { User } from 'firebase/auth';
-import { GetPtCardPredictsRequest, PostPtPredictRequest, PostErrorLogRequest, Tier } from '../../types'
+import { PostErrorLogRequest } from '../../types'
+import { GetPtCardRequest, PostPtPredictRequest } from '../../types/firebase'
 import { randomUUID } from 'crypto'
 
 export default class FirebaseClient {
@@ -47,7 +48,7 @@ export default class FirebaseClient {
 
     }
 
-    async getPtCards (request: GetPtCardPredictsRequest) {
+    async getPtCards (request: GetPtCardRequest) {
 
         this.#validateClient();
         const navigationDirection = request.NavigationDirection ?? "desc"
@@ -88,7 +89,7 @@ export default class FirebaseClient {
 
     }
 
-    async getPtCardsCount (request: GetPtCardPredictsRequest) {
+    async getPtCardsCount (request: GetPtCardRequest) {
 
         this.#validateClient();
 
