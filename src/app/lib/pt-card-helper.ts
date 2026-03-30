@@ -1,20 +1,5 @@
-import { PtCard } from '../../types/component'
+import { PtCardPrediction } from '../../types/component'
 import { AppData, GridMode } from '../../types'
-
-export const sortPtCardList = (cardPredictions: PtCard[]) => {
-
-    return cardPredictions.sort((a: PtCard, b: PtCard) => {
-        const overallDiff = b.CardValue - a.CardValue;
-
-        if (overallDiff != 0) {
-            return overallDiff;
-        }
-
-        return b.CardID - a.CardID;
-
-    })
-
-}
 
 export const countTiers = (tiers: number[]) => {
 
@@ -28,7 +13,7 @@ export const countTiers = (tiers: number[]) => {
 
 }
 
-export const getActiveData = (appData: AppData) => {
+export const getGridData = (appData: AppData) => {
     switch (appData.pageState.GridMode) {
         case GridMode.PtCard:
             return appData.loadedData.PtCards;

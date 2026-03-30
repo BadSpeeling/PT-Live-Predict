@@ -16,8 +16,6 @@ const appData = {
         },
     } as LoadedData,
     setLoadedData: (_: LoadedData) => {},
-    ptCardCount: 0 as number,
-    setPtCardCount: (_: number) => {},
     ptCardFilters: {
         selectedTeam: {label:'', value:''} as SelectOption,
         selectedTier: {label:'', value:''} as SelectOption,
@@ -72,7 +70,6 @@ export default function AppProvider({
             CycleYear: 0,            
         },
     } as LoadedData);
-    const [ptCardCount, setPtCardCount] = React.useState(0)
     const [ptCardFilters,setPtCardFilters] = React.useState(selectedPtCardFilters);
     const [cardPage, setCardPage] = React.useState(cardPagination);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -81,8 +78,6 @@ export default function AppProvider({
     const appData = {
         loadedData,
         setLoadedData,
-        ptCardCount,
-        setPtCardCount,
         ptCardFilters,
         setPtCardFilters,
         cardPage,

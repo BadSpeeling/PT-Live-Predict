@@ -86,12 +86,12 @@ export const PtCardListFilter = () => {
             return;
         }
 
-        if (!(firstNameEntered && lastNameEntered) && !context.ptCardFilters.selectedTeam.value && !context.ptCardFilters.selectedTier.value) {
+        if (!(firstNameEntered && lastNameEntered) && context.ptCardFilters.selectedTeam.value === '' && context.ptCardFilters.selectedTier.value === '') {
             toast("A filter must be selected!");
             return;            
         }
 
-        if (context.pageState.GridMode === GridMode.ResultingTier && !context.ptCardFilters.selectedLiveUpdate.value) {
+        if (context.pageState.GridMode === GridMode.ResultingTier && context.ptCardFilters.selectedLiveUpdate.value === '') {
             toast("A Live Update must be selected!");
             return;
         }
@@ -122,7 +122,7 @@ export const PtCardListFilter = () => {
         }
     })
 
-    const liveUpdateOptions = liveUpdates.slice(0,-1).map((liveUpdate) => {
+    const liveUpdateEnactedOptions = liveUpdates.slice(0,-1).map((liveUpdate) => {
         return {
             label: `${dateToString(liveUpdate.EndDate!)}`,
             value: liveUpdate.LiveUpdateID.toString(),
@@ -170,7 +170,7 @@ export const PtCardListFilter = () => {
             </div>
             <div className="mb-1">
                 <div>Team</div>
-                <div className="lg:w-2/5 cursor-pointer">
+                <div className="lg:w-2/5">
                     <Select
                         options={teams}
                         value={context.ptCardFilters.selectedTeam}
@@ -188,7 +188,7 @@ export const PtCardListFilter = () => {
             </div>
             <div className="mb-1">
                 <div>Tier</div>
-                <div className="lg:w-2/5 cursor-pointer">
+                <div className="lg:w-2/5">
                     <Select
                         options={tiers}
                         value={context.ptCardFilters.selectedTier}
@@ -223,7 +223,7 @@ export const PtCardListFilter = () => {
                     <div>Live Update</div>
                     <div className="lg:w-2/5 cursor-pointer">
                         <Select
-                            options={liveUpdateOptions}
+                            options={liveUpdateEnactedOptions}
                             value={context.ptCardFilters.selectedLiveUpdate}
                             onChange={onSelectedLiveUpdateChange}   
                             instanceId={"selectedLiveUpdate"}

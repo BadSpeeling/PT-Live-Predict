@@ -1,5 +1,5 @@
 import { PostPtPredictRequest } from '../../../types'
-import { postUserPredict } from "../../service/pt-predict-players"
+import { postPtPredict } from "../../service/pt-predict-players"
 import { writeErrorLog } from '../../service/base'
 import { isRequestToLocalhost } from '../../../lib/utils'
 
@@ -9,7 +9,7 @@ export async function POST(request: Request) {
 
     try {
         
-        await postUserPredict(requestParameters, isRequestToLocalhost(request));
+        await postPtPredict(requestParameters, isRequestToLocalhost(request));
 
         return new Response(null, {
             status: 200,

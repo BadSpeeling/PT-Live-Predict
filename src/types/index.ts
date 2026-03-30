@@ -1,4 +1,4 @@
-import { PtCard, PtCardResultingTier } from './component'
+import { PtCardPrediction, PtCardResultingTier } from './component'
 import { LiveUpdate } from './data'
 
 export enum Position {
@@ -100,7 +100,7 @@ export interface AppData {
 }
 
 export interface LoadedData {
-    PtCards: PtCard[],
+    PtCards: PtCardPrediction[],
     PtCardCount: number,
     PtCardsResultingTier: PtCardResultingTier[],
     PtCardResultingTierCount: number,
@@ -144,7 +144,7 @@ export interface GetPtCardPredictsRequest {
 }
 
 export interface GetPtCardPredictsResponse {
-    PtCards: PtCard[],
+    PtCards: PtCardPrediction[],
     PtCardCount: number,
 }
 

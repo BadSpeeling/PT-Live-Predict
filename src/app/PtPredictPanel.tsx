@@ -3,9 +3,9 @@ import { AppContext } from './AppContext'
 import { PtCardListFilter } from './PtCardListFilter'
 import { PtCardPagination } from './PtCardPagination'
 import { GetPtCardPredictsRequest, GetPtCardPredictsResponse, GetPtCardResultingTierRequest, GetPtCardResultingTierResponse, CallServer, GridMode, Tier } from '../types'
-import { PtCard } from './PtCard'
+import { PtCardPrediction } from './PtCardPrediction'
 import { PtCardResultingTier } from './PtCardResultingTier'
-import { getActiveData, getActiveRecordCount } from './lib/pt-card-helper'
+import { getGridData, getActiveRecordCount } from './lib/pt-card-helper'
 import { toast, ToastContainer } from 'react-toastify';
 import { GridStatus } from './GridStatus'
 import { liveUpdates } from '../types/data'
@@ -16,28 +16,24 @@ export const PtPredictPanel = () => {
 
     React.useEffect(() => {
       if (context.pageState.GridMode === GridMode.PtCard) {
-        switch (context.pageState.CallServer) {
-          case CallServer.GetStandard:        
+        if (context.pageState.CallServer === CallServer.GetStandard) {          
             handleCardLoad(true);
-            break;
-          case CallServer.GetPaginated:
+        }
+        else if (context.pageState.CallServer === CallServer.GetPaginated) {   
             handleCardLoad(false);
-            break;
         }
       }
       else if (context.pageState.GridMode === GridMode.ResultingTier) {
-        switch (context.pageState.CallServer) {
-          case CallServer.GetStandard:        
+        if (context.pageState.CallServer === CallServer.GetStandard) {          
             handlePtCardResultingTierLoad(true);
-            break;
-          case CallServer.GetPaginated:
+        }
+        else if (context.pageState.CallServer === CallServer.GetPaginated) {   
             handlePtCardResultingTierLoad(false);
-            break;
         }
       }
     }, [context.pageState.CallServer])
     
-    const ptCards = getActiveData(context);
+    const ptCards = getGridData(context);
     const activeCount = getActiveRecordCount(context);
 
     const getLastPtCardID = () => {
@@ -146,7 +142,7 @@ export const PtPredictPanel = () => {
     }
 
     const cardsBody = () => {
-      return context.loadedData.PtCards.map((ptCard) => <PtCard ptCard={ptCard} key={ptCard.PtCardID} />)
+      return context.loadedData.PtCards.map((ptCard) => <PtCardPrediction ptCardPrediction={ptCard} key={ptCard.PtCardID} />)
     };
 
     const resultingTierBody = () => {

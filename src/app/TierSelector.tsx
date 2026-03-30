@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AppContext } from './AppContext'
 import { Tier, PostPtPredictRequest, PostPtPredictResponse } from '../types'
-import { PtCard as PtCardValues } from '../types/component'
+import { PtCardPrediction as PtCardValues } from '../types/component'
 import { toast } from 'react-toastify';
 
 type TierSelectorProps = {

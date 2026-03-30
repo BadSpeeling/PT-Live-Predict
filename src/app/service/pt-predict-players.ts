@@ -1,7 +1,7 @@
 import { GetPtCardPredictsRequest, GetPtCardResultingTierRequest, PostPtPredictRequest, PostPtPredictResponse, GetPtCardPredictsResponse, GetPtCardResultingTierResponse, Position, GridMode } from '../../types'
 import FirebaseClient from '../../lib/firebase/FirebaseClient'
 
-import { PtCard, PtCardResultingTier } from '../../types/component'
+import { PtCardPrediction, PtCardResultingTier } from '../../types/component'
 import { PtCard as PtCardRecord } from '../../types/data'
 import { extractPositionFromCardTitle, getError } from './utils'
 
@@ -45,7 +45,7 @@ export const getPtCardsResultingTier = async (requestBody: GetPtCardResultingTie
 
 }
 
-export const postUserPredict = async (requestBody: PostPtPredictRequest, isLocalHostFlag: boolean) => {
+export const postPtPredict = async (requestBody: PostPtPredictRequest, isLocalHostFlag: boolean) => {
 
     const firebaseClient = new FirebaseClient(isLocalHostFlag);
     await firebaseClient.initialize();
@@ -70,7 +70,7 @@ const mapPtCard = (ptCardRecord: PtCardRecord, userID: string) => {
         CardValue: ptCardRecord.CardValue,
         Position: ptCardRecord.Position,
         PredictedTier: ptCardRecord.PtPredicts ? filterForUser(ptCardRecord.PtPredicts, userID) : undefined,
-    } as PtCard    
+    } as PtCardPrediction    
 
 }
 
