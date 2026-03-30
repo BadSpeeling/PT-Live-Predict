@@ -24,3 +24,12 @@ export function getError (error: unknown, errorType: string, errorRequestBody: s
     }
 
 }
+
+export function getErrorMessage (error: unknown) {
+    if (error instanceof Error) {
+        return error.message;    
+    }
+    else {
+        return "No error message";
+    }
+}
