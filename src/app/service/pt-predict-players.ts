@@ -21,10 +21,6 @@ export const getPtPredictPlayers = async (requestBody: GetPtCardPredictsRequest,
         throw Error("Failure getting PtCards for PtCardPredicts: " + getErrorMessage(e));
     }
 
-    if (ptCards.length == 0) {
-        throw Error("No ptCardPredicts loaded");
-    }
-
     let ptCardCount: number;
 
     try {
@@ -55,11 +51,7 @@ export const getPtCardsResultingTier = async (requestBody: GetPtCardResultingTie
     catch (e) {
         throw Error("Failure getting PtCards for PtCardsResultingTier: " + getErrorMessage(e));
     }
-
-    if (ptCards.length == 0) {
-        throw Error("No ptCardsResultingTier loaded");
-    }
-
+    
     let ptCardCount: number;
 
     try {

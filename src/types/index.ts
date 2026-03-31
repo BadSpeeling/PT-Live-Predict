@@ -86,8 +86,10 @@ export interface SelectOption {
 }
 
 export interface AppData {
-    loadedData: LoadedData,
-    setLoadedData: React.Dispatch<React.SetStateAction<LoadedData>>, 
+    ptCardsPrediction: LoadedData<PtCardPrediction> | null,
+    setPtCardsPrediction: React.Dispatch<React.SetStateAction<LoadedData<PtCardPrediction> | null>>, 
+    ptCardsResultingTier: LoadedData<PtCardResultingTier> | null,
+    setPtCardsResultingTier: React.Dispatch<React.SetStateAction<LoadedData<PtCardResultingTier> | null>>, 
     ptCardFilters: PtCardFilters,
     setPtCardFilters: React.Dispatch<React.SetStateAction<PtCardFilters>>, 
     cardPage: CardPagination,
@@ -99,11 +101,9 @@ export interface AppData {
     setPageState: React.Dispatch<React.SetStateAction<PageState>>,
 }
 
-export interface LoadedData {
-    PtCards: PtCardPrediction[],
-    PtCardCount: number,
-    PtCardsResultingTier: PtCardResultingTier[],
-    PtCardResultingTierCount: number,
+export interface LoadedData<T> {
+    Cards: T[],
+    CardTotal: number,
     LiveUpdate: LiveUpdate,
 }
 

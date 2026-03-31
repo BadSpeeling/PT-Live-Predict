@@ -143,8 +143,18 @@ export const PtCardListFilter = () => {
             }
         }
 
+        const clearLoadedData = (gridMode: GridMode) => {
+            switch (gridMode) {
+                case GridMode.PtCard:
+                    context.setPtCardsPrediction(null);
+                case GridMode.ResultingTier:
+                    context.setPtCardsResultingTier(null);
+            }
+        }
+
         const gridMode = getGridModeEnum();
 
+        clearLoadedData(context.pageState.GridMode);
         context.setPageState({
             ...context.pageState,
             GridMode: gridMode,

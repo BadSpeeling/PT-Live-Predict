@@ -18,7 +18,7 @@ export const TierSelector = ({ ptCard }: TierSelectorProps) => {
 
         setSelectedTier(selectedTier);
 
-        const updatedPtCards = context.loadedData.PtCards.map((currPtCard) => {
+        const updatedPtCards = context.ptCardsPrediction!.Cards.map((currPtCard) => {
             if (ptCard.CardID === currPtCard.CardID) {
                 
                 return {
@@ -32,9 +32,9 @@ export const TierSelector = ({ ptCard }: TierSelectorProps) => {
             }
         });
 
-        context.setLoadedData({
-            ...context.loadedData,
-            PtCards: updatedPtCards
+        context.setPtCardsPrediction({
+            ...context.ptCardsPrediction!,
+            Cards: updatedPtCards
         });
 
         const options = {

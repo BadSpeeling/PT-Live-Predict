@@ -2,20 +2,13 @@
 
 import * as React from 'react'
 import { AppData, CallServer, GridMode, PageState, CardPagination, SelectOption, PtCardFilters, PtPlayerName, LoadedData } from '../types'
+import { PtCardPrediction, PtCardResultingTier } from '../types/component'
 
 const appData = {
-    loadedData: {
-        PtCards: [],
-        PtCardCount: 0,
-        PtCardsResultingTier: [],
-        PtCardResultingTierCount: 0,
-        LiveUpdate: {
-            LiveUpdateID: 0,
-            StartDate: new Date(),
-            CycleYear: 0,            
-        },
-    } as LoadedData,
-    setLoadedData: (_: LoadedData) => {},
+    ptCardsPrediction: null,
+    setPtCardsPrediction: (_: LoadedData<PtCardPrediction>) => {},
+    ptCardsResultingTier: null,
+    setPtCardsResultingTier: (_: LoadedData<PtCardResultingTier>) => {},
     ptCardFilters: {
         selectedTeam: {label:'', value:''} as SelectOption,
         selectedTier: {label:'', value:''} as SelectOption,
@@ -59,25 +52,19 @@ export default function AppProvider({
         selectedLiveUpdate: {label:'',value:''} as SelectOption,
     } as PtCardFilters
 
-    const [loadedData, setLoadedData] = React.useState({
-        PtCards: [],
-        PtCardCount: 0,
-        PtCardsResultingTier: [],
-        PtCardResultingTierCount: 0,
-        LiveUpdate: {
-            LiveUpdateID: 0,
-            StartDate: new Date(),
-            CycleYear: 0,            
-        },
-    } as LoadedData);
+    const [ptCardsPrediction, setPtCardsPrediction] = React.useState(null as LoadedData<PtCardPrediction>|null);
+    const [ptCardsResultingTier, setPtCardsResultingTier] = React.useState(null as LoadedData<PtCardResultingTier>|null);
+
     const [ptCardFilters,setPtCardFilters] = React.useState(selectedPtCardFilters);
     const [cardPage, setCardPage] = React.useState(cardPagination);
     const [isLoading, setIsLoading] = React.useState(false);
     const [pageState, setPageState] = React.useState({ CallServer: CallServer.None, GridMode: GridMode.PtCard});
 
     const appData = {
-        loadedData,
-        setLoadedData,
+        ptCardsPrediction,
+        setPtCardsPrediction,
+        ptCardsResultingTier,
+        setPtCardsResultingTier,
         ptCardFilters,
         setPtCardFilters,
         cardPage,
