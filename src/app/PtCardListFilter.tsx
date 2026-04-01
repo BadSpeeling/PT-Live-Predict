@@ -128,10 +128,14 @@ export const PtCardListFilter = () => {
         }
     })
 
-    const handleAlignment = (
+    const handleGridModeChange = (
         event: React.MouseEvent<HTMLElement>,
-        newAlignment: '0'|'1',
+        newAlignment: '0'|'1'|null,
     ) => {
+
+        if (newAlignment === null) {
+            return;
+        }
 
         const getGridModeEnum = () => {
             switch (newAlignment) {
@@ -167,7 +171,7 @@ export const PtCardListFilter = () => {
                 <ToggleButtonGroup
                     value={context.pageState.GridMode.toString()}
                     exclusive
-                    onChange={handleAlignment}
+                    onChange={handleGridModeChange}
                 >
                     <ToggleButton value="0">
                         Current Cards
