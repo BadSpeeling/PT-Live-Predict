@@ -52,6 +52,23 @@ export const PtPredictPanel = () => {
       }
     }
 
+    const getPageState = () => {
+      switch (context.pageState.CallServer) {
+        case CallServer.GetStandard:
+          return {
+            ...context.cardPage,
+            CurrentPage: 1,
+          };
+        case CallServer.GetPaginated:
+          return {
+            ...context.cardPage,
+            CurrentPage: context.cardPage.CurrentPage + (context.cardPage.NavigationDirection === 'desc' ? 1 : -1),
+          };
+        default:
+          return context.cardPage;
+      }
+    }
+
     const handleCardLoad = async (ignoreLastPtCardID: boolean) => {
         const queryLiveUpdateID = context.currentLiveUpdateID;
         const options = {
@@ -83,6 +100,7 @@ export const PtPredictPanel = () => {
             CardTotal: getPtCardPredictsResponse.PtCardCount,
             LiveUpdate: liveUpdate,
           });  
+          context.setCardPage(getPageState());
 
         }
         else {
@@ -126,7 +144,8 @@ export const PtPredictPanel = () => {
             Cards: getPtCardResultingTierResponse.PtCardsResultingTier,
             CardTotal: getPtCardResultingTierResponse.PtCardCount,
             LiveUpdate: liveUpdate,
-          });       
+          });
+          context.setCardPage(getPageState());       
 
         }
         else {

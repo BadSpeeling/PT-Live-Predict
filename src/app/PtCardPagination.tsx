@@ -14,7 +14,6 @@ export const PtCardPagination = ({totalPages}: Props) => {
         if (pageNumber >= 1 && pageNumber <= totalPages) {
             context.setCardPage({
                 ...context.cardPage,
-                CurrentPage: pageNumber,
                 NavigationDirection: pageNumber - context.cardPage.CurrentPage > 0 ? "desc" : "asc",
             })
             context.setPageState({

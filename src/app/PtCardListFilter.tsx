@@ -102,7 +102,6 @@ export const PtCardListFilter = () => {
         });
         context.setCardPage({
             ...context.cardPage,
-            CurrentPage: 1,
             NavigationDirection: null,
             PageSize: getPageSize(),
         })
