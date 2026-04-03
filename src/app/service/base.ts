@@ -1,6 +1,6 @@
 import FirebaseClient from '../../lib/firebase/FirebaseClient'
-import { getError } from './utils'
 import { getAuthenticatedAppForUser } from '../../lib/firebase/serverApp'
+import { getError } from './converters';
 
 export const getFirebaseClient = async (isLocalHostFlag: boolean) => {
 
