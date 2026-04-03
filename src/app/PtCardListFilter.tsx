@@ -137,7 +137,7 @@ export const PtCardListFilter = () => {
             return;
         }
 
-        const getGridModeEnum = () => {
+        const getToggledGridMode = () => {
             switch (newAlignment) {
                 case "0":
                     return GridMode.PtCard;
@@ -155,9 +155,9 @@ export const PtCardListFilter = () => {
             }
         }
 
-        const gridMode = getGridModeEnum();
-
         clearLoadedData(context.pageState.GridMode);
+        const gridMode = getToggledGridMode();
+
         context.setPageState({
             ...context.pageState,
             GridMode: gridMode,

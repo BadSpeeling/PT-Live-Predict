@@ -179,10 +179,3 @@ export interface PostPtPredictRequest {
 export interface PostPtPredictResponse {
     RequestSucceeded: boolean,
 }
-
-export interface PostErrorLogRequest {
-    ErrorType: string,
-    ErrorMsg: string,
-    ErrorStack: string,
-    ErrorRequestBody: any,
-}

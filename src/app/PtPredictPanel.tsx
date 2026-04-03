@@ -52,7 +52,7 @@ export const PtPredictPanel = () => {
       }
     }
 
-    const getPageState = () => {
+    const getPaginationState = () => {
       switch (context.pageState.CallServer) {
         case CallServer.GetStandard:
           return {
@@ -100,7 +100,7 @@ export const PtPredictPanel = () => {
             CardTotal: getPtCardPredictsResponse.PtCardCount,
             LiveUpdate: liveUpdate,
           });  
-          context.setCardPage(getPageState());
+          context.setCardPage(getPaginationState());
 
         }
         else {
@@ -145,7 +145,7 @@ export const PtPredictPanel = () => {
             CardTotal: getPtCardResultingTierResponse.PtCardCount,
             LiveUpdate: liveUpdate,
           });
-          context.setCardPage(getPageState());       
+          context.setCardPage(getPaginationState());       
 
         }
         else {

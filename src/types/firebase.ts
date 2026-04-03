@@ -15,3 +15,10 @@ export interface PostPtPredictRequest {
     PtCardID: number,
     PredictedTier: number,
 }
+
+export interface PostErrorLogRequest {
+    ErrorType: string,
+    ErrorMsg: string,
+    ErrorStack: string,
+    ErrorRequestBody: any,
+}

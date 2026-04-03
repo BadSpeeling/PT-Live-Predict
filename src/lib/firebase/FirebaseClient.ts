@@ -1,8 +1,7 @@
-import { Firestore, setDoc, orderBy, where, getFirestore, getDocs, query, Query, collection, QuerySnapshot, DocumentData, Timestamp, doc, startAfter, limit, getCountFromServer, getDoc, QueryConstraint } from "firebase/firestore";
+import { Firestore, setDoc, orderBy, where, getFirestore, getDocs, query, collection, QuerySnapshot, DocumentData, Timestamp, doc, startAfter, limit, getCountFromServer, getDoc, QueryConstraint } from "firebase/firestore";
 import { PtCard } from "../../types/data"
 import { User } from 'firebase/auth';
-import { PostErrorLogRequest } from '../../types'
-import { GetPtCardRequest, PostPtPredictRequest } from '../../types/firebase'
+import { GetPtCardRequest, PostPtPredictRequest, PostErrorLogRequest } from '../../types/firebase'
 import { randomUUID } from 'crypto'
 
 export default class FirebaseClient {
