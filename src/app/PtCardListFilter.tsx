@@ -86,12 +86,12 @@ export const PtCardListFilter = () => {
             return;
         }
 
-        if (!(firstNameEntered && lastNameEntered) && !context.ptCardFilters.selectedTeam.value && !context.ptCardFilters.selectedTier.value) {
+        if (!(firstNameEntered && lastNameEntered) && context.ptCardFilters.selectedTeam.value === '' && context.ptCardFilters.selectedTier.value === '') {
             toast("A filter must be selected!");
             return;            
         }
 
-        if (context.pageState.GridMode === GridMode.ResultingTier && !context.ptCardFilters.selectedLiveUpdate.value) {
+        if (context.pageState.GridMode === GridMode.ResultingTier && context.ptCardFilters.selectedLiveUpdate.value === '') {
             toast("A Live Update must be selected!");
             return;
         }
@@ -102,7 +102,6 @@ export const PtCardListFilter = () => {
         });
         context.setCardPage({
             ...context.cardPage,
-            CurrentPage: 1,
             NavigationDirection: null,
             PageSize: getPageSize(),
         })
@@ -122,17 +121,21 @@ export const PtCardListFilter = () => {
         }
     })
 
-    const liveUpdateOptions = liveUpdates.slice(0,-1).map((liveUpdate) => {
+    const liveUpdateEnactedOptions = liveUpdates.slice(0,-1).map((liveUpdate) => {
         return {
             label: `${dateToString(liveUpdate.EndDate!)}`,
             value: liveUpdate.LiveUpdateID.toString(),
         }
     })
 
-    const handleAlignment = (
+    const handleGridModeChange = (
         event: React.MouseEvent<HTMLElement>,
-        newAlignment: '0'|'1',
+        newAlignment: '0'|'1'|null,
     ) => {
+
+        if (newAlignment === null) {
+            return;
+        }
 
         const getGridModeEnum = () => {
             switch (newAlignment) {
@@ -143,8 +146,18 @@ export const PtCardListFilter = () => {
             }
         }
 
+        const clearLoadedData = (gridMode: GridMode) => {
+            switch (gridMode) {
+                case GridMode.PtCard:
+                    context.setPtCardsPrediction(null);
+                case GridMode.ResultingTier:
+                    context.setPtCardsResultingTier(null);
+            }
+        }
+
         const gridMode = getGridModeEnum();
 
+        clearLoadedData(context.pageState.GridMode);
         context.setPageState({
             ...context.pageState,
             GridMode: gridMode,
@@ -158,7 +171,7 @@ export const PtCardListFilter = () => {
                 <ToggleButtonGroup
                     value={context.pageState.GridMode.toString()}
                     exclusive
-                    onChange={handleAlignment}
+                    onChange={handleGridModeChange}
                 >
                     <ToggleButton value="0">
                         Current Cards
@@ -170,7 +183,7 @@ export const PtCardListFilter = () => {
             </div>
             <div className="mb-1">
                 <div>Team</div>
-                <div className="lg:w-2/5 cursor-pointer">
+                <div className="lg:w-2/5">
                     <Select
                         options={teams}
                         value={context.ptCardFilters.selectedTeam}
@@ -188,7 +201,7 @@ export const PtCardListFilter = () => {
             </div>
             <div className="mb-1">
                 <div>Tier</div>
-                <div className="lg:w-2/5 cursor-pointer">
+                <div className="lg:w-2/5">
                     <Select
                         options={tiers}
                         value={context.ptCardFilters.selectedTier}
@@ -223,7 +236,7 @@ export const PtCardListFilter = () => {
                     <div>Live Update</div>
                     <div className="lg:w-2/5 cursor-pointer">
                         <Select
-                            options={liveUpdateOptions}
+                            options={liveUpdateEnactedOptions}
                             value={context.ptCardFilters.selectedLiveUpdate}
                             onChange={onSelectedLiveUpdateChange}   
                             instanceId={"selectedLiveUpdate"}

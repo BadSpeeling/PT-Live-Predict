@@ -1,22 +1,34 @@
 import { GetPtCardPredictsRequest, GetPtCardResultingTierRequest, PostPtPredictRequest, PostPtPredictResponse, GetPtCardPredictsResponse, GetPtCardResultingTierResponse, Position, GridMode } from '../../types'
-import FirebaseClient from '../../lib/firebase/FirebaseClient'
 
-import { PtCard, PtCardResultingTier } from '../../types/component'
-import { PtCard as PtCardRecord } from '../../types/data'
-import { extractPositionFromCardTitle, getError } from './utils'
+import { PtCardPrediction, PtCardResultingTier } from '../../types/component'
+import { PtCard } from '../../types/data'
+import { extractPositionFromCardTitle, getErrorMessage } from './utils'
+import { PtCardPredictsToPtCardRequest, PtCardResultingTierToPtCardRequest, PtPredictRequestToFirebase } from './converters'
+import { getFirebaseClient } from './base'
 
 export const getPtPredictPlayers = async (requestBody: GetPtCardPredictsRequest, isLocalHostFlag: boolean) => {
 
-    const firebaseClient = new FirebaseClient(isLocalHostFlag);
-    await firebaseClient.initialize();
+    const firebaseClient = await getFirebaseClient(isLocalHostFlag);
 
-    const ptCards = await firebaseClient.getPtCards(requestBody);
+    const getPtCardsRequest = PtCardPredictsToPtCardRequest(requestBody);
     
-    if (ptCards.length == 0) {
-        throw Error("No ptCards loaded");
+    let ptCards: PtCard[]; 
+    
+    try {
+        ptCards = await firebaseClient.getPtCards(getPtCardsRequest);
+    }
+    catch (e) {
+        throw Error("Failure getting PtCards for PtCardPredicts: " + getErrorMessage(e));
     }
 
-    const ptCardCount = await firebaseClient.getPtCardsCount(requestBody);
+    let ptCardCount: number;
+
+    try {
+        ptCardCount = await firebaseClient.getPtCardsCount(requestBody);
+    }
+    catch (e) {
+        throw Error("Failure getting total record count for PtCardPredicts: " + getErrorMessage(e));
+    }
 
     return { 
         PtCards: mapPtCards(ptCards, (firebaseClient.currentUser?.uid ?? "").toString()),
@@ -27,16 +39,27 @@ export const getPtPredictPlayers = async (requestBody: GetPtCardPredictsRequest,
 
 export const getPtCardsResultingTier = async (requestBody: GetPtCardResultingTierRequest, isLocalHostFlag: boolean) => {
 
-    const firebaseClient = new FirebaseClient(isLocalHostFlag);
-    await firebaseClient.initialize();
+    const firebaseClient = await getFirebaseClient(isLocalHostFlag);
 
-    const ptCards = await firebaseClient.getPtCards(requestBody);
+    const getPtCardsRequest = PtCardResultingTierToPtCardRequest(requestBody);
+
+    let ptCards: PtCard[]; 
     
-    if (ptCards.length == 0) {
-        throw Error("No ptCardsResultingTier loaded");
+    try {
+        ptCards = await firebaseClient.getPtCards(getPtCardsRequest);
     }
+    catch (e) {
+        throw Error("Failure getting PtCards for PtCardsResultingTier: " + getErrorMessage(e));
+    }
+    
+    let ptCardCount: number;
 
-    const ptCardCount = await firebaseClient.getPtCardsCount(requestBody);
+    try {
+        ptCardCount = await firebaseClient.getPtCardsCount(requestBody);
+    }
+    catch (e) {
+        throw Error("Failure getting total record count for PtCardsResultingTier: " + getErrorMessage(e));
+    }
 
     return { 
         PtCardsResultingTier: mapPtCardsResultingTier(ptCards, (firebaseClient.currentUser?.uid ?? "").toString()),
@@ -45,46 +68,52 @@ export const getPtCardsResultingTier = async (requestBody: GetPtCardResultingTie
 
 }
 
-export const postUserPredict = async (requestBody: PostPtPredictRequest, isLocalHostFlag: boolean) => {
+export const postPtPredict = async (requestBody: PostPtPredictRequest, isLocalHostFlag: boolean) => {
 
-    const firebaseClient = new FirebaseClient(isLocalHostFlag);
-    await firebaseClient.initialize();
+    const firebaseClient = await getFirebaseClient(isLocalHostFlag);
 
-    await firebaseClient.postPtPredict(requestBody);
-    
+    const postPtPredictRequest = PtPredictRequestToFirebase(requestBody);
+
+    try {
+        await firebaseClient.postPtPredict(postPtPredictRequest);
+    }
+    catch (e) {
+        throw Error("Failure posting PtPredict: " + getErrorMessage(e));
+    }
+
 }
 
-const mapPtCards = (ptCardRecords: PtCardRecord[], userID: string) => {
-    return ptCardRecords.map(r => mapPtCard(r, userID));
+const mapPtCards = (ptCards: PtCard[], userID: string) => {
+    return ptCards.map(r => mapPtCard(r, userID));
 }
 
-const mapPtCard = (ptCardRecord: PtCardRecord, userID: string) => {
+const mapPtCard = (ptCard: PtCard, userID: string) => {
     
-    const position = getPosition(ptCardRecord);
+    const position = getPosition(ptCard);
 
     return {
-        PtCardID: ptCardRecord.PtCardID,
-        CardID: ptCardRecord.CardID,
-        LiveUpdateID: ptCardRecord.LiveUpdateID,
-        CardTitle: `${position} ${ptCardRecord.FirstName} ${ptCardRecord.LastName} ${ptCardRecord.Franchise}`,
-        CardValue: ptCardRecord.CardValue,
-        Position: ptCardRecord.Position,
-        PredictedTier: ptCardRecord.PtPredicts ? filterForUser(ptCardRecord.PtPredicts, userID) : undefined,
-    } as PtCard    
+        PtCardID: ptCard.PtCardID,
+        CardID: ptCard.CardID,
+        LiveUpdateID: ptCard.LiveUpdateID,
+        CardTitle: `${position} ${ptCard.FirstName} ${ptCard.LastName} ${ptCard.Franchise}`,
+        CardValue: ptCard.CardValue,
+        Position: ptCard.Position,
+        PredictedTier: ptCard.PtPredicts ? filterForUser(ptCard.PtPredicts, userID) : undefined,
+    } as PtCardPrediction    
 
 }
 
-const mapPtCardsResultingTier = (ptCardRecords: PtCardRecord[], userID: string) => {
-    return ptCardRecords.map(r => mapPtCardResultingTier(r, userID));
+const mapPtCardsResultingTier = (ptCards: PtCard[], userID: string) => {
+    return ptCards.map(r => mapPtCardResultingTier(r, userID));
 }
 
-const mapPtCardResultingTier = (ptCardRecord: PtCardRecord, userID: string) => {
+const mapPtCardResultingTier = (ptCard: PtCard, userID: string) => {
     
-    const position = getPosition(ptCardRecord);
+    const position = getPosition(ptCard);
 
     const getPredictedTiers = () => {
-        if (ptCardRecord.PtPredicts) {
-            return Object.values(ptCardRecord.PtPredicts);
+        if (ptCard.PtPredicts) {
+            return Object.values(ptCard.PtPredicts);
         }
         else {
             return [] as number[];
@@ -92,25 +121,25 @@ const mapPtCardResultingTier = (ptCardRecord: PtCardRecord, userID: string) => {
     }
 
     return {
-        PtCardID: ptCardRecord.PtCardID,
-        CardID: ptCardRecord.CardID,
-        LiveUpdateID: ptCardRecord.LiveUpdateID,
-        CardTitle: `${position} ${ptCardRecord.FirstName} ${ptCardRecord.LastName} ${ptCardRecord.Franchise}`,
-        CardValue: ptCardRecord.CardValue,
-        Position: ptCardRecord.Position,
+        PtCardID: ptCard.PtCardID,
+        CardID: ptCard.CardID,
+        LiveUpdateID: ptCard.LiveUpdateID,
+        CardTitle: `${position} ${ptCard.FirstName} ${ptCard.LastName} ${ptCard.Franchise}`,
+        CardValue: ptCard.CardValue,
+        Position: ptCard.Position,
         PredictedTiers: getPredictedTiers(),
-        ResultingTier: ptCardRecord.ResultingTier,
-        ResultingCardValue: ptCardRecord.ResultingCardValue,
-        PreviousTier: ptCardRecord.tier,
+        ResultingTier: ptCard.ResultingTier,
+        ResultingCardValue: ptCard.ResultingCardValue,
+        PreviousTier: ptCard.tier,
     } as PtCardResultingTier    
 }
 
-const getPosition = (ptCardRecord: PtCardRecord) => {
-    if (ptCardRecord.Position === 1) {        
-        return extractPositionFromCardTitle(ptCardRecord.CardTitle)
+const getPosition = (ptCard: PtCard) => {
+    if (ptCard.Position === 1) {        
+        return extractPositionFromCardTitle(ptCard.CardTitle)
     }
     else {
-        return Position[ptCardRecord.Position];
+        return Position[ptCard.Position];
     }
 }
 

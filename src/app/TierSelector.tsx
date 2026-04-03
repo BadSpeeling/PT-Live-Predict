@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AppContext } from './AppContext'
 import { Tier, PostPtPredictRequest, PostPtPredictResponse } from '../types'
-import { PtCard as PtCardValues } from '../types/component'
+import { PtCardPrediction as PtCardValues } from '../types/component'
 import { toast } from 'react-toastify';
 
 type TierSelectorProps = {
@@ -18,7 +18,7 @@ export const TierSelector = ({ ptCard }: TierSelectorProps) => {
 
         setSelectedTier(selectedTier);
 
-        const updatedPtCards = context.loadedData.PtCards.map((currPtCard) => {
+        const updatedPtCards = context.ptCardsPrediction!.Cards.map((currPtCard) => {
             if (ptCard.CardID === currPtCard.CardID) {
                 
                 return {
@@ -32,9 +32,9 @@ export const TierSelector = ({ ptCard }: TierSelectorProps) => {
             }
         });
 
-        context.setLoadedData({
-            ...context.loadedData,
-            PtCards: updatedPtCards
+        context.setPtCardsPrediction({
+            ...context.ptCardsPrediction!,
+            Cards: updatedPtCards
         });
 
         const options = {

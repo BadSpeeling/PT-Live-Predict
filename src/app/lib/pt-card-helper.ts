@@ -1,21 +1,3 @@
-import { PtCard } from '../../types/component'
-import { AppData, GridMode } from '../../types'
-
-export const sortPtCardList = (cardPredictions: PtCard[]) => {
-
-    return cardPredictions.sort((a: PtCard, b: PtCard) => {
-        const overallDiff = b.CardValue - a.CardValue;
-
-        if (overallDiff != 0) {
-            return overallDiff;
-        }
-
-        return b.CardID - a.CardID;
-
-    })
-
-}
-
 export const countTiers = (tiers: number[]) => {
 
     const tierCounts = [...Array(6).keys()].map(_ => 0);
@@ -28,23 +10,6 @@ export const countTiers = (tiers: number[]) => {
 
 }
 
-export const getActiveData = (appData: AppData) => {
-    switch (appData.pageState.GridMode) {
-        case GridMode.PtCard:
-            return appData.loadedData.PtCards;
-        case GridMode.ResultingTier:
-            return appData.loadedData.PtCardsResultingTier;
-    }
-}
-
-export const getActiveRecordCount = (appData: AppData) => {
-    switch (appData.pageState.GridMode) {
-        case GridMode.PtCard:
-            return appData.loadedData.PtCardCount;
-        case GridMode.ResultingTier:
-            return appData.loadedData.PtCardResultingTierCount;
-    }
-}
 
 export const dateToString = (date: Date) => {
     return `${date.getFullYear()}-${dateToStringHelper(date.getMonth()+1)}-${dateToStringHelper(date.getDate())}`

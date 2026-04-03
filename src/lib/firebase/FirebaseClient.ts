@@ -1,38 +1,20 @@
-import { getAuthenticatedAppForUser } from './serverApp'
 import { Firestore, setDoc, orderBy, where, getFirestore, getDocs, query, Query, collection, QuerySnapshot, DocumentData, Timestamp, doc, startAfter, limit, getCountFromServer, getDoc, QueryConstraint } from "firebase/firestore";
 import { PtCard } from "../../types/data"
 import { User } from 'firebase/auth';
-import { GetPtCardPredictsRequest, PostPtPredictRequest, PostErrorLogRequest, Tier } from '../../types'
+import { PostErrorLogRequest } from '../../types'
+import { GetPtCardRequest, PostPtPredictRequest } from '../../types/firebase'
 import { randomUUID } from 'crypto'
 
 export default class FirebaseClient {
 
-    firestore?: Firestore;
-    currentUser?: User | null;
-    isLocalHostFlag: boolean;    
+    firestore: Firestore;
+    currentUser: User;
 
-    constructor (isLocalHostFlag: boolean) {
-        this.isLocalHostFlag = isLocalHostFlag;        
-    }
+    constructor (firebaseServerApp: any, currentUser: User) {
 
-    async initialize () {
-
-        const { firebaseServerApp, currentUser } = await getAuthenticatedAppForUser(this.isLocalHostFlag);
-        const firestore = getFirestore(firebaseServerApp);
-
-        this.firestore = firestore;
+        this.firestore = getFirestore(firebaseServerApp);
         this.currentUser = currentUser;
 
-    }
-
-    #validateClient () {
-        if (!this.firestore) {
-            throw Error("Firestore has not been initialized!")
-        }
-
-        if (!this.currentUser) {
-            throw new Error("The user has not been authentication yet!")
-        }
     }
 
     #snapshotConverter <T> (snapshot: QuerySnapshot<DocumentData, DocumentData>) {
@@ -47,9 +29,8 @@ export default class FirebaseClient {
 
     }
 
-    async getPtCards (request: GetPtCardPredictsRequest) {
+    async getPtCards (request: GetPtCardRequest) {
 
-        this.#validateClient();
         const navigationDirection = request.NavigationDirection ?? "desc"
 
         const queryConstraints = [
@@ -88,9 +69,7 @@ export default class FirebaseClient {
 
     }
 
-    async getPtCardsCount (request: GetPtCardPredictsRequest) {
-
-        this.#validateClient();
+    async getPtCardsCount (request: GetPtCardRequest) {
 
         const queryConstraints = [
             where("LiveUpdateID", "==", request.LiveUpdateID),
@@ -118,8 +97,6 @@ export default class FirebaseClient {
 
     async postPtPredict (postRequest: PostPtPredictRequest) {
 
-        this.#validateClient();
-
         const userID = this.currentUser!.uid
 
         const ptCardRef = doc(this.firestore!, "PtCard", postRequest.PtCardID.toString());
@@ -133,8 +110,6 @@ export default class FirebaseClient {
     }
 
     async postErrorLog (postRequest: PostErrorLogRequest) {
-
-        this.#validateClient();
 
         const guid = randomUUID();
         const errorLogRef = doc(this.firestore!, "ErrorLog", guid);

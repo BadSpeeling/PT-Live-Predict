@@ -1,4 +1,4 @@
-import { PtCard, PtCardResultingTier } from './component'
+import { PtCardPrediction, PtCardResultingTier } from './component'
 import { LiveUpdate } from './data'
 
 export enum Position {
@@ -86,8 +86,10 @@ export interface SelectOption {
 }
 
 export interface AppData {
-    loadedData: LoadedData,
-    setLoadedData: React.Dispatch<React.SetStateAction<LoadedData>>, 
+    ptCardsPrediction: LoadedData<PtCardPrediction> | null,
+    setPtCardsPrediction: React.Dispatch<React.SetStateAction<LoadedData<PtCardPrediction> | null>>, 
+    ptCardsResultingTier: LoadedData<PtCardResultingTier> | null,
+    setPtCardsResultingTier: React.Dispatch<React.SetStateAction<LoadedData<PtCardResultingTier> | null>>, 
     ptCardFilters: PtCardFilters,
     setPtCardFilters: React.Dispatch<React.SetStateAction<PtCardFilters>>, 
     cardPage: CardPagination,
@@ -99,11 +101,9 @@ export interface AppData {
     setPageState: React.Dispatch<React.SetStateAction<PageState>>,
 }
 
-export interface LoadedData {
-    PtCards: PtCard[],
-    PtCardCount: number,
-    PtCardsResultingTier: PtCardResultingTier[],
-    PtCardResultingTierCount: number,
+export interface LoadedData<T> {
+    Cards: T[],
+    CardTotal: number,
     LiveUpdate: LiveUpdate,
 }
 
@@ -144,7 +144,7 @@ export interface GetPtCardPredictsRequest {
 }
 
 export interface GetPtCardPredictsResponse {
-    PtCards: PtCard[],
+    PtCards: PtCardPrediction[],
     PtCardCount: number,
 }
 
